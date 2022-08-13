@@ -20,8 +20,7 @@ var PATH_FLIGHTPLAN = addon.storagePath ~ "/AI/FlightPlans/" ~ FILENAME_FLIGHTPL
 var SCENARIO_ID = "aerotow_addon";
 var SCENARIO_NAME = "Aerotow Add-on";
 var SCENARIO_DESC = "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.";
-var METER_TO_FEET = 3.2808399;
-var MAX_RWY_LENGTH = 200; # Sum of distance in Rolling waypoints in meters
+var MAX_RWY_LENGTH = 225; # Sum of distance in Rolling waypoints in meters
 
 #
 # Global variables
@@ -202,31 +201,32 @@ var generateFlightPlanXml = func () {
 
     initAircraftVariable(airport, runway, 1);
 
-    # Start at 2 o'clock from the glider and line up with the runway
+    # Start at 2 o'clock from the glider...
     # Inital ktas must be >= 1.0
     addWptGround({"hdgChange": 60, "dist": 25}, {"altChange": 0, "ktas": 5});
 
     # Reset coord and heading
     initAircraftVariable(airport, runway, 0);
 
-    var gliderOffsetM = getGliderOffsetRunwayThreshold(runway);
+    var gliderOffsetM = getGliderOffsetFromRunwayThreshold(runway);
+
+    # ... and line up with the runway
+    addWptGround({"hdgChange": 0, "dist": 30 + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
 
     # Rolling
-    addWptGround({"hdgChange": 0, "dist": 30 + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
     addWptGround({"hdgChange": 0, "dist": 5},  {"altChange": 0, "ktas": 5});
     addWptGround({"hdgChange": 0, "dist": 50}, {"altChange": 0, "ktas": perf.speed / 4});
     addWptGround({"hdgChange": 0, "dist": 50}, {"altChange": 0, "ktas": perf.speed / 1.8});
     addWptGround({"hdgChange": 0, "dist": 50}, {"altChange": 0, "ktas": perf.speed});
 
     # Takeof
-    addWptAir({"hdgChange": 0,   "dist": 20},  {"altChange": 2,   "ktas": perf.speed * 1.05});
-    addWptAir({"hdgChange": 0,   "dist": 20},  {"altChange": 20,  "ktas": perf.speed * 1.075});
-    addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": 240, "ktas": perf.speed * 1.1});
+    addWptAir({"hdgChange": 0,   "dist": 70},  {"altChange": 3,            "ktas": perf.speed * 1.05});
+    addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": perf.vs / 10, "ktas": perf.speed * 1.025});
 
     # Circle around airport
-    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs * 1.2, "ktas": perf.speed});
-    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs * 1.2, "ktas": perf.speed});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs * 1.5, "ktas": perf.speed * 1.025});
+    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs / 1.5, "ktas": perf.speed});
+    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs / 1.7, "ktas": perf.speed});
+    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.025});
     addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.05});
     addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.075});
     addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.1});
@@ -311,16 +311,18 @@ var getAircraftPerformance = func () {
 # runway - Object of runway from which the glider start.
 #
 var initAircraftVariable = func (airport, runway, isGliderPos = 1) {
+    var gliderCood = geo.aircraft_position();
+
     # Set coordinates as glider position or runway threshold
     g_coord = isGliderPos 
-        ? geo.aircraft_position()
+        ? gliderCood
         : geo.Coord.new().set_latlon(runway.lat, runway.lon);
 
     # Set airplane heading as runway heading
     g_heading = runway.heading;
 
     # Set airplane altitude as airport elevation
-    g_altitude = airport.elevation * METER_TO_FEET;
+    g_altitude = gliderCood.alt() * M2FT;
 }
 
 #
@@ -329,7 +331,7 @@ var initAircraftVariable = func (airport, runway, isGliderPos = 1) {
 # runway - Object of runway from which the glider start
 # Return the distance in metres, of the glider's displacement from the runway threshold.
 #
-var getGliderOffsetRunwayThreshold = func (runway) {
+var getGliderOffsetFromRunwayThreshold = func (runway) {
     var gliderCoord = geo.aircraft_position();
     var rwyThreshold = geo.Coord.new().set_latlon(runway.lat, runway.lon);
 
@@ -452,8 +454,8 @@ var getWptString = func (name, coord = nil, alt = nil, ktas = nil, groundAir = n
     }
 
     if (alt != nil) {
-        str = str ~ "            <alt>" ~ alt ~ "</alt>\n";
-        # str = str ~ "            <crossat>" ~ alt ~ "</crossat>\n";
+        # str = str ~ "            <alt>" ~ alt ~ "</alt>\n";
+        str = str ~ "            <crossat>" ~ alt ~ "</crossat>\n";
     }
 
     if (ktas != nil) {
