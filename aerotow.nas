@@ -182,7 +182,7 @@ var generateFlightPlanXml = func () {
     var minRwyLength = getMinRunwayLength();
     if (runway.length < minRwyLength) {
         messages.displayError(
-            "This runway is too short. Please choose a longer one then " ~ minRwyLength ~ " m "
+            "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
             ~ "(" ~ math.round(minRwyLength * M2FT) ~ " ft)."
         );
         return 0;
