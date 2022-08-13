@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+#
+# Aerotow Everywhere - Add-on for FlightGear
+#
+# Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
+#
+# Copyright (C) 2022 Roman Ludwicki
+#
+# Aerotow Everywhere is an Open Source project and it is licensed
+# under the GNU Public License v3 (GPLv3)
+#
+-->
+
+<!--
+  use this addon-config.xml to create/set/publish your property tree
+  or override default settings from defaults.xml
+
+  Node: this file MUST be named addon-config.xml and it MUST be in the
+  root path of your addon/plugin.
+  The topmost element MUST be <PropertyList>
+-->
+
+<PropertyList>
+    <addons>
+        <by-id>
+            <org.flightgear.addons.Aerotow>
+                <addon-devel>
+                    <ai-model type="string">Cub</ai-model>
+                    <help-text>=== How to start? ===
+
+From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts).
+The tow aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by `Ctrl-o` key (check help of you glider). The aircraft will begin to accelerate and take off.
+
+The tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then when it has completed the entire set route it simply turns right 90 degrees and flies at a constant altitude.
+
+You can disconnect from the aircraft at any time, most often by pressing the `o` key.
+
+=== Troubleshotting ===
+
+1. When I select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
+
+Probably you didn't include the `--data` command line option with the path where FlightGear should look for additional flight plan files for AI. Unfortunately, the simulator does not inform us that there was a problem with finding the flight plan file, so everything looks like it should work but does not.
+For fix it, in the file explorer of your operating system, find the directory `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow`. This path must be added by the `--data` command line option, so it will be treated as an additional FGData directory where FlightGear will find the flight plan. In Launcher go to "Settings" tab and in "Additionnal Setting" type (on the Linux system):
+
+--data=/home/{username}/.fgfs/Export/Addons/org.flightgear.addons.Aerotow
+
+or on the Windows:
+
+--data=C:\Users\{username}\AppData\Roaming\flightgear.org\Export\Addons\org.flightgear.addons.Aerotow
+
+Run simulator again, now everything should be working.
+
+                    </help-text>
+                </addon-devel>
+            </org.flightgear.addons.Aerotow>
+        </by-id>
+    </addons>
+</PropertyList>

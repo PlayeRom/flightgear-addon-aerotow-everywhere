@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+#
+# Aerotow Everywhere - Add-on for FlightGear
+#
+# Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
+#
+# Copyright (C) 2022 Roman Ludwicki
+#
+# Aerotow Everywhere is an Open Source project and it is licensed
+# under the GNU Public License v3 (GPLv3)
+#
+-->
+
+<!--
+    2018-12 WARNING:
+    PUI menu items must have a globally unique label to make bindings work
+    correctly. Bindings of all items with the same label will be triggered
+    if any of them is selected from the menu.
+-->
+
+<PropertyList>
+    <meta>
+        <file-type type="string">FlightGear add-on menu bar items</file-type>
+        <format-version type="int">1</format-version>
+    </meta>
+    <menubar-items>
+        <menu>
+            <label>Aerotow Everywhere</label>
+            <enabled type="bool">true</enabled>
+
+            <item>
+                <label>Call for Piper J3 Cub aircraft</label>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
+                    <value type="string">Cub</value>
+                </binding>
+            </item>
+            <item>
+                <label>Call for Robin DR400 aircraft</label>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
+                    <value type="string">DR400</value>
+                </binding>
+            </item>
+            <item>
+                <label>Call for Cessna 182 aircraft</label>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
+                    <value type="string">c182</value>
+                </binding>
+            </item>
+            <item>
+                <label>------------------</label>
+                <enabled>false</enabled>
+            </item>
+            <item>
+                <label>Disable tow aircraft</label>
+                <binding>
+                    <command>nasal</command>
+                    <script><![CDATA[aerotow.stopAerotow();]]></script>
+                </binding>
+            </item>
+            <item>
+                <label>------------------</label>
+                <enabled>false</enabled>
+            </item>
+            <item>
+                <label>Help</label>
+                <binding>
+                    <command>dialog-show</command>
+                    <dialog-name>help-aerotow</dialog-name>
+                </binding>
+            </item>
+            <item>
+                <label>About</label>
+                <binding>
+                    <command>dialog-show</command>
+                    <dialog-name>about-aerotow</dialog-name>
+                </binding>
+            </item>
+
+            <!--
+            FOR DEVELOPMENT ONLY!
+            trigger reload of addon-main.nas
+            1) This item should be REMOVED for release versions.
+            2) Ensure the label is unique
+            3) replace addon ID to match your addon
+            -->
+            <!-- <item>
+                <label>Reload Add-on</label>
+                <binding>
+                    <command>addon-reload</command>
+                    <id>org.flightgear.addons.Aerotow</id>
+                </binding>
+            </item> -->
+        </menu>
+    </menubar-items>
+</PropertyList>
