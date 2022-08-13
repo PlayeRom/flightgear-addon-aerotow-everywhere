@@ -20,7 +20,6 @@ var PATH_FLIGHTPLAN = addon.storagePath ~ "/AI/FlightPlans/" ~ FILENAME_FLIGHTPL
 var SCENARIO_ID = "aerotow_addon";
 var SCENARIO_NAME = "Aerotow Add-on";
 var SCENARIO_DESC = "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.";
-var MAX_RWY_LENGTH = 225; # Sum of distance in Rolling waypoints in meters
 
 #
 # Global variables
@@ -180,10 +179,11 @@ var generateFlightPlanXml = func () {
     var airport = airportinfo(icao);
     var runway = airport.runways[runwayName];
 
-    if (runway.length < MAX_RWY_LENGTH) {
+    var minRwyLength = getMinRunwayLength();
+    if (runway.length < minRwyLength) {
         messages.displayError(
-            "This runway is too short. Please choose a longer one then " ~ MAX_RWY_LENGTH ~ " m "
-            ~ "(" ~ math.round(MAX_RWY_LENGTH * METER_TO_FEET) ~ " ft)."
+            "This runway is too short. Please choose a longer one then " ~ minRwyLength ~ " m "
+            ~ "(" ~ math.round(minRwyLength * M2FT) ~ " ft)."
         );
         return 0;
     }
@@ -214,13 +214,22 @@ var generateFlightPlanXml = func () {
     addWptGround({"hdgChange": 0, "dist": 30 + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
 
     # Rolling
-    addWptGround({"hdgChange": 0, "dist": 5},  {"altChange": 0, "ktas": 5});
-    addWptGround({"hdgChange": 0, "dist": 50}, {"altChange": 0, "ktas": perf.speed / 4});
-    addWptGround({"hdgChange": 0, "dist": 50}, {"altChange": 0, "ktas": perf.speed / 1.8});
-    addWptGround({"hdgChange": 0, "dist": 50}, {"altChange": 0, "ktas": perf.speed});
+    addWptGround({"hdgChange": 0, "dist": 10}, {"altChange": 0, "ktas": 5});
+    addWptGround({"hdgChange": 0, "dist": 20}, {"altChange": 0, "ktas": 5});
+    addWptGround({"hdgChange": 0, "dist": 20}, {"altChange": 0, "ktas": perf.speed / 6});
+    addWptGround({"hdgChange": 0, "dist": 10}, {"altChange": 0, "ktas": perf.speed / 5});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 4});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 3.5});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 3});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 2.5});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 2});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 1.75});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 1.5});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed / 1.25});
+    addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed});
 
     # Takeof
-    addWptAir({"hdgChange": 0,   "dist": 70},  {"altChange": 3,            "ktas": perf.speed * 1.05});
+    addWptAir({"hdgChange": 0,   "dist": 100 * perf.rolling}, {"altChange": 3, "ktas": perf.speed * 1.05});
     addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": perf.vs / 10, "ktas": perf.speed * 1.025});
 
     # Circle around airport
@@ -260,7 +269,7 @@ var generateFlightPlanXml = func () {
 }
 
 #
-# Return hash with "vs" and "speed".
+# Return hash with "vs", "speed", "rolling".
 #
 var getAircraftPerformance = func () {
     # Cub
@@ -284,22 +293,25 @@ var getAircraftPerformance = func () {
     var aiModel = getSelectedAircraft();
     if (aiModel == "DR400") {
         return {
-            "vs":    285, # ft per 1000 m
-            "speed": 70,
+            "vs":      285, # ft per 1000 m
+            "speed":   70,
+            "rolling": 2,
         };
     }
     
     if (aiModel == "c182") {
         return {
-            "vs":    295, # ft per 1000 m
-            "speed": 75,
+            "vs":      295, # ft per 1000 m
+            "speed":   75,
+            "rolling": 2.2,
         };
     }
 
     # Cub
     return {
-        "vs":    200, # ft per 1000 m
-        "speed": 55,
+        "vs":      200, # ft per 1000 m
+        "speed":   55,
+        "rolling": 1,
     };
 }
 
@@ -336,6 +348,22 @@ var getGliderOffsetFromRunwayThreshold = func (runway) {
     var rwyThreshold = geo.Coord.new().set_latlon(runway.lat, runway.lon);
 
     return rwyThreshold.distance_to(gliderCoord);
+}
+
+#
+# Get the minimum runway length required, in meters
+#
+var getMinRunwayLength = func () {
+    var aiModel = getSelectedAircraft();
+    if (aiModel == "DR400") {
+        return 470;
+    }
+    
+    if (aiModel == "c182") {
+        return 508;
+    }
+
+    return 280;
 }
 
 #
