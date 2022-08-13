@@ -22,7 +22,7 @@ Where `{username}` is the name of the user logged into the operating system.
 
 Start FlightGear at any airport with your aircraft as a glider, such as ASK 21.
 
-From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of you glider). The AI aircraft will begin to accelerate and take off.
+From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
 
 ## How does the AI tow aircraft fly?
 
