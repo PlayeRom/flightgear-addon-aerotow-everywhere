@@ -323,18 +323,18 @@ var getAircraftPerformance = func () {
 # runway - Object of runway from which the glider start.
 #
 var initAircraftVariable = func (airport, runway, isGliderPos = 1) {
-    var gliderCood = geo.aircraft_position();
+    var gliderCoord = geo.aircraft_position();
 
     # Set coordinates as glider position or runway threshold
     g_coord = isGliderPos 
-        ? gliderCood
+        ? gliderCoord
         : geo.Coord.new().set_latlon(runway.lat, runway.lon);
 
     # Set airplane heading as runway heading
     g_heading = runway.heading;
 
     # Set airplane altitude as airport elevation
-    g_altitude = gliderCood.alt() * M2FT;
+    g_altitude = gliderCoord.alt() * M2FT;
 }
 
 #
