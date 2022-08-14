@@ -5,7 +5,7 @@ This is an add-on designed to include an AI aircraft that will be able to tow a 
 ## Installation
 
 This add-on creates a flight plan in real-time based on the airport you are at. Unfortunately this causes a problem which you will have to solve manually by following the instructions below.
-Namely, the flight plan for AI aircraft, by default, must be stored in the `$FG_ROOT/AI/FlightPlanes/` directory. But for security reasons, Nasal scripts cannot save files to that directory, but can save e.g. to `$FG_HOME/Export/`. Therefore, the run-time created flight plan will just be saved to `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/AI/FlightPlanes/`. The problem is that FlightGear does not know that it is supposed to look for the flight plan file in this location as well, so you have to tell it manually by using the `--data` command line option.
+Namely, the flight plan for AI aircraft, by default, must be stored in the `$FG_ROOT/AI/FlightPlans/` directory. But for security reasons, Nasal scripts cannot save files to that directory, but can save e.g. to `$FG_HOME/Export/`. Therefore, the run-time created flight plan will just be saved to `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/AI/FlightPlans/`. The problem is that FlightGear does not know that it is supposed to look for the flight plan file in this location as well, so you have to tell it manually by using the `--data` command line option.
 
 `$FG_HOME` is the FlightGear home path. It differs depending on the operating system.
 Under Linux/macOS `$FG_HOME` is `/home/{username}/.fgfs/`.
