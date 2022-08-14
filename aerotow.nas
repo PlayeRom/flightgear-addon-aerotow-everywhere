@@ -318,9 +318,9 @@ var getAircraftPerformance = func () {
 #
 # Initialize AI aircraft variable
 #
-# isGliderPos - Pass 1 for set AI aircraft's coordinates as glider position, 0 set coordinates as runway threshold.
 # airport - Object from airportinfo().
 # runway - Object of runway from which the glider start.
+# isGliderPos - Pass 1 for set AI aircraft's coordinates as glider position, 0 set coordinates as runway threshold.
 #
 var initAircraftVariable = func (airport, runway, isGliderPos = 1) {
     var gliderCoord = geo.aircraft_position();
@@ -333,12 +333,13 @@ var initAircraftVariable = func (airport, runway, isGliderPos = 1) {
     # Set airplane heading as runway heading
     g_heading = runway.heading;
 
-    # Set airplane altitude as airport elevation
+    # Set AI airplane altitude as glider altitude (assumed it's on the ground).
+    # It is more accurate than airport.elevation.
     g_altitude = gliderCoord.alt() * M2FT;
 }
 
 #
-# Get distance from glider to runway threshold
+# Get distance from glider to runway threshold e.g. in case that the user taxi from the runway threshold
 #
 # runway - Object of runway from which the glider start
 # Return the distance in metres, of the glider's displacement from the runway threshold.
@@ -408,14 +409,14 @@ var addWptEnd = func () {
 }
 
 #
-# Write waipoint to flight plan file
+# Write waypoint to flight plan file
 #
 # name - The name of waypoint
 # coordOffset.hdgChange - How the aircraft's heading supposed to change?
 # coordOffset.dist - Distance in meters to calculate next waypoint coordinates
 # performance.altChange - How the aircraft's altitude is supposed to change?
 # performance.ktas - True air speed of AI plane at the waypoint
-# groundAir - Allowe value: "ground or "air". The "ground" means that AI plane is on the ground, "air" - in air
+# groundAir - Allowed value: "ground or "air". The "ground" means that AI plane is on the ground, "air" - in air
 # sec - Number of seconds for "WAIT" waypoint
 #
 var wrireWpt = func (
