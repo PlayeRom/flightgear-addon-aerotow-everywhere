@@ -177,6 +177,12 @@ var generateFlightPlanXml = func () {
     }
 
     var airport = airportinfo(icao);
+
+    if (!contains(airport.runways, runwayName)) {
+        messages.displayError("The " ~ icao ~" airport does not have runway " ~ runwayName);
+        return 0;
+    }
+
     var runway = airport.runways[runwayName];
 
     var minRwyLength = getMinRunwayLength();
