@@ -44,6 +44,7 @@ This add-on add a new item to main menu named "Aerotow Everywhere" with followin
 ## Limitations
 
 1. This add-on doesn't check if there are any obstacles in the aircraft's path, e.g. terrain, buildings, power lines, etc. This should be borne in mind when selecting an airport.
+2. Minimum FlightGear version: 2020.4.0
 
 ## Troubleshotting
 
