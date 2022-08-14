@@ -152,7 +152,7 @@ var isScenarioAdded = func () {
 # Return name of selected aircraft. Possible values: "Cub", "DR400", "c182".
 #
 var getSelectedAircraft = func () {
-    return getprop("/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model") or "Cub";
+    return getprop(addon.node.getPath() ~ "/addon-devel/ai-model") or "Cub";
 }
 
 #
@@ -183,7 +183,7 @@ var generateFlightPlanXml = func () {
     if (runway.length < minRwyLength) {
         messages.displayError(
             "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
-            ~ "(" ~ math.round(minRwyLength * M2FT) ~ " ft)."
+            ~ "(" ~ math.round(minRwyLength * globals.M2FT) ~ " ft)."
         );
         return 0;
     }
@@ -335,7 +335,7 @@ var initAircraftVariable = func (airport, runway, isGliderPos = 1) {
 
     # Set AI airplane altitude as glider altitude (assumed it's on the ground).
     # It is more accurate than airport.elevation.
-    g_altitude = gliderCoord.alt() * M2FT;
+    g_altitude = gliderCoord.alt() * globals.M2FT;
 }
 
 #

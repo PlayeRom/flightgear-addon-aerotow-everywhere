@@ -36,7 +36,7 @@ var main = func(addon) {
 
     loadExtraNasalFiles(addon);
 
-    setlistener("/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model", func(n) {
+    setlistener(addon.node.getPath() ~ "/addon-devel/ai-model", func(n) {
         aerotow.startAerotow();
     });
 }
