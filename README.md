@@ -22,7 +22,7 @@ Where `{username}` is the name of the user logged into the operating system.
 
 Start FlightGear at any airport with your aircraft as a glider, such as ASK 21.
 
-From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
+From the top menu, select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400` or `Cessna 182` (yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
 
 ## How does the AI tow aircraft fly?
 
@@ -34,23 +34,24 @@ You can disconnect from the aircraft at any time, most often by pressing the `o`
 
 This add-on add a new item to main menu named "Aerotow Everywhere" with following items:
 
-1. "Call for Piper J3 Cub aircraft" - load AI tow sceneraio with Piper J3 Cub. Possible altitude to reach ~3,600 ft.
-2. "Call for Robin DR400 aircraft" - load AI tow sceneraio with Robin DR400. This aircraft has better performance and can take you to over 4,500 ft.
-3. "Call for Cessna 182 aircraft" - load AI tow sceneraio with Cessna 182. This aircraft has little bit better performance than Robin.
-4. "Disable tow aircraft" - unload AI tow sceneraio.
-5. "Help" - display help dialog.
-6. "About" - display about dialog with add-on information.
+1. `Call for Piper J3 Cub aircraft` - load AI tow sceneraio with Piper J3 Cub. Possible altitude to reach ~3,600 ft.
+2. `Call for Robin DR400 aircraft` - load AI tow sceneraio with Robin DR400. This aircraft has better performance and can take you to over 4,500 ft.
+3. `Call for Cessna 182 aircraft` - load AI tow sceneraio with Cessna 182. This aircraft has little bit better performance than Robin.
+4. `Disable tow aircraft` - unload AI tow sceneraio.
+5. `Help` - display help dialog.
+6. `About` - display about dialog with add-on information.
 
 ## Limitations
 
-1. This add-on doesn't check if there are any obstacles in the aircraft's path, e.g. terrain, buildings, power lines, etc. This should be borne in mind when selecting an airport.
-2. Minimum FlightGear version: 2020.4.0
+1. This add-on doesn't check if there are any obstacles in the AI aircraft's path, e.g. terrain, buildings, power lines, etc. Keep this in mind when choosing an airport.
+2. Minimum FlightGear version: 2020.4.0 (dev/nightly). Because only nightly version is able to search for flight plans in additional FGData folders added by `--data` command line option.
 
 ## Troubleshotting
 
-1. When I select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessana 182" from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
+1. When I select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400` or `Cessana 182` from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
 
 Probably you didn't include the `--data` command line option with the path where FlightGear should look for additional flight plan files for AI. Unfortunately, the simulator does not inform us that there was a problem with finding the flight plan file, so everything looks like it should work but does not.
+
 For fix it, in the file explorer of your operating system, find the directory `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow`. This path must be added by the `--data` command line option, so it will be treated as an additional FGData directory where FlightGear will find the flight plan. In Launcher go to "Settings" tab and in "Additionnal Setting" type (on the Linux system):
 
 ```
