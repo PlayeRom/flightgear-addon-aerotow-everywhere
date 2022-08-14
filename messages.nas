@@ -34,20 +34,20 @@ var displayError = func (message) {
 # type - The type of message. It can take values as "ok" or "error".
 #
 var display = func (message, type) {
+    # Print to console
+    print("Aerotow Everywhere add-on: " ~ message);
+
     # Read the message by speech synthesizer
     props.globals.getNode("/sim/sound/voices/ai-plane").setValue(message);
 
-    # Display message on the screan
+    # Display message on the screen
     var durationInSec = int(size(message) / 12) + 3;
     var window = screen.window.new(nil, -40, 10, durationInSec);
     window.bg = [0.0, 0.0, 0.0, 0.40];
 
-    if (type == "error") {
-        window.fg = [1.0, 0.0, 0.0, 1];
-    }
-    else {
-        window.fg = [0.0, 1.0, 0.0, 1];
-    }
+    window.fg = type == "error"
+        ? [1.0, 0.0, 0.0, 1]
+        : [0.0, 1.0, 0.0, 1];
 
     window.align = "center";
     window.write(message);
