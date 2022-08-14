@@ -27,7 +27,7 @@
             <org.flightgear.addons.Aerotow>
                 <addon-devel>
                     <ai-model type="string">Cub</ai-model>
-                    <help-text>=== How to start? ===
+                    <help-text type="string">=== How to start? ===
 
 From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts).
 The tow aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by `Ctrl-o` key (check help of your glider). The aircraft will begin to accelerate and take off.
