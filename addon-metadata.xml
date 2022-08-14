@@ -66,6 +66,7 @@
             <file type="string">
             <!-- Use a relative, slash-separated path to a file under the add-on
                     base directory that contains the add-on license text. -->
+                LICENSE
             </file>
 
             <url type="string">https://www.gnu.org/licenses/gpl-3.0.html</url>
