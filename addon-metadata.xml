@@ -81,7 +81,7 @@
             </home-page>
 
             <download type="string">
-                https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere
+                https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere/releases/latest
             </download>
 
             <support type="string">
