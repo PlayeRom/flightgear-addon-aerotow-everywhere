@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.2.0
+
+- Add possibility to change the flight plan of AI tow plane.
+
 ## v.1.1.0
 
 - Fix AI aircraft going underground during take-off due to uneven runway elevations.
