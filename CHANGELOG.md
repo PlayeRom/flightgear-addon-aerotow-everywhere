@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v.1.0.1
+## v.1.1.0
 
 - Fix AI aircraft going underground during take-off due to uneven runway elevations.
 - Possibility to add thermal with configuration of its parameters.
