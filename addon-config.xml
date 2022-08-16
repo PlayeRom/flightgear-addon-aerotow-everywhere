@@ -37,14 +37,28 @@
                         <height-msl type="int">9000</height-msl>
                         <height-msl-m type="int">2742</height-msl-m>
                     </add-thermal>
+                    <route>
+                        <ai-model>Piper J3 Cub</ai-model>
+                        <init-wpt>
+                            <heading-change type="double">0</heading-change>
+                            <distance-m type="double">0</distance-m>
+                            <alt-change-agl-ft type="double">0</alt-change-agl-ft>
+                        </init-wpt>
+                        <total>
+                            <distance>0</distance>
+                            <alt>0</alt>
+                        </total>
+                    </route>
                     <help-text type="string">=== How to start? ===
 
 From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts).
 The tow aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by `Ctrl-o` key (check help of your glider). The aircraft will begin to accelerate and take off.
 
-The tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then when it has completed the entire set route it simply turns right 90 degrees and flies at a constant altitude.
+By default, the tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then when it has completed the entire set route it simply turns right 90 degrees and flies at a constant altitude.
 
 You can disconnect from the aircraft at any time, most often by pressing the `o` key.
+
+Before start you can change route of AI aircraft by menu "Aerotow Everywhere" -> "Aerotow Route".
 
 === Troubleshotting ===
 

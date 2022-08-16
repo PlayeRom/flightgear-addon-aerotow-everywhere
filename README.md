@@ -24,23 +24,75 @@ Start FlightGear at any airport with your aircraft as a glider, such as ASK 21.
 
 From the top menu, select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400` or `Cessna 182` (yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
 
-## How does the AI tow aircraft fly?
+## How does the AI tow aircraft fly by default?
 
-The tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then when it has completed the entire set route it simply turns right 90 degrees and flies at a constant altitude.
+The tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then when it has completed the entire set route it turns to unknown direction and flies at a constant altitude.
 
-You can disconnect from the aircraft at any time, most often by pressing the `o` key.
+You can disconnect from the aircraft at any time, most often by pressing the `o` key (check help of your glider).
+
+```
+Default route
+^ - airport with heading direction to north
+1 - 1st waypoint
+2 - 2nd waypoint, etc.
+
+    2 . . 1   7
+    .     .   .
+    .     .   .
+    3     .   .
+    .     .   .
+    .     .   .
+    .     .   .
+    .     .   .
+    .     .   .
+    .     .   .
+    .     ^   6
+    .         .
+    .         .
+    4 . . . . 5
+```
 
 ## Menu of add-on
 
 This add-on add a new item to main menu named `Aerotow Everywhere` with following items:
 
-1. `Call for Piper J3 Cub aircraft` - load AI tow sceneraio with Piper J3 Cub. Possible altitude to reach ~3,600 ft.
-2. `Call for Robin DR400 aircraft` - load AI tow sceneraio with Robin DR400. This aircraft has better performance and can take you to over 4,500 ft.
-3. `Call for Cessna 182 aircraft` - load AI tow sceneraio with Cessna 182. This aircraft has little bit better performance than Robin.
-4. `Disable tow aircraft` - unload AI tow sceneraio.
-5. `Add thermal` - display the dialog for configuring and adding thermal.
-6. `Help` - display help dialog.
-7. `About` - display about dialog with add-on information.
+1. `Aerotow Route` - display the dialog for change aerotow route.
+2. `Call for Piper J3 Cub aircraft` - load AI tow sceneraio with Piper J3 Cub.
+3. `Call for Robin DR400 aircraft` - load AI tow sceneraio with Robin DR400. This aircraft has better performance and can take you higher then Piper Cub.
+4. `Call for Cessna 182 aircraft` - load AI tow sceneraio with Cessna 182. This aircraft has little bit better performance than Robin.
+5. `Disable tow aircraft` - unload AI tow sceneraio.
+6. `Add thermal` - display the dialog for configuring and adding thermal.
+7. `Help` - display help dialog.
+8. `About` - display about dialog with add-on information.
+
+## Aerotow Route
+
+You can change the AI aircraft's default route, for this go to menu `Aerotow Everywhere` -> `Aerotow Route`.
+
+### Aerotow aircraft
+
+On the top of the "Aerotow Route" dialog you have selector to change aircraft type. It's only for calculate performance and display how the altitude will change.
+
+### Route
+
+Next you have initial heading, distance and altitude change. "Initial heading" depend of the runway where you are located. The aircraft will always take-off along the runway, a distance of 100 m, where it will gain 20 ft in altitude above the terrain. These parameters you cannot change unless you change the airport/runway.
+
+Next you can see a table with fields where you can change values. Each row represents a single waypoint of flight plan of AI aircraft. For each waypoint you have following columns:
+
+1. `Heading change (deg)` - information on how the heading of the aircraft should change in relation to the previous one. A value of `0` means no change, so continue with the same heading. And e.g. `-90` means a left turn of 90 degrees, `60` means a right turn of 60 degrees, etc.
+2. `Distance (m)` - distance in meters from the previous waypoint to the present one.
+3. `Alt change (AGL ft)` - information on how much the altitude on this leg of the route will increase (in feet above ground.) This information depend of selected airplane.
+
+If you enter a value less than or equal to `0` for `Distance (m)` field this means that here the route is end and the next rows will not be included to the flight plan.
+
+You have a maximum of 10 waypoints to use, hope that's enough.
+
+On the below of the dialog you can see a total amount of distance (in meters) and total altitude in feet above ground level.
+
+### Buttons
+
+1. `OK` - close the route dialog.
+2. `Default` - set default waypoints (your changes will be lost.)
 
 ## Adding thermals
 
@@ -53,11 +105,11 @@ An additional feature of this add-on is the possibility of placing the thermals 
 
 Click `Add thermal` button for add the thermal.
 
-Many thanks to the forum user "wlbragg" for proposing and presenting a solution to this feature.
+Many thanks to the FG forum user "wlbragg" for proposing and presenting a solution to this feature.
 
 ## Limitations
 
-1. This add-on doesn't check if there are any obstacles in the AI aircraft's path, e.g. terrain, buildings, power lines, etc. Keep this in mind when choosing an airport.
+1. This add-on doesn't check if there are any obstacles in the AI aircraft's path, e.g. terrain, buildings, power lines, etc. Keep this in mind when choosing an airport or planning your route.
 2. Minimum FlightGear version: 2020.4.0 (dev/nightly). Because only nightly version is able to search for flight plans in additional FGData folders added by `--data` command line option.
 
 ## Troubleshotting

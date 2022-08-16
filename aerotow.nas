@@ -21,6 +21,8 @@ var PATH_FLIGHTPLAN = ADDON.storagePath ~ "/AI/FlightPlans/" ~ FILENAME_FLIGHTPL
 var SCENARIO_ID = "aerotow_addon";
 var SCENARIO_NAME = "Aerotow Add-on";
 var SCENARIO_DESC = "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.";
+var MAX_ROUTE_WAYPOINT = 10;
+var DISTANCE_DETERMINANT = 1000; # meters
 
 #
 # Global variables
@@ -41,6 +43,56 @@ var init = func () {
     append(g_towListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/ai-model", func () {
         startAerotow();
     }));
+
+    append(g_towListeners, setlistener("/sim/presets/longitude-deg", func () {
+        # User change airport/runway
+        initialFlightPlan();
+    }));
+
+    initialFlightPlan();
+
+    # Set listener for aerotow combo box value in route dialog for recalculate altitude change
+    append(g_towListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/route/ai-model", func () {
+        calculateAltChangeAndTotals();
+    }));
+
+    # Set listeners for distance fields for calculate altitude change
+    for (var i = 0; i < MAX_ROUTE_WAYPOINT; i = i + 1) {
+        append(g_towListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ i ~ "]/distance-m", func (node) {
+            calculateAltChangeAndTotals();
+        }));
+    }
+}
+
+#
+# Calculate total distance and altitude and put in to property tree
+#
+var calculateAltChangeAndTotals = func () {
+    var totalDistance = 0.0;
+    var totalAlt = 0.0;
+    var isEnd = 0;
+
+    var isRouteMode = 1;
+    var perf = getAircraftPerformance(isRouteMode);
+
+    for (var i = 0; i < MAX_ROUTE_WAYPOINT; i = i + 1) {
+        var distance = getprop(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ i ~ "]/distance-m");
+        var altChange = getAltChange(perf.vs, distance);
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ i ~ "]/alt-change-agl-ft", altChange);
+
+        if (!isEnd) {
+            if (distance > 0.0) {
+                totalDistance = totalDistance + distance;
+                totalAlt = totalAlt + altChange;
+            }
+            else {
+                isEnd = 1;
+            }
+        }
+    }
+
+    setprop(ADDON_NODE_PATH ~ "/addon-devel/route/total/distance", totalDistance);
+    setprop(ADDON_NODE_PATH ~ "/addon-devel/route/total/alt", totalAlt);
 }
 
 #
@@ -170,10 +222,126 @@ var isScenarioAdded = func () {
 }
 
 #
-# Return name of selected aircraft. Possible values: "Cub", "DR400", "c182".
+# Return name of selected aircraft. Possible values depend of isRouteMode: "Cub", "DR400", "c182".
 #
-var getSelectedAircraft = func () {
+# isRouteMode - use 1 to get the plane for the "Aerotow Route" dialog, use 0 (default) for call the airplane for towing
+#
+var getSelectedAircraft = func (isRouteMode = 0) {
+    if (isRouteMode) {
+        return getprop(ADDON_NODE_PATH ~ "/addon-devel/route/ai-model") or "Piper J3 Cub";
+    }
+
     return getprop(ADDON_NODE_PATH ~ "/addon-devel/ai-model") or "Cub";
+}
+
+#
+# Get airport an runway hash where the glider is located.
+#
+# Return hash with "airport" and "runway", otherwise nil.
+#
+var getAirportAndRunway = func () {
+    var icao = getprop("/sim/airport/closest-airport-id");
+    if (icao == nil) {
+        messages.displayError("Airport code cannot be obtained.");
+        return nil;
+    }
+
+    var runwayName = getprop("/sim/atc/runway");
+    if (runwayName == nil) {
+        messages.displayError("Runway name cannot be obtained.");
+        return nil;
+    }
+
+    var airport = airportinfo(icao);
+
+    if (!contains(airport.runways, runwayName)) {
+        messages.displayError("The " ~ icao ~" airport does not have runway " ~ runwayName);
+        return nil;
+    }
+
+    var runway = airport.runways[runwayName];
+
+    var minRwyLength = getMinRunwayLength();
+    if (runway.length < minRwyLength) {
+        messages.displayError(
+            "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
+            ~ "(" ~ math.round(minRwyLength * globals.M2FT) ~ " ft)."
+        );
+        return nil;
+    }
+
+    return {
+        "airport": airport,
+        "runway": runway,
+    };
+}
+
+#
+# Initialize flight plan and set it to property tree
+#
+# Return 1 on successful, otherwise 0.
+#
+var initialFlightPlan = func () {
+    var location = getAirportAndRunway();
+    if (location == nil) {
+        return 0;
+    }
+
+    var perf = getAircraftPerformance();
+
+    initAircraftVariable(location.airport, location.runway, 0);
+
+    # inittial readonly waypoint
+    setprop(ADDON_NODE_PATH ~ "/addon-devel/route/init-wpt/heading-change", g_heading);
+    setprop(ADDON_NODE_PATH ~ "/addon-devel/route/init-wpt/distance-m", 100);
+    setprop(ADDON_NODE_PATH ~ "/addon-devel/route/init-wpt/alt-change-agl-ft", perf.vs / 10);
+
+    # in air
+    var wptData = [
+        {"hdgChange": 0,   "dist": 5000, "altChange": perf.vs * 5},
+        {"hdgChange": -90, "dist": 1000, "altChange": perf.vs},
+        {"hdgChange": -90, "dist": 1000, "altChange": perf.vs},
+        {"hdgChange": 0,   "dist": 5000, "altChange": perf.vs * 5},
+        {"hdgChange": -90, "dist": 1500, "altChange": perf.vs * 1.5},
+        {"hdgChange": -90, "dist": 1000, "altChange": perf.vs},
+        {"hdgChange": 0,   "dist": 5000, "altChange": perf.vs * 5},
+        {"hdgChange": 0,   "dist": 0,    "altChange": 0},
+        {"hdgChange": 0,   "dist": 0,    "altChange": 0},
+        {"hdgChange": 0,   "dist": 0,    "altChange": 0},
+    ];
+
+    # Default route
+    # ^ - airport with heading direction to north
+    # 1 - 1st waypoint
+    # 2 - 2nd waypoint, etc.
+    #
+    #     2 . . 1   7
+    #     .     .   .
+    #     .     .   .
+    #     3     .   .
+    #     .     .   .
+    #     .     .   .
+    #     .     .   .
+    #     .     .   .
+    #     .     .   .
+    #     .     .   .
+    #     .     ^   6
+    #     .         .
+    #     .         .
+    #     4 . . . . 5
+
+    var index = 0;
+    foreach (var wpt; wptData) {
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ index ~ "]/heading-change",    wpt.hdgChange);
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ index ~ "]/distance-m",        wpt.dist);
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ index ~ "]/alt-change-agl-ft", wpt.altChange);
+
+        index = index + 1;
+    }
+
+    calculateAltChangeAndTotals();
+
+    return 1;
 }
 
 #
@@ -185,33 +353,8 @@ var getSelectedAircraft = func () {
 var generateFlightPlanXml = func () {
     g_wptCount = 0;
 
-    var icao = getprop("/sim/airport/closest-airport-id");
-    if (icao == nil) {
-        messages.displayError("Airport code cannot be obtained.");
-        return 0;
-    }
-
-    var runwayName = getprop("/sim/atc/runway");
-    if (runwayName == nil) {
-        messages.displayError("Runway name cannot be obtained.");
-        return 0;
-    }
-
-    var airport = airportinfo(icao);
-
-    if (!contains(airport.runways, runwayName)) {
-        messages.displayError("The " ~ icao ~" airport does not have runway " ~ runwayName);
-        return 0;
-    }
-
-    var runway = airport.runways[runwayName];
-
-    var minRwyLength = getMinRunwayLength();
-    if (runway.length < minRwyLength) {
-        messages.displayError(
-            "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
-            ~ "(" ~ math.round(minRwyLength * globals.M2FT) ~ " ft)."
-        );
+    var location = getAirportAndRunway();
+    if (location == nil) {
         return 0;
     }
 
@@ -226,16 +369,16 @@ var generateFlightPlanXml = func () {
 
     var perf = getAircraftPerformance();
 
-    initAircraftVariable(airport, runway, 1);
+    initAircraftVariable(location.airport, location.runway, 1);
 
     # Start at 2 o'clock from the glider...
     # Inital ktas must be >= 1.0
     addWptGround({"hdgChange": 60, "dist": 25}, {"altChange": 0, "ktas": 5});
 
     # Reset coord and heading
-    initAircraftVariable(airport, runway, 0);
+    initAircraftVariable(location.airport, location.runway, 0);
 
-    var gliderOffsetM = getGliderOffsetFromRunwayThreshold(runway);
+    var gliderOffsetM = getGliderOffsetFromRunwayThreshold(location.runway);
 
     # ... and line up with the runway
     addWptGround({"hdgChange": 0, "dist": 30 + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
@@ -259,29 +402,24 @@ var generateFlightPlanXml = func () {
     addWptAir({"hdgChange": 0,   "dist": 100 * perf.rolling}, {"elevationPlus": 3, "ktas": perf.speed * 1.05});
     addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": perf.vs / 10, "ktas": perf.speed * 1.025});
 
-    # Circle around airport
-    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs / 1.5, "ktas": perf.speed});
-    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs / 1.7, "ktas": perf.speed});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.025});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.05});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.075});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.1});
-    addWptAir({"hdgChange": -90, "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.125}); # crosswind leg
-    addWptAir({"hdgChange": -90, "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.15}); # downwind leg
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.175});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.2});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.225});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.25});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.275});
-    addWptAir({"hdgChange": -90, "dist": 500},  {"altChange": perf.vs / 2,   "ktas": perf.speed * 1.25}); # base leg
-    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs / 2,   "ktas": perf.speed * 1.275});
-    addWptAir({"hdgChange": 0,   "dist": 500},  {"altChange": perf.vs / 2,   "ktas": perf.speed * 1.3});
-    addWptAir({"hdgChange": -90, "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.3}); # final leg
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.325});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.35});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.375});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.4});
-    addWptAir({"hdgChange": 0,   "dist": 1000}, {"altChange": perf.vs,       "ktas": perf.speed * 1.425});
+    var speedInc = 1.0;
+    foreach (var wptNode; props.globals.getNode(ADDON_NODE_PATH ~ "/addon-devel/route").getChildren("wpt")) {
+        var dist = wptNode.getChild("distance-m").getValue();
+        if (dist <= 0.0) {
+            break;
+        }
+
+        var hdgChange = wptNode.getChild("heading-change").getValue();
+        var altChange = getAltChange(perf.vs, dist);
+
+        speedInc = speedInc + ((dist / DISTANCE_DETERMINANT) * 0.025);
+        var ktas = perf.speed * speedInc;
+        if (ktas > perf.speedLimit) {
+            ktas = perf.speedLimit;
+        }
+
+        addWptAir({"hdgChange": hdgChange, "dist": dist}, {"altChange": altChange, "ktas": ktas});
+    }
 
     addWptEnd();
 
@@ -298,7 +436,7 @@ var generateFlightPlanXml = func () {
 #
 # Return hash with "vs", "speed", "rolling".
 #
-var getAircraftPerformance = func () {
+var getAircraftPerformance = func (isRouteMode = 0) {
     # Cub
     # Cruise Speed 61 kt
     # Max Speed 106 kt
@@ -317,29 +455,42 @@ var getAircraftPerformance = func () {
     # Stall speed 50 kt
     # Best climb: 924 ft/min
 
-    var aiModel = getSelectedAircraft();
-    if (aiModel == "DR400") {
+    var aiModel = getSelectedAircraft(isRouteMode);
+    if (aiModel == "DR400" or aiModel == "Robin DR400") {
         return {
-            "vs":      285, # ft per 1000 m
-            "speed":   70,
-            "rolling": 2,
+            "vs":         285, # ft per DISTANCE_DETERMINANT m
+            "speed":      70,
+            "speedLimit": 75,
+            "rolling":    2,
         };
     }
 
-    if (aiModel == "c182") {
+    if (aiModel == "c182" or aiModel == "Cessna 182") {
         return {
-            "vs":      295, # ft per 1000 m
-            "speed":   75,
-            "rolling": 2.2,
+            "vs":         295, # ft per DISTANCE_DETERMINANT m
+            "speed":      75,
+            "speedLimit": 80,
+            "rolling":    2.2,
         };
     }
 
     # Cub
     return {
-        "vs":      200, # ft per 1000 m
-        "speed":   55,
-        "rolling": 1,
+        "vs":         200, # ft per DISTANCE_DETERMINANT m
+        "speed":      55,
+        "speedLimit": 60,
+        "rolling":    1,
     };
+}
+
+#
+# Return how much the altitide increases for a given vertical speed and distance
+#
+# vs - vertical speed for DISTANCE_DETERMINANT m
+# distance - distance in meters
+#
+var getAltChange = func (vs, distance) {
+    return vs * (distance / DISTANCE_DETERMINANT);
 }
 
 #

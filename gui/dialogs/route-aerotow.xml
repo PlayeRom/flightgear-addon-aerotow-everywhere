@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+#
+# Aerotow Everywhere - Add-on for FlightGear
+#
+# Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
+#
+# Copyright (C) 2022 Roman Ludwicki
+#
+# Aerotow Everywhere is an Open Source project and it is licensed
+# under the GNU Public License v3 (GPLv3)
+#
+-->
+
+<!-- This file requires FlightGear version 2018.2 or newer -->
+
+<PropertyList>
+    <name>route-aerotow</name>
+    <resizable>false</resizable>
+    <layout>vbox</layout>
+    <default-padding>3</default-padding>
+
+    <group>
+        <layout>hbox</layout>
+
+        <empty>
+            <stretch>1</stretch>
+        </empty>
+
+        <text>
+            <label>Aerotow Route</label>
+        </text>
+
+        <empty>
+            <stretch>1</stretch>
+        </empty>
+
+        <button>
+            <pref-width>16</pref-width>
+            <pref-height>16</pref-height>
+            <legend></legend>
+            <keynum>27</keynum>
+            <border>2</border>
+            <binding>
+                <command>dialog-close</command>
+            </binding>
+        </button>
+    </group>
+
+    <hrule/>
+
+    <text>
+        <halign>left</halign>
+        <label>  Here you can change the default flight path of the tow plane.  </label>
+    </text>
+    <text>
+        <halign>left</halign>
+        <label>  You cannot change the initial point, the AI plane always   </label>
+    </text>
+    <text>
+        <halign>left</halign>
+        <label>  takes-off in front of the runway you are on.  </label>
+    </text>
+    <text>
+        <halign>left</halign>
+        <label>  Set 0 for `Distance` for completing the flight plan.  </label>
+    </text>
+
+    <hrule/>
+
+    <group>
+        <layout>table</layout>
+
+        <text>
+            <row>0</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Aerotow</label>
+        </text>
+
+        <combo>
+            <row>0</row>
+            <col>1</col>
+            <halign>left</halign>
+            <pref-width>150</pref-width>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/ai-model</property>
+            <value>Piper J3 Cub</value>
+            <value>Robin DR400</value>
+            <value>Cessna 182</value>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </combo>
+    </group>
+
+    <hrule/>
+
+    <group>
+        <layout>table</layout>
+
+        <text>
+            <row>0</row>
+            <col>0</col>
+            <halign>left</halign>
+            <label>Initial Heading (deg)</label>
+        </text>
+        <text>
+            <row>0</row>
+            <col>1</col>
+            <halign>left</halign>
+            <label>Distance (m)</label>
+        </text>
+        <text>
+            <row>0</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label>Alt change (AGL ft)</label>
+        </text>
+
+        <text>
+            <row>1</row>
+            <col>0</col>
+            <halign>left</halign>
+            <label></label>
+            <format>%.2f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/init-wpt/heading-change</property>
+        </text>
+        <text>
+            <row>1</row>
+            <col>1</col>
+            <halign>left</halign>
+            <label></label>
+            <format>%.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/init-wpt/distance-m</property>
+        </text>
+        <text>
+            <row>1</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/init-wpt/alt-change-agl-ft</property>
+        </text>
+
+        <text>
+            <row>2</row>
+            <col>0</col>
+            <halign>left</halign>
+            <label>Heading change (deg)</label>
+        </text>
+        <text>
+            <row>2</row>
+            <col>1</col>
+            <halign>left</halign>
+            <label>Distance (m)</label>
+        </text>
+        <text>
+            <row>2</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label>Alt change (AGL ft)</label>
+        </text>
+
+        <input>
+            <row>3</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[0]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>3</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[0]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>3</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[0]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>4</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[1]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>4</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[1]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>4</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[1]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>5</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[2]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>5</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[2]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>5</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[2]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>6</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[3]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>6</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[3]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>6</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[3]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>7</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[4]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>7</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[4]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>7</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[4]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>8</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[5]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>8</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[5]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>8</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[5]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>9</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[6]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>9</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[6]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>9</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[6]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>10</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[7]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>10</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[7]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>10</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[7]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>11</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[8]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>11</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[8]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>11</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[8]/alt-change-agl-ft</property>
+        </text>
+
+        <input>
+            <row>12</row>
+            <col>0</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[9]/heading-change</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <input>
+            <row>12</row>
+            <col>1</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[9]/distance-m</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
+        <text>
+            <row>12</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpt[9]/alt-change-agl-ft</property>
+        </text>
+
+        <text>
+            <row>13</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Total:</label>
+        </text>
+        <text>
+            <row>13</row>
+            <col>1</col>
+            <halign>left</halign>
+            <label></label>
+            <format>%.f m</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/total/distance</property>
+        </text>
+        <text>
+            <row>13</row>
+            <col>2</col>
+            <halign>left</halign>
+            <label></label>
+            <format>     %.f ft</format>
+            <live>true</live>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/total/alt</property>
+        </text>
+    </group>
+
+    <hrule/>
+
+    <group>
+        <empty>
+            <stretch>true</stretch>
+        </empty>
+
+        <layout>hbox</layout>
+
+        <button>
+            <legend>OK</legend>
+            <equal>true</equal>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+            <binding>
+                <command>dialog-close</command>
+            </binding>
+        </button>
+
+        <button>
+            <legend>Default</legend>
+            <equal>true</equal>
+            <binding>
+                <command>nasal</command>
+                <script><![CDATA[aerotow.initialFlightPlan();]]></script>
+            </binding>
+        </button>
+
+        <empty>
+            <stretch>true</stretch>
+        </empty>
+    </group>
+
+</PropertyList>
