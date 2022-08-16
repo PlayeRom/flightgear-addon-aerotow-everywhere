@@ -12,11 +12,12 @@
 #
 # Constants
 #
-var addon = addons.getAddon("org.flightgear.addons.Aerotow");
+var ADDON = addons.getAddon("org.flightgear.addons.Aerotow");
+var ADDON_NODE_PATH = ADDON.node.getPath();
 var FILENAME_SCENARIO = "aerotown-addon.xml";
 var FILENAME_FLIGHTPLAN = "aerotown-addon-flightplan.xml";
-var PATH_SCENARIO = addon.storagePath ~ "/" ~ FILENAME_SCENARIO;
-var PATH_FLIGHTPLAN = addon.storagePath ~ "/AI/FlightPlans/" ~ FILENAME_FLIGHTPLAN;
+var PATH_SCENARIO = ADDON.storagePath ~ "/" ~ FILENAME_SCENARIO;
+var PATH_FLIGHTPLAN = ADDON.storagePath ~ "/AI/FlightPlans/" ~ FILENAME_FLIGHTPLAN;
 var SCENARIO_ID = "aerotow_addon";
 var SCENARIO_NAME = "Aerotow Add-on";
 var SCENARIO_DESC = "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.";
@@ -30,14 +31,14 @@ var g_fpFileHandler = nil; # Handler for wrire flight plan to file
 var g_coord = nil; # Coordinates for flight plan
 var g_heading = nil; # AI plane heading
 var g_altitude = nil; # AI plane altitude
-var g_listeners = [];
+var g_towListeners = [];
 
 #
 # Initialize thermal module
 #
 var init = func () {
     # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
-    append(g_listeners, setlistener(addon.node.getPath() ~ "/addon-devel/ai-model", func () {
+    append(g_towListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/ai-model", func () {
         startAerotow();
     }));
 }
@@ -46,7 +47,7 @@ var init = func () {
 # Uninitialize thermal module
 #
 var uninit = func () {
-    foreach (var listener; g_listeners) {
+    foreach (var listener; g_towListeners) {
         removelistener(listener);
     }
 }
@@ -172,7 +173,7 @@ var isScenarioAdded = func () {
 # Return name of selected aircraft. Possible values: "Cub", "DR400", "c182".
 #
 var getSelectedAircraft = func () {
-    return getprop(addon.node.getPath() ~ "/addon-devel/ai-model") or "Cub";
+    return getprop(ADDON_NODE_PATH ~ "/addon-devel/ai-model") or "Cub";
 }
 
 #
