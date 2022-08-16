@@ -30,6 +30,26 @@ var g_fpFileHandler = nil; # Handler for wrire flight plan to file
 var g_coord = nil; # Coordinates for flight plan
 var g_heading = nil; # AI plane heading
 var g_altitude = nil; # AI plane altitude
+var g_listeners = [];
+
+#
+# Initialize thermal module
+#
+var init = func () {
+    # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
+    append(g_listeners, setlistener(addon.node.getPath() ~ "/addon-devel/ai-model", func () {
+        startAerotow();
+    }));
+}
+
+#
+# Uninitialize thermal module
+#
+var uninit = func () {
+    foreach (var listener; g_listeners) {
+        removelistener(listener);
+    }
+}
 
 #
 # Main function to prepare AI scenario and run it.
@@ -235,7 +255,7 @@ var generateFlightPlanXml = func () {
     addWptGround({"hdgChange": 0, "dist": 10 * perf.rolling}, {"altChange": 0, "ktas": perf.speed});
 
     # Takeof
-    addWptAir({"hdgChange": 0,   "dist": 100 * perf.rolling}, {"altChange": 3, "ktas": perf.speed * 1.05});
+    addWptAir({"hdgChange": 0,   "dist": 100 * perf.rolling}, {"elevationPlus": 3, "ktas": perf.speed * 1.05});
     addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": perf.vs / 10, "ktas": perf.speed * 1.025});
 
     # Circle around airport
@@ -304,7 +324,7 @@ var getAircraftPerformance = func () {
             "rolling": 2,
         };
     }
-    
+
     if (aiModel == "c182") {
         return {
             "vs":      295, # ft per 1000 m
@@ -332,7 +352,7 @@ var initAircraftVariable = func (airport, runway, isGliderPos = 1) {
     var gliderCoord = geo.aircraft_position();
 
     # Set coordinates as glider position or runway threshold
-    g_coord = isGliderPos 
+    g_coord = isGliderPos
         ? gliderCoord
         : geo.Coord.new().set_latlon(runway.lat, runway.lon);
 
@@ -365,7 +385,7 @@ var getMinRunwayLength = func () {
     if (aiModel == "DR400") {
         return 470;
     }
-    
+
     if (aiModel == "c182") {
         return 508;
     }
@@ -404,14 +424,14 @@ var addWptAir = func (coordOffset, performance) {
 # sec - Number of seconds for wait
 #
 var addWptWait = func (sec) {
-    wrireWpt("WAIT", {"hdgChange": nil, "dist": nil}, {"altChange": nil, "ktas": nil}, nil, sec);
+    wrireWpt("WAIT", {}, {}, nil, sec);
 }
 
 #
 # Add "END" waypoint
 #
 var addWptEnd = func () {
-    wrireWpt("END", {"hdgChange": nil, "dist": nil}, {"altChange": nil, "ktas": nil});
+    wrireWpt("END", {}, {});
 }
 
 #
@@ -421,6 +441,9 @@ var addWptEnd = func () {
 # coordOffset.hdgChange - How the aircraft's heading supposed to change?
 # coordOffset.dist - Distance in meters to calculate next waypoint coordinates
 # performance.altChange - How the aircraft's altitude is supposed to change?
+# performance.elevationPlus - Set aircraft altitude as current terrain elevation + given value in feets.
+#                             It's best to use for the first point in the air to avoid the plane collapsing into
+#                             the ground in a bumpy airport
 # performance.ktas - True air speed of AI plane at the waypoint
 # groundAir - Allowed value: "ground or "air". The "ground" means that AI plane is on the ground, "air" - in air
 # sec - Number of seconds for "WAIT" waypoint
@@ -432,8 +455,8 @@ var wrireWpt = func (
     groundAir = nil,
     sec = nil
 ) {
-    var localCoord = nil;
-    if (coordOffset.hdgChange != nil and coordOffset.dist != nil) {
+    var coord = nil;
+    if (contains(coordOffset, "hdgChange") and contains(coordOffset, "dist")) {
         g_heading = g_heading + coordOffset.hdgChange;
         if (g_heading < 0) {
             g_heading = 360 + g_heading;
@@ -444,24 +467,29 @@ var wrireWpt = func (
         }
 
         g_coord.apply_course_distance(g_heading, coordOffset.dist);
-        localCoord = g_coord;
+        coord = g_coord;
     }
 
-    var localAlt = nil;
-    if (performance.altChange != nil) {
-        g_altitude = g_altitude + performance.altChange;
-        localAlt = g_altitude;
+    var alt = nil;
+    if (coord != nil and contains(performance, "elevationPlus")) {
+        var elevation = geo.elevation(coord.lat(), coord.lon());
+        if (elevation == nil) {
+            g_altitude = g_altitude + performance.elevationPlus;
+        }
+        else {
+            g_altitude = elevation * globals.M2FT + performance.elevationPlus;
+        }
+        alt = g_altitude;
     }
+    else if (contains(performance, "altChange")) {
+        g_altitude = g_altitude + performance.altChange;
+        alt = g_altitude;
+    }
+
+    var ktas = contains(performance, "ktas") ? performance.ktas : nil;
 
     name = name == nil ? g_wptCount : name;
-    var data = getWptString(
-        name,
-        localCoord,
-        localAlt,
-        performance.ktas,
-        groundAir,
-        sec
-    );
+    var data = getWptString(name, coord, alt, ktas, groundAir, sec);
 
     io.write(g_fpFileHandler, data);
 

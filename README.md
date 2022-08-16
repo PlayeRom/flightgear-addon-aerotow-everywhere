@@ -32,14 +32,28 @@ You can disconnect from the aircraft at any time, most often by pressing the `o`
 
 ## Menu of add-on
 
-This add-on add a new item to main menu named "Aerotow Everywhere" with following items:
+This add-on add a new item to main menu named `Aerotow Everywhere` with following items:
 
 1. `Call for Piper J3 Cub aircraft` - load AI tow sceneraio with Piper J3 Cub. Possible altitude to reach ~3,600 ft.
 2. `Call for Robin DR400 aircraft` - load AI tow sceneraio with Robin DR400. This aircraft has better performance and can take you to over 4,500 ft.
 3. `Call for Cessna 182 aircraft` - load AI tow sceneraio with Cessna 182. This aircraft has little bit better performance than Robin.
 4. `Disable tow aircraft` - unload AI tow sceneraio.
-5. `Help` - display help dialog.
-6. `About` - display about dialog with add-on information.
+5. `Add thermal` - display the dialog for configuring and adding thermal.
+6. `Help` - display help dialog.
+7. `About` - display about dialog with add-on information.
+
+## Adding thermals
+
+An additional feature of this add-on is the possibility of placing the thermals just in front of the glider. To do this, go to menu `Aerotow Everywhere` -> `Add thermal` where you can configure the following parameters:
+
+1. `Distance` - the distance in metres at which the thermals will be placed in front of the gliders.
+2. `Strength` - thermal strength in feet per second.
+3. `Diameter` - diameter of thermal in feet.
+4. `Height` - height of thermal in feet above mean sea level.
+
+Click `Add thermal` button for add the thermal.
+
+Many thanks to the forum user "wlbragg" for proposing and presenting a solution to this feature.
 
 ## Limitations
 

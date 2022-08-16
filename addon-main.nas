@@ -21,11 +21,15 @@ var unload = func(addon) {
     #
     # Other resources should be freed by adding the corresponding code here,
     # e.g. myCanvas.del();
+
+    aerotow.uninit();
+    thermal.uninit();
 }
 
 var main = func(addon) {
     print("Aerotow Everywhere add-on initialized from path ", addon.basePath);
 
+    # Create $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow directory
     addon.createStorageDir();
 
     # Create /AI/FlightPlans/ directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
@@ -36,17 +40,19 @@ var main = func(addon) {
 
     loadExtraNasalFiles(addon);
 
-    setlistener(addon.node.getPath() ~ "/addon-devel/ai-model", func(n) {
-        aerotow.startAerotow();
-    });
+    aerotow.init();
+    thermal.init();
 }
 
+#
+# Load extra Nasal files in main add-on directory
+#
 var loadExtraNasalFiles = func (addon) {
-    foreach (var scriptName; ["aerotow", "messages"]) {
+    foreach (var scriptName; ["aerotow", "messages", "thermal"]) {
         var fileName = addon.basePath ~ "/" ~ scriptName ~ ".nas";
 
-        print("Loading Aerotown Add-on module ", fileName);
-
-        io.load_nasal(fileName, scriptName);
+        if (io.load_nasal(fileName, scriptName)) {
+            print("Aerotown Add-on module \"", scriptName, "\" loaded OK");
+        }
     }
 }

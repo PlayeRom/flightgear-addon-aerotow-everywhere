@@ -27,6 +27,16 @@
             <org.flightgear.addons.Aerotow>
                 <addon-devel>
                     <ai-model type="string">Cub</ai-model>
+                    <add-thermal>
+                        <distance-m type="int">300</distance-m>
+                        <distance-nm type="double">0.16</distance-nm>
+                        <strength-fps type="double">16.0</strength-fps>
+                        <strength-mps type="double">4.88</strength-mps>
+                        <diameter-ft type="int">4000</diameter-ft>
+                        <diameter-m type="int">1219</diameter-m>
+                        <height-msl type="int">9000</height-msl>
+                        <height-msl-m type="int">2742</height-msl-m>
+                    </add-thermal>
                     <help-text type="string">=== How to start? ===
 
 From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts).

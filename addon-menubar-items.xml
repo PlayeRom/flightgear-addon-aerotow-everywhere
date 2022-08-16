@@ -54,10 +54,6 @@
                 </binding>
             </item>
             <item>
-                <label>------------------</label>
-                <enabled>false</enabled>
-            </item>
-            <item>
                 <label>Disable tow aircraft</label>
                 <binding>
                     <command>nasal</command>
@@ -65,7 +61,18 @@
                 </binding>
             </item>
             <item>
-                <label>------------------</label>
+                <label>---------------------</label>
+                <enabled>false</enabled>
+            </item>
+            <item>
+                <label>Add thermal</label>
+                <binding>
+                    <command>dialog-show</command>
+                    <dialog-name>add-thermal</dialog-name>
+                </binding>
+            </item>
+            <item>
+                <label>---------------------</label>
                 <enabled>false</enabled>
             </item>
             <item>
