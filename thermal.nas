@@ -25,35 +25,23 @@ var g_thermalListeners = [];
 #
 var init = func () {
     # Listener for calculate distance from meters to nautical miles.
-    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/distance-m", func () {
-        setprop(
-            ADDON_NODE_PATH ~ "/addon-devel/add-thermal/distance-nm",
-            getprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/distance-m") * globals.M2NM
-        );
+    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/distance-m", func (node) {
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/distance-nm", node.getValue() * globals.M2NM);
     }));
 
     # Listener for calculate strength from ft/s to m/s.
-    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/strength-fps", func () {
-        setprop(
-            ADDON_NODE_PATH ~ "/addon-devel/add-thermal/strength-mps",
-            getprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/strength-fps") * globals.FPS2KT * globals.KT2MPS
-        );
+    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/strength-fps", func (node) {
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/strength-mps", node.getValue() * globals.FPS2KT * globals.KT2MPS);
     }));
 
     # Listener for calculate diameter from ft to m.
-    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/diameter-ft", func () {
-        setprop(
-            ADDON_NODE_PATH ~ "/addon-devel/add-thermal/diameter-m",
-            getprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/diameter-ft") * globals.FT2M
-        );
+    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/diameter-ft", func (node) {
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/diameter-m", node.getValue() * globals.FT2M);
     }));
 
     # Listener for calculate height from ft to m.
-    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/height-msl", func () {
-        setprop(
-            ADDON_NODE_PATH ~ "/addon-devel/add-thermal/height-msl-m",
-            getprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/height-msl") * globals.FT2M
-        );
+    append(g_thermalListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/height-msl", func (node) {
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/add-thermal/height-msl-m", node.getValue() * globals.FT2M);
     }));
 }
 
