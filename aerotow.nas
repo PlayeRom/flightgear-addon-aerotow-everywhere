@@ -41,7 +41,7 @@ var g_towListeners = [];
 var init = func () {
     # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
     append(g_towListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/ai-model", func () {
-        startAerotow();
+        restartAerotow();
     }));
 
     append(g_towListeners, setlistener("/sim/presets/longitude-deg", func () {
@@ -105,14 +105,55 @@ var uninit = func () {
 }
 
 #
+# Function for restart AI scenario with delay when the sound has to stop.
+#
+# Return 1 on successful, otherwise 0.
+#
+var restartAerotow = func () {
+    messages.displayOk("Aerotow in the way");
+
+    # Stop playing engine sound
+    setprop(ADDON_NODE_PATH ~ "/addon-devel/sound/enable", 0);
+
+    # Wait a second for the engine sound to turn off
+    var timer = maketimer(1, func () {
+        unloadScenario();
+    });
+    timer.singleShot = 1;
+    timer.start();
+}
+
+#
+# Unload scenario and start a new one
+#
+var unloadScenario = func () {
+    if (g_isScenarioLoaded) {
+        var args = props.Node.new({ "name": SCENARIO_ID });
+        if (fgcommand("unload-scenario", args)) {
+            g_isScenarioLoaded = 0;
+        }
+    }
+
+    # Start aerotow with delay to avoid duplicate engine sound playing
+    var timer = maketimer(1, func () {
+        startAerotow();
+    });
+    timer.singleShot = 1;
+    timer.start();
+}
+
+#
 # Main function to prepare AI scenario and run it.
 #
 # Return 1 on successful, otherwise 0.
 #
 var startAerotow = func () {
     var args = props.Node.new({ "name": SCENARIO_ID });
+
     if (g_isScenarioLoaded) {
-        fgcommand("unload-scenario", args);
+        if (fgcommand("unload-scenario", args)) {
+            g_isScenarioLoaded = 0;
+        }
     }
 
     generateScenarioXml();
@@ -124,6 +165,8 @@ var startAerotow = func () {
     if (fgcommand("load-scenario", args)) {
         g_isScenarioLoaded = 1;
         messages.displayOk("Let's fly!");
+
+        setprop(ADDON_NODE_PATH ~ "/addon-devel/sound/enable", 1);
         return 1;
     }
 

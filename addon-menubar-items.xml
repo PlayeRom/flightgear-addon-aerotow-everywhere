@@ -43,11 +43,6 @@
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
                     <value type="string">Cub</value>
                 </binding>
-                <binding>
-                    <command>property-assign</command>
-                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
-                    <value type="bool">true</value>
-                </binding>
             </item>
             <item>
                 <label>Call for Robin DR400 aircraft</label>
@@ -56,11 +51,6 @@
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
                     <value type="string">DR400</value>
                 </binding>
-                <binding>
-                    <command>property-assign</command>
-                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
-                    <value type="bool">true</value>
-                </binding>
             </item>
             <item>
                 <label>Call for Cessna 182 aircraft</label>
@@ -68,11 +58,6 @@
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
                     <value type="string">c182</value>
-                </binding>
-                <binding>
-                    <command>property-assign</command>
-                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
-                    <value type="bool">true</value>
                 </binding>
             </item>
             <item>
@@ -84,7 +69,14 @@
                 </binding>
                 <binding>
                     <command>nasal</command>
-                    <script><![CDATA[aerotow.stopAerotow();]]></script>
+                    <script><![CDATA[
+                        # Run stopAerotow() with a delay to ensure that the engine sound turns off
+                        var timer = maketimer(1, func () {
+                            aerotow.stopAerotow();
+                        });
+                        timer.singleShot = 1;
+                        timer.start();
+                    ]]></script>
                 </binding>
             </item>
             <item>
