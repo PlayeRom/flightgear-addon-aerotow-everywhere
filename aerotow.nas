@@ -36,7 +36,7 @@ var g_altitude = nil; # AI plane altitude
 var g_towListeners = [];
 
 #
-# Initialize thermal module
+# Initialize aerotow module
 #
 var init = func () {
     # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
@@ -58,7 +58,7 @@ var init = func () {
 
     # Set listeners for distance fields for calculate altitude change
     for (var i = 0; i < MAX_ROUTE_WAYPOINT; i = i + 1) {
-        append(g_towListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ i ~ "]/distance-m", func (node) {
+        append(g_towListeners, setlistener(ADDON_NODE_PATH ~ "/addon-devel/route/wpt[" ~ i ~ "]/distance-m", func () {
             calculateAltChangeAndTotals();
         }));
     }
@@ -96,7 +96,7 @@ var calculateAltChangeAndTotals = func () {
 }
 
 #
-# Uninitialize thermal module
+# Uninitialize aerotow module
 #
 var uninit = func () {
     foreach (var listener; g_towListeners) {
@@ -477,7 +477,7 @@ var generateFlightPlanXml = func () {
 }
 
 #
-# Return hash with "vs", "speed", "rolling".
+# Return hash with "vs", "speed", "speedLimit", "rolling".
 #
 var getAircraftPerformance = func (isRouteMode = 0) {
     # Cub
@@ -501,10 +501,10 @@ var getAircraftPerformance = func (isRouteMode = 0) {
     var aiModel = getSelectedAircraft(isRouteMode);
     if (aiModel == "DR400" or aiModel == "Robin DR400") {
         return {
-            "vs":         285, # ft per DISTANCE_DETERMINANT m
-            "speed":      70,
-            "speedLimit": 75,
-            "rolling":    2,
+            "vs":         285, # vertical speed in ft per DISTANCE_DETERMINANT m
+            "speed":      70,  # take-off speed
+            "speedLimit": 75,  # max speed
+            "rolling":    2,   # factor for rolling
         };
     }
 
@@ -668,12 +668,9 @@ var wrireWpt = func (
     var alt = nil;
     if (coord != nil and contains(performance, "elevationPlus")) {
         var elevation = geo.elevation(coord.lat(), coord.lon());
-        if (elevation == nil) {
-            g_altitude = g_altitude + performance.elevationPlus;
-        }
-        else {
-            g_altitude = elevation * globals.M2FT + performance.elevationPlus;
-        }
+        g_altitude = elevation == nil
+            ? g_altitude + performance.elevationPlus
+            : elevation * globals.M2FT + performance.elevationPlus;
         alt = g_altitude;
     }
     else if (contains(performance, "altChange")) {
