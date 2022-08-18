@@ -168,7 +168,7 @@ var generateScenarioXml = func () {
                     "callsign":   "FG-TOW",
                     "type":       "aircraft",
                     "class":      "aerotow-dragger",
-                    "model":      "Aircraft/Cub/Models/Cub-ai.xml", # default Cub
+                    "model":      "Aircraft/Aerotow/Cub/Models/Cub-ai.xml", # default Cub
                     "flightplan": FILENAME_FLIGHTPLAN,
                     "repeat":     1,
                 }
@@ -178,10 +178,10 @@ var generateScenarioXml = func () {
 
     var aiModel = getSelectedAircraft();
     if (aiModel == "DR400") {
-        scenarioXml.PropertyList.scenario.entry.model = "Aircraft/DR400/Models/dr400-ai.xml";
+        scenarioXml.PropertyList.scenario.entry.model = "Aircraft/Aerotow/DR400/Models/dr400-ai.xml";
     }
     else if (aiModel == "c182") {
-        scenarioXml.PropertyList.scenario.entry.model = "Aircraft/c182/Models/c182-ai.xml";
+        scenarioXml.PropertyList.scenario.entry.model = "Aircraft/Aerotow/c182/Models/c182-ai.xml";
     }
 
     var node = props.Node.new(scenarioXml);

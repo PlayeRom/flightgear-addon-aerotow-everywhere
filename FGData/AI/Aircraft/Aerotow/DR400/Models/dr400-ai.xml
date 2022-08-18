@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PropertyList include="AI/Aircraft/DR400/Models/dr400-ai.xml">
+    <sound>
+        <path>AI/Aircraft/Aerotow/Sound/sound.xml</path>
+    </sound>
+</PropertyList>

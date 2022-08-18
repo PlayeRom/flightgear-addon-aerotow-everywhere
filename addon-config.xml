@@ -49,6 +49,9 @@
                             <alt>0</alt>
                         </total>
                     </route>
+                    <sound>
+                        <enable type="bool">false</enable>
+                    </sound>
                     <help-text type="string">=== How to start? ===
 
 From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts).

@@ -43,6 +43,11 @@
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
                     <value type="string">Cub</value>
                 </binding>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
+                    <value type="bool">true</value>
+                </binding>
             </item>
             <item>
                 <label>Call for Robin DR400 aircraft</label>
@@ -50,6 +55,11 @@
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
                     <value type="string">DR400</value>
+                </binding>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
+                    <value type="bool">true</value>
                 </binding>
             </item>
             <item>
@@ -59,9 +69,19 @@
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
                     <value type="string">c182</value>
                 </binding>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
+                    <value type="bool">true</value>
+                </binding>
             </item>
             <item>
                 <label>Disable tow aircraft</label>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
+                    <value type="bool">false</value>
+                </binding>
                 <binding>
                     <command>nasal</command>
                     <script><![CDATA[aerotow.stopAerotow();]]></script>
