@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<PropertyList>
+    <fx>
+        <engine>
+            <name>engine</name>
+            <mode>looped</mode>
+            <path>Croisiere_ext_2.wav</path>
+            <condition>
+                <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>
+            </condition>
+            <volume>
+                <offset>-0.80</offset>
+            </volume>
+            <pitch>
+                <property>velocities/true-airspeed-kt</property>
+                <factor>0.012</factor>
+                <offset>0.3</offset>
+                <min>0.3</min>
+                <max>1.0</max>
+            </pitch>
+            <reference-dist>150.0</reference-dist>
+            <max-dist>5000.0</max-dist>
+        </engine>
+    </fx>
+</PropertyList>

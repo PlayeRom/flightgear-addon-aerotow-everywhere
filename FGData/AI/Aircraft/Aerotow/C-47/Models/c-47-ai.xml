@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <description>C-47</description>
+  <path>c-47.ac</path>
+
+  <offsets>
+    <pitch-deg>11.8</pitch-deg>  
+	<z-m>2.65</z-m>
+  </offsets>
+  
+  <sound>
+    <path>AI/Aircraft/Aerotow/C-47/Sound/sound.xml</path>
+  </sound>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>roueG</object-name>
+    <object-name>axeG1</object-name>
+    <object-name>axeG2</object-name>
+    <object-name>axeG3</object-name>
+    <object-name>axeG4</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <interpolation>
+		<entry><ind>0</ind><dep>0.0</dep></entry>
+        <entry><ind>70</ind><dep>0.0</dep></entry>
+        <entry><ind>80</ind><dep>17.5</dep></entry>
+        <entry><ind>90</ind><dep>35</dep></entry>
+    </interpolation>
+    <center>
+        <x-m>-4.24966</x-m>
+        <y-m>-2.814  </y-m>
+        <z-m>-1.24846</z-m>
+    </center>
+    <axis>
+        <x>0</x>
+        <y>1</y>
+        <z>0</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>translate</type>
+    <object-name>roueG</object-name>
+    <object-name>axeG1</object-name>
+    <object-name>axeG2</object-name>
+    <object-name>axeG4</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <interpolation>
+      <entry><ind> 0 </ind><dep> 0.0 </dep></entry>
+      <entry><ind> 70 </ind><dep> 0.0 </dep></entry>
+      <entry><ind>80</ind><dep>.35</dep></entry>
+      <entry><ind>90</ind><dep>.7</dep></entry>
+    </interpolation>
+    <axis>
+      <x> 0 </x>
+      <y> 0 </y>
+      <z> 1 </z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>axeG4</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <interpolation>
+		<entry><ind>0</ind><dep>0.0</dep></entry>
+        <entry><ind>70</ind><dep>0.0</dep></entry>
+        <entry><ind>80</ind><dep>-5</dep></entry>
+        <entry><ind>90</ind><dep>-10</dep></entry>
+    </interpolation>
+    <center>
+        <x-m>-4.23614</x-m>
+        <y-m>-2.814</y-m>
+        <z-m>-3.00605</z-m>
+    </center>
+    <axis>
+        <x>0</x>
+        <y>1</y>
+        <z>0</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>rotate</type>
+        <object-name>roueD</object-name>
+        <object-name>axeD1</object-name>
+        <object-name>axeD2</object-name>
+        <object-name>axeD3</object-name>
+        <object-name>axeD4</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <interpolation>
+		<entry><ind>0</ind><dep>0.0</dep></entry>
+        <entry><ind>70</ind><dep>0.0</dep></entry>
+        <entry><ind>80</ind><dep>17.5</dep></entry>
+        <entry><ind>90</ind><dep>35</dep></entry>
+    </interpolation>
+    <center>
+        <x-m>-4.24966</x-m>
+        <y-m>-2.814  </y-m>
+        <z-m>-1.40846</z-m>
+    </center>
+    <axis>
+        <x>0</x>
+        <y>1</y>
+        <z>0</z>
+    </axis>
+    </animation>
+
+  <animation>
+    <type>translate</type>
+        <object-name>roueD</object-name>
+        <object-name>axeD1</object-name>
+        <object-name>axeD2</object-name>
+        <object-name>axeD4</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <interpolation>
+      <entry><ind> 0 </ind><dep> 0.0 </dep></entry>
+      <entry><ind> 70 </ind><dep> 0.0 </dep></entry>
+      <entry><ind>80</ind><dep>.35</dep></entry>
+      <entry><ind>90</ind><dep>.7</dep></entry>
+    </interpolation>
+    <axis>
+      <x> 0 </x>
+      <y> 0 </y>
+      <z> 1 </z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>rotate</type>
+        <object-name>axeD4</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <interpolation>
+		<entry><ind>0</ind><dep>0.0</dep></entry>
+        <entry><ind>70</ind><dep>0.0</dep></entry>
+        <entry><ind>80</ind><dep>-5</dep></entry>
+        <entry><ind>90</ind><dep>-10</dep></entry>
+    </interpolation>
+    <center>
+        <x-m>-4.23614</x-m>
+        <y-m> 2.814</y-m>
+        <z-m>-3.00605</z-m>
+    </center>
+    <axis>
+        <x>0</x>
+        <y>1</y>
+        <z>0</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <name>leftprop</name>
+    <object-name>heliceL</object-name>
+    <object-name>propblurL</object-name>
+    <object-name>propdiscL</object-name>
+  </animation>
+    
+
+  <animation>
+    <type>select</type>
+    <object-name>propblurL</object-name>
+    <condition>
+      <greater-than>
+        <property>velocities/true-airspeed-kt</property>
+        <value>100</value>
+      </greater-than>
+    </condition>
+  </animation>
+
+  <animation>
+    <type>select</type>
+    <object-name>propdiskL</object-name>
+    <condition>
+      <greater-than>
+        <property>velocities/true-airspeed-kt</property>
+        <value>50</value>
+      </greater-than>
+    </condition>
+  </animation>
+    
+  <animation>
+    <type>select</type>
+    <object-name>heliceL</object-name>
+    <condition>
+      <less-than>
+        <property>velocities/true-airspeed-kt</property>
+        <value>60</value>
+      </less-than>
+    </condition>
+  </animation>
+    
+  <animation>
+    <type>spin</type>
+    <object-name>heliceL</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <factor>10</factor>
+    <center>
+      <x-m>-7.44425</x-m>
+      <y-m>-2.814</y-m>
+      <z-m>-1.189</z-m>
+    </center>
+    <axis>
+      <x> -1.000 </x>
+      <y>  0.000 </y>
+      <z>  0.000 </z>
+    </axis>
+  </animation>
+  
+  <animation>
+    <name>rightprop</name>
+    <object-name>heliceR</object-name>
+    <object-name>propblurR</object-name>
+    <object-name>propdiscR</object-name>
+  </animation>
+  
+  <animation>
+    <type>select</type>
+    <object-name>propblurR</object-name>
+    <condition>
+      <greater-than>
+        <property>velocities/true-airspeed-kt</property>
+        <value>100</value>
+      </greater-than>
+    </condition>
+  </animation>
+
+  <animation>
+    <type>select</type>
+    <object-name>propdiskR</object-name>
+    <condition>
+      <greater-than>
+        <property>velocities/true-airspeed-kt</property>
+        <value>50</value>
+      </greater-than>
+    </condition>
+  </animation>
+    
+  <animation>
+    <type>select</type>
+    <object-name>heliceR</object-name>
+    <condition>
+      <less-than>
+        <property>velocities/true-airspeed-kt</property>
+        <value>60</value>
+      </less-than>
+    </condition>
+  </animation>
+ 
+  <animation>
+    <type>spin</type>
+    <object-name>heliceR</object-name>
+    <property>velocities/true-airspeed-kt</property>
+    <factor> 10 </factor>
+    <center>
+      <x-m>-7.44425</x-m>
+      <y-m> 2.814</y-m>
+      <z-m>-1.189</z-m>
+    </center>
+    <axis>
+      <x> 1.000 </x>
+      <y> 0.000 </y>
+      <z> 0.000 </z>
+    </axis>
+  </animation>
+  
+</PropertyList>

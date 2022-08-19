@@ -176,9 +176,33 @@ var AircraftC182 = {
     },
 };
 
+#
+# Douglas C-47
+# Cruise Speed 152 kt
+# Max speeed 199 kt
+# Stall speed 50 kt
+# Best climb: 1052 ft/min
+#
+
+var AircraftC47 = {
+    new: func () {
+        return {
+            parents:      [Aircraft],
+            vs:           295,
+            speed:        85,
+            speedLimit:   90,
+            rolling:      2.2,
+            minRwyLength: 508,
+            name:         "Douglas C-47",
+            nameMenuCall: "C47",
+            modelPath:    "Aircraft/Aerotow/C-47/Models/c-47-ai.xml",
+        };
+    },
+};
 # Create Aircraft objects
 var g_Aircrafts = [
     AircraftCub.new(),
     AircraftRobin.new(),
     AircraftC182.new(),
+	AircraftC47.new(),
 ];
