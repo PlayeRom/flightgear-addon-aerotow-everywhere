@@ -516,7 +516,9 @@
             <equal>true</equal>
             <binding>
                 <command>nasal</command>
-                <script><![CDATA[aerotow.initialFlightPlan();]]></script>
+                <script><![CDATA[
+                    aerotow.g_Aerotow.scenario.flightPlan.initial();
+                ]]></script>
             </binding>
         </button>
 

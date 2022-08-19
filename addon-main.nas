@@ -23,7 +23,6 @@ var unload = func(addon) {
     # e.g. myCanvas.del();
 
     aerotow.uninit();
-    thermal.uninit();
 }
 
 var main = func(addon) {
@@ -40,18 +39,29 @@ var main = func(addon) {
 
     loadExtraNasalFiles(addon);
 
-    aerotow.init();
-    thermal.init();
+    aerotow.init(addon);
 }
 
 #
 # Load extra Nasal files in main add-on directory
 #
+# addon - Addob object
+#
 var loadExtraNasalFiles = func (addon) {
-    foreach (var scriptName; ["aerotow", "messages", "thermal"]) {
+    var modules = [
+        "nasal/aircraft",
+        "nasal/message",
+        "nasal/dialogs/route",
+        "nasal/dialogs/thermal",
+        "nasal/flight-plan",
+        "nasal/scenario",
+        "aerotow",
+    ];
+
+    foreach (var scriptName; modules) {
         var fileName = addon.basePath ~ "/" ~ scriptName ~ ".nas";
 
-        if (io.load_nasal(fileName, scriptName)) {
+        if (io.load_nasal(fileName, "aerotow")) {
             print("Aerotown Add-on module \"", scriptName, "\" loaded OK");
         }
     }

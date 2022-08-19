@@ -189,7 +189,9 @@
             </binding>
             <binding>
                 <command>nasal</command>
-                <script><![CDATA[thermal.add();]]></script>
+                <script><![CDATA[
+                    aerotow.g_Aerotow.thermal.add();
+                ]]></script>
             </binding>
             <binding>
                 <command>dialog-close</command>
