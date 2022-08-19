@@ -60,6 +60,14 @@
                     <value type="string">c182</value>
                 </binding>
             </item>
+			<item>
+                <label>Call for Douglas C-47 aircraft</label>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
+                    <value type="string">C47</value>
+                </binding>
+            </item>
             <item>
                 <label>Disable tow aircraft</label>
                 <binding>
