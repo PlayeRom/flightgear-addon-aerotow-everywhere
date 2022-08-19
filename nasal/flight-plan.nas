@@ -44,34 +44,42 @@ var FlightPlan = {
     },
 
     #
-    # Get airport an runway hash where the glider is located.
+    # Get inital location of glider.
     #
-    # Return hash with "airport" and "runway", otherwise nil.
+    # Return object with "lat", "lon" and 'heading".
     #
-    getAirportAndRunway: func () {
+    getLocation: func () {
         var icao = getprop("/sim/airport/closest-airport-id");
-        if (icao == nil) {
+        if (icao == nil or icao == "") {
             me.message.error("Airport code cannot be obtained.");
             return nil;
         }
 
-        var runwayName = getprop("/sim/atc/runway");
-        if (runwayName == nil) {
-            me.message.error("Runway name cannot be obtained.");
-            return nil;
-        }
-
+        # Find nearest runway threshold
         var airport = airportinfo(icao);
-
-        if (!contains(airport.runways, runwayName)) {
-            me.message.error("The " ~ icao ~" airport does not have runway " ~ runwayName);
+        if (airport == nil) {
+            me.message.error("An airport with the code " ~ icao ~ " cannot be found.");
             return nil;
         }
 
-        var runway = airport.runways[runwayName];
+        var gliderCoord = geo.aircraft_position();
+
+        var rwyResult = me.findRunway(airport, gliderCoord);
+
+        if (rwyResult.distance > 100) {
+            # The runway is too far away, we assume a bush start
+            return {
+                "type"    : "bush",
+                "lat"     : gliderCoord.lat(),
+                "lon"     : gliderCoord.lon(),
+                "heading" : getprop("/orientation/heading-deg"),
+            };
+        }
+
+        # We have a runway
 
         var minRwyLength = Aircraft.getSelected(me.addon).minRwyLength;
-        if (runway.length < minRwyLength) {
+        if (rwyResult.runway.length < minRwyLength) {
             me.message.error(
                 "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
                 ~ "(" ~ math.round(minRwyLength * globals.M2FT) ~ " ft)."
@@ -80,9 +88,36 @@ var FlightPlan = {
         }
 
         return {
-            "airport": airport,
-            "runway": runway,
+            "type"    : "runway",
+            "lat"     : rwyResult.runway.lat,
+            "lon"     : rwyResult.runway.lon,
+            "heading" : rwyResult.runway.heading,
+        }
+    },
+
+    #
+    # Find nearest runway for given airport
+    #
+    # Return hash with distance to nearest runway threshold and runway object itself.
+    #
+    findRunway: func (airport, gliderCoord) {
+        var result = {
+            "runway"   : nil,
+            "distance" : 999999999,
         };
+
+        foreach (var runwayName; keys(airport.runways)) {
+            var runway = airport.runways[runwayName];
+            var rwyThreshold = geo.Coord.new().set_latlon(runway.lat, runway.lon);
+
+            var distanceToThreshold = rwyThreshold.distance_to(gliderCoord);
+            if (distanceToThreshold < result.distance) {
+                result.runway = runway;
+                result.distance = distanceToThreshold;
+            }
+        }
+
+        return result;
     },
 
     #
@@ -91,14 +126,15 @@ var FlightPlan = {
     # Return 1 on successful, otherwise 0.
     #
     initial: func () {
-        var location = me.getAirportAndRunway();
+        var location = me.getLocation();
         if (location == nil) {
             return 0;
         }
 
         var aircraft = Aircraft.getSelected(me.addon);
 
-        me.initAircraftVariable(location.airport, location.runway, 0);
+        var isGliderPos = 0;
+        me.initAircraftVariable(location, isGliderPos);
 
         # inittial readonly waypoint
         setprop(me.addonNodePath ~ "/addon-devel/route/init-wpt/heading-change", me.heading);
@@ -162,7 +198,7 @@ var FlightPlan = {
     generateXml: func () {
         me.wptCount = 0;
 
-        var location = me.getAirportAndRunway();
+        var location = me.getLocation();
         if (location == nil) {
             return 0;
         }
@@ -171,16 +207,18 @@ var FlightPlan = {
 
         var aircraft = Aircraft.getSelected(me.addon);
 
-        me.initAircraftVariable(location.airport, location.runway, 1);
+        var isGliderPos = 1;
+        me.initAircraftVariable(location, isGliderPos);
 
         # Start at 2 o'clock from the glider...
         # Inital ktas must be >= 1.0
         me.addWptGround({"hdgChange": 60, "dist": 25}, {"altChange": 0, "ktas": 5});
 
         # Reset coord and heading
-        me.initAircraftVariable(location.airport, location.runway, 0);
+        isGliderPos = 0;
+        me.initAircraftVariable(location, isGliderPos);
 
-        var gliderOffsetM = me.getGliderOffsetFromRunwayThreshold(location.runway);
+        var gliderOffsetM = me.getGliderOffsetFromRunwayThreshold(location);
 
         # ... and line up with the runway
         me.addWptGround({"hdgChange": 0, "dist": 30 + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
@@ -200,7 +238,7 @@ var FlightPlan = {
         me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 1.25});
         me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed});
 
-        # Takeof
+        # Take-off
         me.addWptAir({"hdgChange": 0,   "dist": 100 * aircraft.rolling}, {"elevationPlus": 3, "ktas": aircraft.speed * 1.05});
         me.addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": aircraft.vs / 10, "ktas": aircraft.speed * 1.025});
 
@@ -233,20 +271,19 @@ var FlightPlan = {
     #
     # Initialize AI aircraft variable
     #
-    # airport - Object from airportinfo().
-    # runway - Object of runway from which the glider start.
+    # location - Object of location from which the glider start.
     # isGliderPos - Pass 1 for set AI aircraft's coordinates as glider position, 0 set coordinates as runway threshold.
     #
-    initAircraftVariable: func (airport, runway, isGliderPos = 1) {
+    initAircraftVariable: func (location, isGliderPos = 1) {
         var gliderCoord = geo.aircraft_position();
 
         # Set coordinates as glider position or runway threshold
         me.coord = isGliderPos
             ? gliderCoord
-            : geo.Coord.new().set_latlon(runway.lat, runway.lon);
+            : geo.Coord.new().set_latlon(location.lat, location.lon);
 
-        # Set airplane heading as runway heading
-        me.heading = runway.heading;
+        # Set airplane heading as runway or glider heading
+        me.heading = location.heading;
 
         # Set AI airplane altitude as glider altitude (assumed it's on the ground).
         # It is more accurate than airport.elevation.
@@ -256,14 +293,19 @@ var FlightPlan = {
     #
     # Get distance from glider to runway threshold e.g. in case that the user taxi from the runway threshold
     #
-    # runway - Object of runway from which the glider start
+    # location - Object of location from which the glider start.
     # Return the distance in metres, of the glider's displacement from the runway threshold.
     #
-    getGliderOffsetFromRunwayThreshold: func (runway) {
-        var gliderCoord = geo.aircraft_position();
-        var rwyThreshold = geo.Coord.new().set_latlon(runway.lat, runway.lon);
+    getGliderOffsetFromRunwayThreshold: func (location) {
+        if (location.type == "runway") {
+            var gliderCoord = geo.aircraft_position();
+            var rwyThreshold = geo.Coord.new().set_latlon(location.lat, location.lon);
 
-        return rwyThreshold.distance_to(gliderCoord);
+            return rwyThreshold.distance_to(gliderCoord);
+        }
+
+        # We are not on runway
+        return 0;
     },
 
     #
