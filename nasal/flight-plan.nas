@@ -28,19 +28,17 @@ var FlightPlan = {
     new: func (addon, message, routeDialog) {
         var obj = { parents: [FlightPlan] };
 
-        obj.addon       = addon;
-        obj.message     = message;
-        obj.routeDialog = routeDialog;
+        obj.addon            = addon;
+        obj.message          = message;
+        obj.routeDialog      = routeDialog;
+        obj.flightPlanWriter = FlightPlanWriter.new(addon);
 
         obj.addonNodePath = addon.node.getPath();
 
         obj.wptCount      = 0;
-        obj.fpFileHandler = nil; # Handler for wrire flight plan to file
         obj.coord         = nil; # Coordinates for flight plan
         obj.heading       = nil; # AI plane heading
         obj.altitude      = nil; # AI plane altitude
-
-        obj.flightPlanPath = addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
 
         return obj;
     },
@@ -169,14 +167,7 @@ var FlightPlan = {
             return 0;
         }
 
-        me.fpFileHandler = io.open(me.flightPlanPath, "w");
-        io.write(
-            me.fpFileHandler,
-            "<?xml version=\"1.0\"?>\n\n" ~
-            "<!-- This file is generated automatically by the Aerotow Everywhere add-on -->\n\n" ~
-            "<PropertyList>\n" ~
-            "    <flightplan>\n"
-        );
+        me.flightPlanWriter.open();
 
         var aircraft = Aircraft.getSelected(me.addon);
 
@@ -234,12 +225,7 @@ var FlightPlan = {
 
         me.addWptEnd();
 
-        io.write(
-            me.fpFileHandler,
-            "    </flightplan>\n" ~
-            "</PropertyList>\n\n"
-        );
-        io.close(me.fpFileHandler);
+        me.flightPlanWriter.close();
 
         return 1;
     },
@@ -373,51 +359,8 @@ var FlightPlan = {
         var ktas = contains(performance, "ktas") ? performance.ktas : nil;
 
         name = name == nil ? me.wptCount : name;
-        var data = me.getWptString(name, coord, alt, ktas, groundAir, sec);
-
-        io.write(me.fpFileHandler, data);
+        me.flightPlanWriter.write(name, coord, alt, ktas, groundAir, sec);
 
         me.wptCount = me.wptCount + 1;
-    },
-
-    #
-    # Get single waypoint data as a string.
-    #
-    # name - Name of waypoint. Special names are: "WAIT", "END".
-    # coord - The Coord object
-    # alt - Altitude AMSL of AI plane
-    # ktas - True air speed of AI plane
-    # groundAir - Allowe value: "ground or "air". The "ground" means that AI plane is on the ground, "air" - in air
-    # sec - Number of seconds for "WAIT" waypoint
-    #
-    getWptString: func (name, coord = nil, alt = nil, ktas = nil, groundAir = nil, sec = nil) {
-        var str = "        <wpt>\n"
-                ~ "            <name>" ~ name ~ "</name>\n";
-
-        if (coord != nil) {
-            str = str ~ "            <lat>" ~ coord.lat() ~ "</lat>\n";
-            str = str ~ "            <lon>" ~ coord.lon() ~ "</lon>\n";
-            str = str ~ "            <!-- " ~ coord.lat() ~ "," ~ coord.lon() ~ " -->\n";
-        }
-
-        if (alt != nil) {
-            # str = str ~ "            <alt>" ~ alt ~ "</alt>\n";
-            str = str ~ "            <crossat>" ~ alt ~ "</crossat>\n";
-        }
-
-        if (ktas != nil) {
-            str = str ~ "            <ktas>" ~ ktas ~ "</ktas>\n";
-        }
-
-        if (groundAir != nil) {
-            var onGround = groundAir == "ground" ? "true" : "false";
-            str = str ~ "            <on-ground>" ~ onGround ~ "</on-ground>\n";
-        }
-
-        if (sec != nil) {
-            str = str ~ "            <time-sec>" ~ sec ~ "</time-sec>\n";
-        }
-
-        return str ~ "        </wpt>\n";
     },
 };
