@@ -180,15 +180,14 @@ var AircraftC182 = {
 # Douglas C-47
 # Cruise Speed 152 kt
 # Max speeed 199 kt
-# Stall speed 50 kt
+# Stall speed 57 kt
 # Best climb: 1052 ft/min
 #
-
 var AircraftC47 = {
     new: func () {
         return {
             parents:      [Aircraft],
-            vs:           295,
+            vs:           310,
             speed:        85,
             speedLimit:   90,
             rolling:      2.2,
@@ -199,10 +198,11 @@ var AircraftC47 = {
         };
     },
 };
+
 # Create Aircraft objects
 var g_Aircrafts = [
     AircraftCub.new(),
     AircraftRobin.new(),
     AircraftC182.new(),
-	AircraftC47.new(),
+    AircraftC47.new(),
 ];

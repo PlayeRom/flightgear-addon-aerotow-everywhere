@@ -60,7 +60,7 @@
                     <value type="string">c182</value>
                 </binding>
             </item>
-			<item>
+            <item>
                 <label>Call for Douglas C-47 aircraft</label>
                 <binding>
                     <command>property-assign</command>

@@ -88,6 +88,7 @@
             <value>Piper J3 Cub</value>
             <value>Robin DR400</value>
             <value>Cessna 182</value>
+            <value>Douglas C-47</value>
             <binding>
                 <command>dialog-apply</command>
             </binding>
