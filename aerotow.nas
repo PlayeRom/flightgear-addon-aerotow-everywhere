@@ -54,7 +54,7 @@ var Aerotow = {
     # Return 1 on successful, otherwise 0.
     #
     restartAerotow: func () {
-        me.message.success("Aerotow in the way");
+        me.message.success("Aerotow on the way");
 
         # Stop playing engine sound
         setprop(me.addonNodePath ~ "/addon-devel/sound/enable", 0);
