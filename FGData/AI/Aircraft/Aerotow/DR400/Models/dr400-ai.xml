@@ -2,6 +2,6 @@
 
 <PropertyList include="AI/Aircraft/DR400/Models/dr400-ai.xml">
     <sound>
-        <path>AI/Aircraft/Aerotow/Sound/sound.xml</path>
+        <path>AI/Aircraft/Aerotow/DR400/Sound/sound.xml</path>
     </sound>
 </PropertyList>
