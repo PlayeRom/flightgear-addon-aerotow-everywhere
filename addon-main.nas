@@ -28,16 +28,9 @@ var unload = func(addon) {
 var main = func(addon) {
     print("Aerotow Everywhere add-on initialized from path ", addon.basePath);
 
-    # Create $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow directory
-    addon.createStorageDir();
-
-    # Create /AI/FlightPlans/ directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
-    # User has to add the path as --data=$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow
-    # Then the FG will be able to read flight plan file
-    var path = os.path.new(addon.storagePath ~ "/AI/FlightPlans/dummy-file.txt");
-    path.create_dir();
-
     loadExtraNasalFiles(addon);
+
+    createDirectories();
 
     aerotow.init(addon);
 }
@@ -56,6 +49,7 @@ var loadExtraNasalFiles = func (addon) {
         "nasal/flight-plan",
         "nasal/scenario",
         "nasal/io/flight-plan-writer",
+        "nasal/aerotow",
         "aerotow",
     ];
 
@@ -66,4 +60,22 @@ var loadExtraNasalFiles = func (addon) {
             print("Aerotown Add-on module \"", scriptName, "\" loaded OK");
         }
     }
+}
+
+#
+# Create all needed directories.
+#
+var createDirectories = func (addon) {
+    # Create $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow directory
+    addon.createStorageDir();
+
+    # Create /AI/FlightPlans/ directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
+    # User has to add the path as --data=$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow
+    # Then the FG will be able to read flight plan file
+    var path = os.path.new(addon.storagePath ~ "/AI/FlightPlans/dummy-file.txt");
+    path.create_dir();
+
+    # Create /route-saves directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
+    path = os.path.new(addon.storagePath ~ "/" ~ aerotow.RouteDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
+    path.create_dir();
 }

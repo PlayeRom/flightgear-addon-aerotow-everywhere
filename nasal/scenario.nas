@@ -36,7 +36,7 @@ var Scenario = {
         obj.addonNodePath = addon.node.getPath();
 
         obj.listeners = [];
-        obj.routeDialog = RouteDialog.new(addon);
+        obj.routeDialog = RouteDialog.new(addon, message);
         obj.flightPlan = FlightPlan.new(addon, message, obj.routeDialog);
         obj.isScenarioLoaded = 0;
         obj.scenarioPath = addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;

@@ -178,14 +178,16 @@ var FlightPlan = {
 
         var index = 0;
         foreach (var wpt; wptData) {
-            setprop(me.addonNodePath ~ "/addon-devel/route/wpt[" ~ index ~ "]/heading-change",    wpt.hdgChange);
-            setprop(me.addonNodePath ~ "/addon-devel/route/wpt[" ~ index ~ "]/distance-m",        wpt.dist);
-            setprop(me.addonNodePath ~ "/addon-devel/route/wpt[" ~ index ~ "]/alt-change-agl-ft", wpt.altChange);
+            setprop(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change",    wpt.hdgChange);
+            setprop(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/distance-m",        wpt.dist);
+            setprop(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/alt-change-agl-ft", wpt.altChange);
 
             index += 1;
         }
 
         me.routeDialog.calculateAltChangeAndTotals();
+
+        setprop(me.addonNodePath ~ "/addon-devel/route/wpts/description", "Default route around the start location");
 
         return 1;
     },
@@ -244,7 +246,7 @@ var FlightPlan = {
         me.addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": aircraft.vs / 10, "ktas": aircraft.speed * 1.025});
 
         var speedInc = 1.0;
-        foreach (var wptNode; props.globals.getNode(me.addonNodePath ~ "/addon-devel/route").getChildren("wpt")) {
+        foreach (var wptNode; props.globals.getNode(me.addonNodePath ~ "/addon-devel/route/wpts").getChildren("wpt")) {
             var dist = wptNode.getChild("distance-m").getValue();
             if (dist <= 0.0) {
                 break;
