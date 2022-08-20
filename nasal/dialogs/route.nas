@@ -33,7 +33,7 @@ var RouteDialog = {
         }));
 
         # Set listeners for distance fields for calculate altitude change
-        for (var i = 0; i < obj.maxRouteWaypoints; i = i + 1) {
+        for (var i = 0; i < obj.maxRouteWaypoints; i += 1) {
             append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/route/wpt[" ~ i ~ "]/distance-m", func () {
                 obj.calculateAltChangeAndTotals();
             }));
@@ -62,7 +62,7 @@ var RouteDialog = {
         var isRouteMode = 1;
         var aircraft = Aircraft.getSelected(me.addon, isRouteMode);
 
-        for (var i = 0; i < me.maxRouteWaypoints; i = i + 1) {
+        for (var i = 0; i < me.maxRouteWaypoints; i += 1) {
             var distance = getprop(me.addonNodePath ~ "/addon-devel/route/wpt[" ~ i ~ "]/distance-m");
             if (distance == nil) {
                 break;
@@ -73,8 +73,8 @@ var RouteDialog = {
 
             if (!isEnd) {
                 if (distance > 0.0) {
-                    totalDistance = totalDistance + distance;
-                    totalAlt = totalAlt + altChange;
+                    totalDistance += distance;
+                    totalAlt += altChange;
                 }
                 else {
                     isEnd = 1;

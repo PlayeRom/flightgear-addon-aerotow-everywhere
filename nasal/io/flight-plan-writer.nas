@@ -63,32 +63,32 @@ var FlightPlanWriter = {
                 ~ "            <name>" ~ name ~ "</name>\n";
 
         if (coord != nil) {
-            str = str ~ "            <lat>" ~ coord.lat() ~ "</lat>\n";
-            str = str ~ "            <lon>" ~ coord.lon() ~ "</lon>\n";
-            str = str ~ "            <!--\n"
-                      ~ "                 " ~ coord.lat() ~ "," ~ coord.lon() ~ "\n"
-                      ~ "            -->\n";
+            str ~= "            <lat>" ~ coord.lat() ~ "</lat>\n";
+            str ~= "            <lon>" ~ coord.lon() ~ "</lon>\n";
+            str ~= "            <!--\n"
+                 ~ "                 " ~ coord.lat() ~ "," ~ coord.lon() ~ "\n"
+                 ~ "            -->\n";
         }
 
         if (alt != nil) {
-            # str = str ~ "            <alt>" ~ alt ~ "</alt>\n";
-            str = str ~ "            <crossat>" ~ alt ~ "</crossat>\n";
+            # str ~= "            <alt>" ~ alt ~ "</alt>\n";
+            str ~= "            <crossat>" ~ alt ~ "</crossat>\n";
         }
 
         if (ktas != nil) {
-            str = str ~ "            <ktas>" ~ ktas ~ "</ktas>\n";
+            str ~= "            <ktas>" ~ ktas ~ "</ktas>\n";
         }
 
         if (groundAir != nil) {
             var onGround = groundAir == "ground" ? "true" : "false";
-            str = str ~ "            <on-ground>" ~ onGround ~ "</on-ground>\n";
+            str ~= "            <on-ground>" ~ onGround ~ "</on-ground>\n";
         }
 
         if (sec != nil) {
-            str = str ~ "            <time-sec>" ~ sec ~ "</time-sec>\n";
+            str ~= "            <time-sec>" ~ sec ~ "</time-sec>\n";
         }
 
-        str = str ~ "        </wpt>\n";
+        str ~= "        </wpt>\n";
 
         io.write(me.fpFileHandler, str);
     },

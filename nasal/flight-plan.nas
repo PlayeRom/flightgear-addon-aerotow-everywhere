@@ -17,6 +17,7 @@ var FlightPlan = {
     # Constants
     #
     FILENAME_FLIGHTPLAN: "aerotown-addon-flightplan.xml",
+    MAX_RUNWAY_DISTANCE: 100, # meters
 
     #
     # Constructor
@@ -66,7 +67,7 @@ var FlightPlan = {
 
         var rwyResult = me.findRunway(airport, gliderCoord);
 
-        if (rwyResult.distance > 100) {
+        if (rwyResult.distance > FlightPlan.MAX_RUNWAY_DISTANCE) {
             # The runway is too far away, we assume a bush start
             return {
                 "type"    : "bush",
@@ -181,7 +182,7 @@ var FlightPlan = {
             setprop(me.addonNodePath ~ "/addon-devel/route/wpt[" ~ index ~ "]/distance-m",        wpt.dist);
             setprop(me.addonNodePath ~ "/addon-devel/route/wpt[" ~ index ~ "]/alt-change-agl-ft", wpt.altChange);
 
-            index = index + 1;
+            index += 1;
         }
 
         me.routeDialog.calculateAltChangeAndTotals();
@@ -252,7 +253,7 @@ var FlightPlan = {
             var hdgChange = wptNode.getChild("heading-change").getValue();
             var altChange = aircraft.getAltChange(dist);
 
-            speedInc = speedInc + ((dist / Aircraft.DISTANCE_DETERMINANT) * 0.025);
+            speedInc += ((dist / Aircraft.DISTANCE_DETERMINANT) * 0.025);
             var ktas = aircraft.speed * speedInc;
             if (ktas > aircraft.speedLimit) {
                 ktas = aircraft.speedLimit;
@@ -372,13 +373,13 @@ var FlightPlan = {
     ) {
         var coord = nil;
         if (contains(coordOffset, "hdgChange") and contains(coordOffset, "dist")) {
-            me.heading = me.heading + coordOffset.hdgChange;
+            me.heading += coordOffset.hdgChange;
             if (me.heading < 0) {
-                me.heading = 360 + me.heading;
+                me.heading += 360;
             }
 
             if (me.heading > 360) {
-                me.heading = me.heading - 360;
+                me.heading -= 360;
             }
 
             me.coord.apply_course_distance(me.heading, coordOffset.dist);
@@ -394,7 +395,7 @@ var FlightPlan = {
             alt = me.altitude;
         }
         else if (contains(performance, "altChange")) {
-            me.altitude = me.altitude + performance.altChange;
+            me.altitude += performance.altChange;
             alt = me.altitude;
         }
 
@@ -403,6 +404,6 @@ var FlightPlan = {
         name = name == nil ? me.wptCount : name;
         me.flightPlanWriter.write(name, coord, alt, ktas, groundAir, sec);
 
-        me.wptCount = me.wptCount + 1;
+        me.wptCount += 1;
     },
 };
