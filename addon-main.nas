@@ -30,7 +30,7 @@ var main = func(addon) {
 
     loadExtraNasalFiles(addon);
 
-    createDirectories();
+    createDirectories(addon);
 
     aerotow.init(addon);
 }
