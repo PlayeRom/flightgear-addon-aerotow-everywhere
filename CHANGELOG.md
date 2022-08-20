@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v.1.4.0
+
+- Add Douglas C-47 as a tow plane
+- Add possibility to take off in the bush
+- Add a separate engine sound for the DR400
+- Add French translation of meta data
+- Add possibility to save/load route waypoints with description
+
 ## v.1.3.0
 
 - Add engine sound for AI aircrafts
