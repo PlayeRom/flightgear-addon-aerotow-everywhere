@@ -49,6 +49,16 @@
         </long-description>
 
         <localized>
+            <fr>
+                <short-description type="string">
+                    Remorquage d’un planeur depuis n’importe quel aérodrome.
+                </short-description>
+
+                <long-description type="string">
+                    Ce greffon permet d’activer le scénario IA « avion remorqueur » pour démarrer avec un planeur depuis n’importe quel aérodrome.
+                </long-description>
+            </fr>
+
             <pl>
                 <short-description type="string">
                     Samoloty holownicze dla szybowców na każdym lotnisku.
