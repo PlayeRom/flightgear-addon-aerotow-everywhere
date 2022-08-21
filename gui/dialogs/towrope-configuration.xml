@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <name>towrope-config</name>
+    <layout>vbox</layout>
+    <default-padding>5</default-padding>
+    <modal>false</modal>
+    <width>680</width>
+
+    <!-- title bar -->
+    <group>
+        <layout>hbox</layout>
+        <empty>
+            <stretch>true</stretch>
+        </empty>
+        <text>
+            <label>Towrope Configuration</label>
+        </text>
+        <empty>
+            <stretch>true</stretch>
+        </empty>
+        <button>
+            <legend/>
+            <key>Esc</key>
+            <pref-width>16</pref-width>
+            <pref-height>16</pref-height>
+            <border>2</border>
+            <binding>
+                <command>dialog-close</command>
+            </binding>
+        </button>
+    </group>
+
+    <hrule/>
+
+    <!-- aerotow parameters -->
+    <group>
+        <layout>hbox</layout>
+
+        <group>
+            <layout>table</layout>
+
+            <!-- tow length -->
+            <text>
+                <row>0</row>
+                <col>0</col>
+                <halign>right</halign>
+                <label>Towrope Length</label>
+            </text>
+            <text>
+                <row>0</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label></label>
+                <live>true</live>
+                <format>%.0f m </format>
+                <property>/sim/hitches/aerotow/tow/length</property>
+                <color>
+                    <red>0.2</red>
+                    <green>0.9</green>
+                    <blue>0.2</blue>
+                </color>
+            </text>
+
+            <!-- break force -->
+            <text>
+                <row>1</row>
+                <col>0</col>
+                <halign>right</halign>
+                <label>Weak Link Break Force</label>
+            </text>
+            <text>
+                <row>1</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label></label>
+                <live>true</live>
+                <format>%.0f N </format>
+                <property>/sim/hitches/aerotow/tow/brake-force</property>
+                <color>
+                    <red>0.2</red>
+                    <green>0.9</green>
+                    <blue>0.2</blue>
+                </color>
+            </text>
+
+            <!-- tow characteristic -->
+            <text>
+                <row>2</row>
+                <col>0</col>
+                <halign>right</halign>
+                <label>Towrope Elastic Constant</label>
+            </text>
+            <text>
+                <row>2</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label></label>
+                <live>true</live>
+                <format>%.0f N</format>
+                <property>/sim/hitches/aerotow/tow/elastic-constant</property>
+                <color>
+                    <red>0.2</red>
+                    <green>0.9</green>
+                    <blue>0.2</blue>
+                </color>
+            </text>
+
+            <!-- tow thickness -->
+            <text>
+                <row>3</row>
+                <col>0</col>
+                <halign>right</halign>
+                <label>Towrope Diameter</label>
+            </text>
+            <text>
+                <row>3</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label></label>
+                <live>true</live>
+                <format>%.0f mm</format>
+                <property>/sim/hitches/aerotow/rope/rope-diameter-mm</property>
+                <color>
+                    <red>0.2</red>
+                    <green>0.9</green>
+                    <blue>0.2</blue>
+                </color>
+            </text>
+
+            <!-- tow weight -->
+            <text>
+                <row>4</row>
+                <col>0</col>
+                <halign>right</halign>
+                <label>Towrope Weight per Meter</label>
+            </text>
+            <text>
+                <row>4</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label></label>
+                <live>true</live>
+                <format>%.3f kg/m</format>
+                <property>/sim/hitches/aerotow/tow/weight-per-m-kg-m</property>
+                <color>
+                    <red>0.2</red>
+                    <green>0.9</green>
+                    <blue>0.2</blue>
+                </color>
+            </text>
+        </group>
+        <empty>
+            <stretch>true</stretch>
+        </empty>
+
+        <vrule/>
+
+        <group>
+            <layout>table</layout>
+
+            <!-- tow length -->
+            <text>
+                <row>0</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label>20 m</label>
+            </text>
+            <slider>
+                <row>0</row>
+                <col>2</col>
+                <live>true</live>
+                <halign>fill</halign>
+                <pref-width>300</pref-width>
+                <name>tow_length</name>
+                <property>/sim/hitches/aerotow/tow/length</property>
+                <min>20</min>
+                <max>200</max>
+                <step>5</step>
+                <binding>
+                    <command>dialog-apply</command>
+                </binding>
+            </slider>
+            <text>
+                <row>0</row>
+                <col>3</col>
+                <halign>left</halign>
+                <label>200 m</label>
+            </text>
+
+            <!-- break force -->
+            <text>
+                <row>1</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label>100 N</label>
+            </text>
+            <slider>
+                <row>1</row>
+                <col>2</col>
+                <live>true</live>
+                <halign>fill</halign>
+                <pref-width>300</pref-width>
+                <name>break_force</name>
+                <property>/sim/hitches/aerotow/tow/brake-force</property>
+                <min>100</min>
+                <max>100000</max>
+                <step>100</step>
+                <binding>
+                    <command>dialog-apply</command>
+                </binding>
+            </slider>
+            <text>
+                <row>1</row>
+                <col>3</col>
+                <halign>left</halign>
+                <label>100,000 N</label>
+            </text>
+
+            <!-- tow characteristic -->
+            <text>
+                <row>2</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label>0 N</label>
+            </text>
+            <slider>
+                <row>2</row>
+                <col>2</col>
+                <live>true</live>
+                <halign>fill</halign>
+                <pref-width>300</pref-width>
+                <name>elastic_constant</name>
+                <property>/sim/hitches/aerotow/tow/elastic-constant</property>
+                <min>0</min>
+                <max>1500000</max>
+                <step>200</step>
+                <binding>
+                    <command>dialog-apply</command>
+                </binding>
+            </slider>
+            <text>
+                <row>2</row>
+                <col>3</col>
+                <halign>left</halign>
+                <label>1,500,000 N</label>
+            </text>
+
+            <!-- tow thickness -->
+            <text>
+                <row>3</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label>0 mm</label>
+            </text>
+            <slider>
+                <row>3</row>
+                <col>2</col>
+                <live>true</live>
+                <halign>fill</halign>
+                <pref-width>300</pref-width>
+                <name>rope_diameter</name>
+                <property>/sim/hitches/aerotow/rope/rope-diameter-mm</property>
+                <min>0</min>
+                <max>50</max>
+                <step>1</step>
+                <binding>
+                    <command>dialog-apply</command>
+                </binding>
+            </slider>
+            <text>
+                <row>3</row>
+                <col>3</col>
+                <halign>left</halign>
+                <label>50 mm</label>
+            </text>
+
+            <!-- tow weight -->
+            <text>
+                <row>4</row>
+                <col>1</col>
+                <halign>right</halign>
+                <label>0 kg/m</label>
+            </text>
+            <slider>
+                <row>4</row>
+                <col>2</col>
+                <live>true</live>
+                <halign>fill</halign>
+                <pref-width>300</pref-width>
+                <name>weight_per_m</name>
+                <property>/sim/hitches/aerotow/tow/weight-per-m-kg-m</property>
+                <min>0</min>
+                <max>1</max>
+                <step>0.001</step>
+                <binding>
+                    <command>dialog-apply</command>
+                </binding>
+            </slider>
+            <text>
+                <row>4</row>
+                <col>3</col>
+                <halign>left</halign>
+                <label>1 kg/m</label>
+            </text>
+        </group>
+    </group>
+
+    <hrule/>
+
+    <!-- bottom line -->
+    <group>
+        <layout>hbox</layout>
+        <empty>
+            <stretch>true</stretch>
+        </empty>
+        <button>
+            <legend>Close</legend>
+            <equal>true</equal>
+            <binding>
+                <command>dialog-close</command>
+            </binding>
+        </button>
+        <button>
+            <legend>Default</legend>
+            <equal>true</equal>
+            <binding>
+                <command>nasal</command>
+                <script><![CDATA[
+                    setprop("/sim/hitches/aerotow/tow/length", 60.0);
+                    setprop("/sim/hitches/aerotow/tow/brake-force", 100000.0);
+                    setprop("/sim/hitches/aerotow/tow/elastic-constant", 10000.0);
+                    setprop("/sim/hitches/aerotow/rope/rope-diameter-mm", 20);
+                    setprop("/sim/hitches/aerotow/tow/weight-per-m-kg-m", 1.0);
+                ]]></script>
+            </binding>
+        </button>
+        <empty>
+            <stretch>true</stretch>
+        </empty>
+    </group>
+</PropertyList>

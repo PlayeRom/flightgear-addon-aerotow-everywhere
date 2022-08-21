@@ -37,6 +37,13 @@
                 </binding>
             </item>
             <item>
+                <label>Towrope Configuration</label>
+                <binding>
+                    <command>dialog-show</command>
+                    <dialog-name>towrope-config</dialog-name>
+                </binding>
+            </item>
+            <item>
                 <label>Call for Piper J3 Cub aircraft</label>
                 <binding>
                     <command>property-assign</command>
