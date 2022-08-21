@@ -79,11 +79,9 @@
                     <command>nasal</command>
                     <script><![CDATA[
                         # Run stopAerotow() with a delay to ensure that the engine sound turns off
-                        var timer = maketimer(1, func () {
+                        aerotow.Timer.new().singleShot(1, aerotow.g_Aerotow, func () {
                             aerotow.g_Aerotow.stopAerotow();
                         });
-                        timer.singleShot = 1;
-                        timer.start();
                     ]]></script>
                 </binding>
             </item>

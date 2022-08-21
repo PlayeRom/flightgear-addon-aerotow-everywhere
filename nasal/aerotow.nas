@@ -51,8 +51,6 @@ var Aerotow = {
     #
     # Function for restart AI scenario with delay when the sound has to stop.
     #
-    # Return 1 on successful, otherwise 0.
-    #
     restartAerotow: func () {
         me.message.success("Aerotow on the way");
 
@@ -60,11 +58,9 @@ var Aerotow = {
         setprop(me.addonNodePath ~ "/addon-devel/sound/enable", 0);
 
         # Wait a second for the engine sound to turn off
-        var timer = maketimer(1, func () {
+        Timer.new().singleShot(1, me, func () {
             me.unloadScenario();
         });
-        timer.singleShot = 1;
-        timer.start();
     },
 
     #
@@ -76,11 +72,9 @@ var Aerotow = {
         }
 
         # Start aerotow with delay to avoid duplicate engine sound playing
-        var timer = maketimer(1, func () {
+        Timer.new().singleShot(1, me, func () {
             me.startAerotow();
         });
-        timer.singleShot = 1;
-        timer.start();
     },
 
     #
