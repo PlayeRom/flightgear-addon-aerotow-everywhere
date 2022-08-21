@@ -10,7 +10,7 @@
 #
 
 #
-# Flight Plan object
+# Class FlightPlan for crate and save as XML file the flight plan for AI scenario.
 #
 var FlightPlan = {
     #
@@ -93,7 +93,7 @@ var FlightPlan = {
             "lat"     : rwyResult.runway.lat,
             "lon"     : rwyResult.runway.lon,
             "heading" : rwyResult.runway.heading,
-        }
+        };
     },
 
     #

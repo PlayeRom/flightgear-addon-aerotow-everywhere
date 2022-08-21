@@ -10,7 +10,7 @@
 #
 
 #
-# Object for write flight plan to the XML file
+# Class FlightPlanWriter for write flight plan to the XML file
 #
 var FlightPlanWriter = {
     #

@@ -10,7 +10,7 @@
 #
 
 #
-# Class Timer for wrapping maketimer()
+# Class Timer for wrapping maketimer() function.
 #
 var Timer = {
     #

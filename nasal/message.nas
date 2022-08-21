@@ -10,7 +10,7 @@
 #
 
 #
-# Object for display messages
+# Class Message for display messages on the screen with read by speech synthesizer.
 #
 var Message = {
     #

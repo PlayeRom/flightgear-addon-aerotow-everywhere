@@ -10,16 +10,16 @@
 #
 
 #
-# Scenario object
+# Class Scenario for create AI scenario XML file and attach it to scenario property list for load it.
 #
 var Scenario = {
     #
     # Constants
     #
-    SCENARIO_ID:         "aerotow_addon",
-    SCENARIO_NAME:       "Aerotow Add-on",
-    SCENARIO_DESC:       "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.",
-    FILENAME_SCENARIO:   "aerotown-addon.xml",
+    SCENARIO_ID:       "aerotow_addon",
+    SCENARIO_NAME:     "Aerotow Add-on",
+    SCENARIO_DESC:     "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.",
+    FILENAME_SCENARIO: "aerotown-addon.xml",
 
     #
     # Constructor

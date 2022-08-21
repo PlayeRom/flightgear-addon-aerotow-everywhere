@@ -10,7 +10,7 @@
 #
 
 #
-# Parent object of Aircraft
+# Parent class of Aircraft
 #
 var Aircraft = {
     #

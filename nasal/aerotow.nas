@@ -10,7 +10,7 @@
 #
 
 #
-# Aerotow object
+# Class Aerotow for enable and disable scenario with aerotow aircraft.
 #
 var Aerotow = {
     #

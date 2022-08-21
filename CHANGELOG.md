@@ -2,7 +2,7 @@
 
 ## v.1.4.1
 
-- Fix carsh by missing parameter
+- Fix crash by missing parameter
 
 ## v.1.4.0
 

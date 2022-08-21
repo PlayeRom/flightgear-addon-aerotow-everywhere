@@ -9,6 +9,9 @@
 # under the GNU Public License v3 (GPLv3)
 #
 
+#
+# Class Thermal for handle add new thermal.
+#
 var Thermal = {
     #
     # Constructor
