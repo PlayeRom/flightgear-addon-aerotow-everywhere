@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.5.0
+
+- Add Towrope Configuration dialog
+
 ## v.1.4.1
 
 - Fix crash by missing parameter
