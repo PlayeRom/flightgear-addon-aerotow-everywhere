@@ -224,7 +224,7 @@ var FlightPlan = {
         var gliderOffsetM = me.getGliderOffsetFromRunwayThreshold(location);
 
         # ... and line up with the runway
-        me.addWptGround({"hdgChange": 0, "dist": 30 + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
+        me.addWptGround({"hdgChange": 0, "dist": me.getInitialDistance() + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
 
         # Rolling
         me.addWptGround({"hdgChange": 0, "dist": 10}, {"altChange": 0, "ktas": 5});
@@ -272,6 +272,17 @@ var FlightPlan = {
     },
 
     #
+    # Get initial distance AI plane from the glider that the tow is nearly tautened.
+    #
+    # Return distance in meters.
+    #
+    getInitialDistance: func () {
+        var ropeLengthM = getprop("/sim/hitches/aerotow/tow/length") or 60;
+        var tautenRelative = 0.68;
+        return ropeLengthM * tautenRelative;
+    },
+
+    #
     # Initialize AI aircraft variable
     #
     # location - Object of location from which the glider start.
@@ -307,7 +318,7 @@ var FlightPlan = {
             return rwyThreshold.distance_to(gliderCoord);
         }
 
-        # We are not on runway
+        # We are not on the runway
         return 0;
     },
 
