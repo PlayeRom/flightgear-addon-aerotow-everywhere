@@ -55,7 +55,7 @@ var Aerotow = {
         me.message.success("Aerotow on the way");
 
         # Stop playing engine sound
-        setprop(me.addonNodePath ~ "/addon-devel/sound/enable", 0);
+        setprop(me.addonNodePath ~ "/addon-devel/sound/enable", false);
 
         # Wait a second for the engine sound to turn off
         Timer.new().singleShot(1, me, func () {
@@ -80,15 +80,15 @@ var Aerotow = {
     #
     # Main function to prepare AI scenario and run it.
     #
-    # Return 1 on successful, otherwise 0.
+    # Return true on successful, otherwise false.
     #
     startAerotow: func () {
         if (!me.scenario.unload()) {
-            return 0;
+            return false;
         }
 
         if (!me.scenario.generateXml()) {
-            return 0;
+            return false;
         }
 
         return me.scenario.load();
@@ -97,10 +97,10 @@ var Aerotow = {
     #
     # Function for unload our AI scenario.
     #
-    # Return 1 on successful, otherwise 0.
+    # Return true on successful, otherwise false.
     #
     stopAerotow: func () {
-        var withMessages = 1;
+        var withMessages = true;
         return me.scenario.unload(withMessages);
     },
 };

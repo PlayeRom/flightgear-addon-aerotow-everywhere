@@ -327,11 +327,11 @@
             <binding>
                 <command>nasal</command>
                 <script><![CDATA[
-                    setprop("/sim/hitches/aerotow/tow/length", 60.0);
-                    setprop("/sim/hitches/aerotow/tow/brake-force", 100000.0);
-                    setprop("/sim/hitches/aerotow/tow/elastic-constant", 10000.0);
-                    setprop("/sim/hitches/aerotow/rope/rope-diameter-mm", 20);
-                    setprop("/sim/hitches/aerotow/tow/weight-per-m-kg-m", 1.0);
+                    setprop("/sim/hitches/aerotow/tow/length", 60.0);              # hitch.nas 60.0
+                    setprop("/sim/hitches/aerotow/tow/brake-force", 100000.0);     # hitch.nas 12345.0
+                    setprop("/sim/hitches/aerotow/tow/elastic-constant", 10000.0); # hitch.nas 9111.0
+                    setprop("/sim/hitches/aerotow/rope/rope-diameter-mm", 20);     # hitch.nas 20
+                    setprop("/sim/hitches/aerotow/tow/weight-per-m-kg-m", 0.35);   # hitch.nas 0.35
                 ]]></script>
             </binding>
         </button>

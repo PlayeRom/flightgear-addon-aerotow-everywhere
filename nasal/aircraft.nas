@@ -50,7 +50,7 @@ var Aircraft = {
     #
     # name - Name of aircraft to check.
     #
-    # Return 1 when match, otherwise 0.
+    # Return true when match, otherwise false.
     #
     isModelName: func (name) {
         return name == me.name or name == me.nameMenuCall;
@@ -69,8 +69,8 @@ var Aircraft = {
     # Return selected Aircraft object
     #
     # addon - Addon object
-    # isRouteMode - Use 1 to get the plane for the "Aerotow Route" dialog,
-    #               use 0 (default) for call the airplane for towing.
+    # isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
+    #               use false (default) for call the airplane for towing.
     #
     getSelected: func (addon, isRouteMode = 0) {
         var name = Aircraft.getSelectedAircraftName(addon, isRouteMode);
@@ -89,10 +89,10 @@ var Aircraft = {
     #
     #
     # addon - Addon object
-    # isRouteMode - Use 1 to get the plane for the "Aerotow Route" dialog,
-    #               use 0 (default) for call the airplane for towing.
+    # isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
+    #               use false (default) for call the airplane for towing.
     #
-    getSelectedAircraftName: func (addon, isRouteMode = 0) {
+    getSelectedAircraftName: func (addon, isRouteMode) {
         if (isRouteMode) {
             return getprop(addon.node.getPath() ~ "/addon-devel/route/ai-model") or g_Aircrafts[0].name;
         }

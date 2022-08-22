@@ -124,17 +124,17 @@ var FlightPlan = {
     #
     # Initialize flight plan and set it to property tree
     #
-    # Return 1 on successful, otherwise 0.
+    # Return true on successful, otherwise false.
     #
     initial: func () {
         var location = me.getLocation();
         if (location == nil) {
-            return 0;
+            return false;
         }
 
         var aircraft = Aircraft.getSelected(me.addon);
 
-        var isGliderPos = 0;
+        var isGliderPos = false;
         me.initAircraftVariable(location, isGliderPos);
 
         # inittial readonly waypoint
@@ -189,28 +189,28 @@ var FlightPlan = {
 
         setprop(me.addonNodePath ~ "/addon-devel/route/wpts/description", "Default route around the start location");
 
-        return 1;
+        return true;
     },
 
     #
     # Generate the XML file with the flight plane for our plane for AI scenario.
-    # The file will be stored to $Fobj.HOME/Export/aerotown-addon-flightplan.xml.
+    # The file will be stored to $HOME/Export/Addons/org.flightgear.addons.Aerotow/AI/FlightPlans/aerotown-addon-flightplan.xml.
     #
-    # Return 1 on successful, otherwise 0.
+    # Return true on successful, otherwise false.
     #
     generateXml: func () {
         me.wptCount = 0;
 
         var location = me.getLocation();
         if (location == nil) {
-            return 0;
+            return false;
         }
 
         me.flightPlanWriter.open();
 
         var aircraft = Aircraft.getSelected(me.addon);
 
-        var isGliderPos = 1;
+        var isGliderPos = true;
         me.initAircraftVariable(location, isGliderPos);
 
         # Start at 2 o'clock from the glider...
@@ -218,7 +218,7 @@ var FlightPlan = {
         me.addWptGround({"hdgChange": 60, "dist": 25}, {"altChange": 0, "ktas": 5});
 
         # Reset coord and heading
-        isGliderPos = 0;
+        isGliderPos = false;
         me.initAircraftVariable(location, isGliderPos);
 
         var gliderOffsetM = me.getGliderOffsetFromRunwayThreshold(location);
@@ -268,7 +268,7 @@ var FlightPlan = {
 
         me.flightPlanWriter.close();
 
-        return 1;
+        return true;
     },
 
     #
@@ -286,9 +286,9 @@ var FlightPlan = {
     # Initialize AI aircraft variable
     #
     # location - Object of location from which the glider start.
-    # isGliderPos - Pass 1 for set AI aircraft's coordinates as glider position, 0 set coordinates as runway threshold.
+    # isGliderPos - Pass true for set AI aircraft's coordinates as glider position, false set coordinates as runway threshold.
     #
-    initAircraftVariable: func (location, isGliderPos = 1) {
+    initAircraftVariable: func (location, isGliderPos) {
         var gliderCoord = geo.aircraft_position();
 
         # Set coordinates as glider position or runway threshold
@@ -318,7 +318,7 @@ var FlightPlan = {
             return rwyThreshold.distance_to(gliderCoord);
         }
 
-        # We are not on the runway
+        # We are not on the runway, return 0 distance
         return 0;
     },
 

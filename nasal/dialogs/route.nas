@@ -64,9 +64,9 @@ var RouteDialog = {
     calculateAltChangeAndTotals: func () {
         var totalDistance = 0.0;
         var totalAlt = 0.0;
-        var isEnd = 0;
+        var isEnd = false;
 
-        var isRouteMode = 1;
+        var isRouteMode = true;
         var aircraft = Aircraft.getSelected(me.addon, isRouteMode);
 
         for (var i = 0; i < me.maxRouteWaypoints; i += 1) {
@@ -84,7 +84,7 @@ var RouteDialog = {
                     totalAlt += altChange;
                 }
                 else {
-                    isEnd = 1;
+                    isEnd = true;
                 }
             }
         }

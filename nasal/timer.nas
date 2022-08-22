@@ -33,7 +33,7 @@ var Timer = {
         var timer = maketimer(delaySec, self, func () {
             callback();
         });
-        timer.singleShot = 1;
+        timer.singleShot = true;
         timer.start();
 
         return timer;

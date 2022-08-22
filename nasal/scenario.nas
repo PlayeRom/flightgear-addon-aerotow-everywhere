@@ -38,7 +38,7 @@ var Scenario = {
         obj.listeners = [];
         obj.routeDialog = RouteDialog.new(addon, message);
         obj.flightPlan = FlightPlan.new(addon, message, obj.routeDialog);
-        obj.isScenarioLoaded = 0;
+        obj.isScenarioLoaded = false;
         obj.scenarioPath = addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
 
         obj.flightPlan.initial();
@@ -64,11 +64,13 @@ var Scenario = {
 
     #
     # Generate the XML file with the AI scenario.
-    # The file will be stored to $FG_HOME/Export/aerotown-addon.xml.
+    # The file will be stored to $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/aerotown-addon.xml.
+    #
+    # Return true on successful, otherwise false
     #
     generateXml: func () {
         if (!me.flightPlan.generateXml()) {
-            return 0;
+            return false;
         }
 
         var scenarioXml = {
@@ -82,7 +84,7 @@ var Scenario = {
                         "class":      "aerotow-dragger",
                         "model":      Aircraft.getSelected(me.addon).modelPath,
                         "flightplan": FlightPlan.FILENAME_FLIGHTPLAN,
-                        "repeat":     1,
+                        "repeat":     true, # start again indefinitely
                     }
                 }
             }
@@ -93,7 +95,7 @@ var Scenario = {
 
         me.addScenarioToPropertyList();
 
-        return 1;
+        return true;
     },
 
     #
@@ -114,67 +116,67 @@ var Scenario = {
     },
 
     #
-    # Return 1 if scenario is already added to "/sim/ai/scenarios" property list, otherwise return 0.
+    # Return true if scenario is already added to "/sim/ai/scenarios" property list, otherwise return false.
     #
     isAlreadyAdded: func () {
         foreach (var scenario; props.globals.getNode("/sim/ai/scenarios").getChildren("scenario")) {
             var id = scenario.getChild("id");
             if (id != nil and id.getValue() == Scenario.SCENARIO_ID) {
-                return 1;
+                return true;
             }
         }
 
-        return 0;
+        return false;
     },
 
     #
     # Load scenario
     #
-    # Return 1 on successful, otherwise 0.
+    # Return true on successful, otherwise false.
     #
     load: func () {
         var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
         if (fgcommand("load-scenario", args)) {
-            me.isScenarioLoaded = 1;
+            me.isScenarioLoaded = true;
             me.message.success("Let's fly!");
 
             # Enable engine sound
-            setprop(me.addonNodePath ~ "/addon-devel/sound/enable", 1);
-            return 1;
+            setprop(me.addonNodePath ~ "/addon-devel/sound/enable", true);
+            return true;
         }
 
         me.message.error("Tow failed!");
-        return 0;
+        return false;
     },
 
     #
     # Unload scenario
     #
-    # withMessages - Set 1 to display messages.
+    # withMessages - Set true to display messages.
     #
-    # Return 1 on successful, otherwise 0.
+    # Return true on successful, otherwise false.
     #
     unload: func (withMessages = 0) {
         if (me.isScenarioLoaded) {
             var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
             if (fgcommand("unload-scenario", args)) {
-                me.isScenarioLoaded = 0;
+                me.isScenarioLoaded = false;
 
                 if (withMessages) {
                     me.message.success("Aerotown disabled");
                 }
-                return 1;
+                return true;
             }
 
             if (withMessages) {
                 me.message.error("Aerotown disable failed");
             }
-            return 0;
+            return false;
         }
 
         if (withMessages) {
             me.message.success("Aerotown already disabled");
         }
-        return 1;
+        return true;
     },
 };

@@ -62,7 +62,7 @@ var Thermal = {
     #
     # Add thermal 300 m before glider position.
     #
-    # Return 1 on successful, otherwise 0.
+    # Return true on successful, otherwise false.
     #
     add: func () {
         var heading = getprop("/orientation/heading-deg") or 0;
@@ -87,10 +87,10 @@ var Thermal = {
 
         if (fgcommand("add-aiobject", args)) {
             me.message.success("The thermal has been added");
-            return 1;
+            return true;
         }
 
         me.message.error("Adding thermal failed");
-        return 0;
+        return false;
     },
 };
