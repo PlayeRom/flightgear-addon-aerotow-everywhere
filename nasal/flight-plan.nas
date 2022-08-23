@@ -194,7 +194,7 @@ var FlightPlan = {
 
     #
     # Generate the XML file with the flight plane for our plane for AI scenario.
-    # The file will be stored to $HOME/Export/Addons/org.flightgear.addons.Aerotow/AI/FlightPlans/aerotown-addon-flightplan.xml.
+    # The file will be stored to $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/AI/FlightPlans/aerotown-addon-flightplan.xml.
     #
     # Return true on successful, otherwise false.
     #
