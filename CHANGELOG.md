@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.6.0
+
+- Add sound support from internal and external view for C-74 aircraft (thanks to wlbragg)
+
 ## v.1.5.0
 
 - Add Towrope Configuration dialog
@@ -10,10 +14,10 @@
 
 ## v.1.4.0
 
-- Add Douglas C-47 as a tow plane
+- Add Douglas C-47 as a tow plane (thanks to wlbragg)
 - Add possibility to take off in the bush
 - Add a separate engine sound for the DR400
-- Add French translation of meta data
+- Add French translation of meta data (thanks to Florent)
 - Add possibility to save/load route waypoints with description
 
 ## v.1.3.0
