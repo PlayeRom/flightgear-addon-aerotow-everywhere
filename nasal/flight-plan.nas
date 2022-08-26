@@ -47,7 +47,7 @@ var FlightPlan = {
     #
     # Get inital location of glider.
     #
-    # Return object with "lat", "lon" and 'heading".
+    # Return object with "lat", "lon" and "heading".
     #
     getLocation: func () {
         var icao = getprop("/sim/airport/closest-airport-id");
@@ -136,6 +136,9 @@ var FlightPlan = {
 
         var isGliderPos = false;
         me.initAircraftVariable(location, isGliderPos);
+
+        # Max altitude without limits
+        setprop(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", 0);
 
         # inittial readonly waypoint
         setprop(me.addonNodePath ~ "/addon-devel/route/init-wpt/heading-change", me.heading);
@@ -245,23 +248,40 @@ var FlightPlan = {
         me.addWptAir({"hdgChange": 0,   "dist": 100 * aircraft.rolling}, {"elevationPlus": 3, "ktas": aircraft.speed * 1.05});
         me.addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": aircraft.vs / 10, "ktas": aircraft.speed * 1.025});
 
+
+        # 0 means without altitude limits
+        var maxAltAgl = getprop(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl") or 0;
+        var totalAlt = 0.0;
+        var isAltLimit = false;
+
+        # Add waypoints according to user settings
         var speedInc = 1.0;
         foreach (var wptNode; props.globals.getNode(me.addonNodePath ~ "/addon-devel/route/wpts").getChildren("wpt")) {
-            var dist = wptNode.getChild("distance-m").getValue();
-            if (dist <= 0.0) {
+            var distance = wptNode.getChild("distance-m").getValue();
+            if (distance <= 0.0) {
                 break;
             }
 
             var hdgChange = wptNode.getChild("heading-change").getValue();
-            var altChange = aircraft.getAltChange(dist);
 
-            speedInc += ((dist / Aircraft.DISTANCE_DETERMINANT) * 0.025);
+            # If we have reached the altitude limit, the altitude no longer changes (0)
+            var altChange = isAltLimit ? 0 : aircraft.getAltChange(distance);
+            if (maxAltAgl > 0 and altChange > 0 and totalAlt + altChange > maxAltAgl) {
+                # We will exceed the altitude limit, so set the altChange to the altitude limit
+                # and set isAltLimit flag that the limit is reached.
+                altChange = maxAltAgl - totalAlt;
+                isAltLimit = true;
+            }
+
+            speedInc += ((distance / Aircraft.DISTANCE_DETERMINANT) * 0.025);
             var ktas = aircraft.speed * speedInc;
             if (ktas > aircraft.speedLimit) {
                 ktas = aircraft.speedLimit;
             }
 
-            me.addWptAir({"hdgChange": hdgChange, "dist": dist}, {"altChange": altChange, "ktas": ktas});
+            totalAlt += altChange;
+
+            me.addWptAir({"hdgChange": hdgChange, "dist": distance}, {"altChange": altChange, "ktas": ktas});
         }
 
         me.addWptEnd();

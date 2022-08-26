@@ -75,14 +75,14 @@
             <row>0</row>
             <col>0</col>
             <halign>right</halign>
-            <label>Aerotow</label>
+            <label>Aerotow:</label>
         </text>
 
         <combo>
             <row>0</row>
             <col>1</col>
             <halign>left</halign>
-            <pref-width>150</pref-width>
+            <pref-width>120</pref-width>
             <live>true</live>
             <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/ai-model</property>
             <value>Piper J3 Cub</value>
@@ -93,6 +93,24 @@
                 <command>dialog-apply</command>
             </binding>
         </combo>
+
+        <text>
+            <row>0</row>
+            <col>2</col>
+            <halign>right</halign>
+            <label>Max alt (AGL):</label>
+        </text>
+
+        <input>
+            <row>0</row>
+            <col>3</col>
+            <halign>left</halign>
+            <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpts/max-alt-agl</property>
+            <live>true</live>
+            <binding>
+                <command>dialog-apply</command>
+            </binding>
+        </input>
     </group>
 
     <hrule/>
@@ -501,7 +519,7 @@
 
     <input>
         <halign>fill</halign>
-        <halign>left</halign>
+        <!-- <halign>left</halign> -->
         <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/route/wpts/description</property>
         <live>true</live>
         <binding>

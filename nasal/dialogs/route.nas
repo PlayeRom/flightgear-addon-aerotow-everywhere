@@ -39,6 +39,11 @@ var RouteDialog = {
             obj.calculateAltChangeAndTotals();
         }));
 
+        # Set listener for Max altitude AGL value in route dialog for recalculate altitude change
+        append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", func () {
+            obj.calculateAltChangeAndTotals();
+        }));
+
         # Set listeners for distance fields for calculate altitude change
         for (var i = 0; i < obj.maxRouteWaypoints; i += 1) {
             append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m", func () {
@@ -65,17 +70,26 @@ var RouteDialog = {
         var totalDistance = 0.0;
         var totalAlt = 0.0;
         var isEnd = false;
+        var isAltLimit = false;
 
         var isRouteMode = true;
         var aircraft = Aircraft.getSelected(me.addon, isRouteMode);
 
+        # 0 means without altitude limits
+        var maxAltAgl = getprop(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl") or 0;
+
         for (var i = 0; i < me.maxRouteWaypoints; i += 1) {
-            var distance = getprop(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m");
-            if (distance == nil) {
-                break;
+            var distance = getprop(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m") or 0;
+
+            # If we have reached the altitude limit, the altitude no longer changes (0)
+            var altChange = isAltLimit ? 0 : aircraft.getAltChange(distance);
+            if (maxAltAgl > 0 and altChange > 0 and totalAlt + altChange > maxAltAgl) {
+                # We will exceed the altitude limit, so set the altChange to the altitude limit
+                # and set isAltLimit flag that the limit is reached.
+                altChange = maxAltAgl - totalAlt;
+                isAltLimit = true;
             }
 
-            var altChange = aircraft.getAltChange(distance);
             setprop(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/alt-change-agl-ft", altChange);
 
             if (!isEnd) {

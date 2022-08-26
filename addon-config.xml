@@ -44,6 +44,10 @@
                             <distance-m type="double">0</distance-m>
                             <alt-change-agl-ft type="double">0</alt-change-agl-ft>
                         </init-wpt>
+                        <wpts>
+                            <description type="string">Default route around the start location</description>
+                            <max-alt-agl type="double"></max-alt-agl>
+                        </wpts>
                         <total>
                             <distance>0</distance>
                             <alt>0</alt>
