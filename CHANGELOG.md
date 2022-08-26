@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.7.0
+
+- Add possibility to set max altitude in route dialog
+
 ## v.1.6.0
 
 - Add sound support from internal and external view for C-74 aircraft (thanks to wlbragg)
