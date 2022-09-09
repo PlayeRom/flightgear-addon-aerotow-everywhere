@@ -36,7 +36,6 @@ var FlightPlan = {
 
         obj.addonNodePath = addon.node.getPath();
 
-        obj.wptCount      = 0;
         obj.coord         = nil; # Coordinates for flight plan
         obj.heading       = nil; # AI plane heading
         obj.altitude      = nil; # AI plane altitude
@@ -70,10 +69,11 @@ var FlightPlan = {
         if (rwyResult.distance > FlightPlan.MAX_RUNWAY_DISTANCE) {
             # The runway is too far away, we assume a bush start
             return {
-                "type"    : "bush",
-                "lat"     : gliderCoord.lat(),
-                "lon"     : gliderCoord.lon(),
-                "heading" : getprop("/orientation/heading-deg"),
+                "type"     : "bush",
+                "lat"      : gliderCoord.lat(),
+                "lon"      : gliderCoord.lon(),
+                "heading"  : getprop("/orientation/heading-deg"),
+                "elevation": me.getEleveationInFt(gliderCoord),
             };
         }
 
@@ -89,10 +89,14 @@ var FlightPlan = {
         }
 
         return {
-            "type"    : "runway",
-            "lat"     : rwyResult.runway.lat,
-            "lon"     : rwyResult.runway.lon,
-            "heading" : rwyResult.runway.heading,
+            "type"     : "runway",
+            "lat"      : rwyResult.runway.lat,
+            "lon"      : rwyResult.runway.lon,
+            "heading"  : rwyResult.runway.heading,
+            "elevation": me.getEleveationInFt(
+                geo.Coord.new().set_latlon(rwyResult.runway.lat, rwyResult.runway.lon)
+            ),
+            "length"   : rwyResult.runway.length,
         };
     },
 
@@ -149,11 +153,11 @@ var FlightPlan = {
         var wptData = [
             {"hdgChange": 0,   "dist": 5000, "altChange": aircraft.vs * 5},
             {"hdgChange": -90, "dist": 1000, "altChange": aircraft.vs},
-            {"hdgChange": -90, "dist": 1000, "altChange": aircraft.vs},
-            {"hdgChange": 0,   "dist": 5000, "altChange": aircraft.vs * 5},
+            {"hdgChange": -90, "dist": 6000, "altChange": aircraft.vs * 6},
             {"hdgChange": -90, "dist": 1500, "altChange": aircraft.vs * 1.5},
-            {"hdgChange": -90, "dist": 1000, "altChange": aircraft.vs},
-            {"hdgChange": 0,   "dist": 5000, "altChange": aircraft.vs * 5},
+            {"hdgChange": -90, "dist": 6000, "altChange": aircraft.vs * 6},
+            {"hdgChange": 0,   "dist": 0,    "altChange": 0},
+            {"hdgChange": 0,   "dist": 0,    "altChange": 0},
             {"hdgChange": 0,   "dist": 0,    "altChange": 0},
             {"hdgChange": 0,   "dist": 0,    "altChange": 0},
             {"hdgChange": 0,   "dist": 0,    "altChange": 0},
@@ -164,20 +168,20 @@ var FlightPlan = {
         # 1 - 1st waypoint
         # 2 - 2nd waypoint, etc.
         #
-        #     2 . . 1   7
-        #     .     .   .
-        #     .     .   .
-        #     3     .   .
+        #     2 . . 1   5
         #     .     .   .
         #     .     .   .
         #     .     .   .
         #     .     .   .
         #     .     .   .
         #     .     .   .
-        #     .     ^   6
+        #     .     .   .
+        #     .     .   .
+        #     .     .   .
+        #     .     ^   .
         #     .         .
         #     .         .
-        #     4 . . . . 5
+        #     3 . . . . 4
 
         var index = 0;
         foreach (var wpt; wptData) {
@@ -202,8 +206,6 @@ var FlightPlan = {
     # Return true on successful, otherwise false.
     #
     generateXml: func () {
-        me.wptCount = 0;
-
         var location = me.getLocation();
         if (location == nil) {
             return false;
@@ -218,7 +220,7 @@ var FlightPlan = {
 
         # Start at 2 o'clock from the glider...
         # Inital ktas must be >= 1.0
-        me.addWptGround({"hdgChange": 60, "dist": 25}, {"altChange": 0, "ktas": 5});
+        me.addWptGround({"shift": {"hdgChange": 60, "dist": 25, "altChange": 0}, "ktas": 5}); # 1
 
         # Reset coord and heading
         isGliderPos = false;
@@ -227,26 +229,26 @@ var FlightPlan = {
         var gliderOffsetM = me.getGliderOffsetFromRunwayThreshold(location);
 
         # ... and line up with the runway
-        me.addWptGround({"hdgChange": 0, "dist": me.getInitialDistance() + gliderOffsetM}, {"altChange": 0, "ktas": 2.5});
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": me.getInitialDistance() + gliderOffsetM, "altChange": 0}, "ktas": 2.5}); # 2
 
         # Rolling
-        me.addWptGround({"hdgChange": 0, "dist": 10}, {"altChange": 0, "ktas": 5});
-        me.addWptGround({"hdgChange": 0, "dist": 20}, {"altChange": 0, "ktas": 5});
-        me.addWptGround({"hdgChange": 0, "dist": 20}, {"altChange": 0, "ktas": aircraft.speed / 6});
-        me.addWptGround({"hdgChange": 0, "dist": 10}, {"altChange": 0, "ktas": aircraft.speed / 5});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 4});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 3.5});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 3});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 2.5});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 2});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 1.75});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 1.5});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed / 1.25});
-        me.addWptGround({"hdgChange": 0, "dist": 10 * aircraft.rolling}, {"altChange": 0, "ktas": aircraft.speed});
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10,                    "altChange": 0}, "ktas": 5}); # 3
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 20,                    "altChange": 0}, "ktas": 5}); # 4
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 20,                    "altChange": 0}, "ktas": aircraft.speed / 6}); # 5
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10,                    "altChange": 0}, "ktas": aircraft.speed / 5}); # 6
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 4}); # 7
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 3.5}); # 8
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 3}); # 9
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 2.5}); # 10
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 2}); # 11
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 1.75}); # 12
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 1.5}); # 13
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 1.25}); # 14
+        me.addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed}); # 15
 
         # Take-off
-        me.addWptAir({"hdgChange": 0,   "dist": 100 * aircraft.rolling}, {"elevationPlus": 3, "ktas": aircraft.speed * 1.05});
-        me.addWptAir({"hdgChange": 0,   "dist": 100}, {"altChange": aircraft.vs / 10, "ktas": aircraft.speed * 1.025});
+        me.addWptAir({   "shift": {"hdgChange": 0, "dist": 100 * aircraft.rolling, "elevation": 3}, "ktas": aircraft.speed * 1.05}); # 16
+        me.addWptAir({   "shift": {"hdgChange": 0, "dist": 100,     "altChange": aircraft.vs / 10}, "ktas": aircraft.speed * 1.025}); # 17
 
 
         # 0 means without altitude limits
@@ -281,10 +283,86 @@ var FlightPlan = {
 
             totalAlt += altChange;
 
-            me.addWptAir({"hdgChange": hdgChange, "dist": distance}, {"altChange": altChange, "ktas": ktas});
+            me.addWptAir({"shift": {"hdgChange": hdgChange, "dist": distance, "altChange": altChange}, "ktas": ktas});
         }
 
-        me.addWptEnd();
+        # Back to airport if possible
+        if (location.type == "runway") {
+            # Add extra near waypoint to keep plane in whole designed track
+            me.addWptAir({"shift": {"hdgChange": hdgChange, "dist": 100, "altChange": altChange}, "ktas": ktas});
+
+            var coordRwyThreshold = geo.Coord.new().set_latlon(location.lat, location.lon);;
+
+            # Check distance to runway threshold
+            var dostanceToThreshold = me.coord.distance_to(coordRwyThreshold);
+
+            # Reset variables
+            me.heading = location.heading; # runway heading
+            me.coord = coordRwyThreshold;
+
+            # Move o the left of the runway threshold
+            me.heading = me.correctHeading(me.heading - 90);
+            me.coord.apply_course_distance(me.heading, 1000);
+
+            # Add a waypoint to the left of the runway + 3000 m to the middle of length
+            # Descend as far as you can to max elevation + 3000 ft
+            var halfRwyLenght = location.length / 2;
+            var altAgl = me.altitude - location.elevation;
+            var elevation = altAgl - (aircraft.getAltChange(dostanceToThreshold) * 2);
+            if (elevation < 3000) {
+                elevation = 3000;
+            }
+            me.addWptAir({"shift": {"hdgChange": 90, "dist": halfRwyLenght, "elevation": elevation}, "ktas": aircraft.speed});
+
+            # Fly downwind away of threshold, how far depend of the altitude
+            var desiredElevation = 2000;
+            var distance = (((elevation - desiredElevation) / (aircraft.vs * 3)) * 1000);
+            if (distance < 3000) {
+                distance = 3000;
+            }
+            me.addWptAir({"shift": {"hdgChange": -180, "dist": halfRwyLenght + distance, "elevation": desiredElevation}, "ktas": aircraft.speed});
+
+            # Turn to base leg
+            me.addWptAir({"shift": {"hdgChange": -90, "dist": 1000, "elevation": 1000}, "ktas": aircraft.speed, "flapsDown": true});
+
+            # Reset variables
+            me.coord = geo.Coord.new().set_latlon(location.lat, location.lon); # runway threshold
+
+            # Turn on final
+            me.addWptAir({
+                "coord"    : me.coord,
+                "crossAt"  : location.elevation + 10,
+                "ktas"     : aircraft.speed * 0.75,
+                "flapsDown": true,
+                "gearDown" : true,
+            });
+
+            # Reset variables
+            me.heading = location.heading;
+
+            # Flare
+            me.addWptAir({
+                "shift"    : {"hdgChange": 0, "dist": 100, "elevation": 10},
+                "ktas"     : aircraft.speed * 0.7,
+                "flapsDown": true,
+                "gearDown" : true,
+            });
+
+            # Touchdown
+            me.addWptGround({"shift": {"hdgChange": 0, "dist": 200, "elevation": 0}, "ktas": aircraft.speed * 0.6});
+
+            # Break
+            me.addWptGround({"shift": {"hdgChange": 0, "dist": 200, "elevation": 0}, "ktas": aircraft.speed * 0.4});
+
+            # Slow down to 5 kt
+            me.addWptGround({"shift": {"hdgChange": 0, "dist": 50, "elevation": 0}, "ktas": 5});
+
+            # Turn right out of runway and full stop
+            me.addWptEnd({"shift": {"hdgChange": 90, "dist": 100, "elevation": 0}, "ktas": 0, "onGround": true});
+        }
+        else {
+            me.addWptEnd();
+        }
 
         me.flightPlanWriter.close();
 
@@ -345,26 +423,24 @@ var FlightPlan = {
     #
     # Add new waypoint on ground
     #
-    # coordOffset - Hash for calculate next coordinates (lat, lon), with following fields:
-    # {
-    #     hdgChange - How the aircraft's heading supposed to change? 0 - keep the same heading.
-    #     dis - Distance in meters to calculate next waypoint coordinates.
-    # }
-    # performance - Hash with following fields:
-    # {
-    #     altChange - How the aircraft's altitude is supposed to change? 0 - keep the same altitude.
-    #     ktas - True air speed of AI plane at the waypoint.
-    # }
+    # wptData - hash object with waypoint data
     #
-    addWptGround: func (coordOffset, performance) {
-        me.wrireWpt(nil, coordOffset, performance, "ground");
+    addWptGround: func (wptData) {
+        wptData.onGround = true;
+        me.addWpt(wptData);
     },
 
     #
     # Add new waypoint in air
     #
-    addWptAir: func (coordOffset, performance) {
-        me.wrireWpt(nil, coordOffset, performance, "air");
+    # wptData - hash object wtih waypoint data
+    #
+    addWptAir: func (wptData) {
+        if (contains(wptData, "onGround")) {
+            wptData.onGround = nil;
+        }
+
+        me.addWpt(wptData);
     },
 
     #
@@ -373,70 +449,115 @@ var FlightPlan = {
     # sec - Number of seconds for wait
     #
     addWptWait: func (sec) {
-        me.wrireWpt("WAIT", {}, {}, nil, sec);
+        me.addWpt({"waitSec": sec});
     },
 
     #
-    # Add "END" waypoint
+    # Add "END" waypoint with optional waypoint data
     #
-    addWptEnd: func () {
-        me.wrireWpt("END", {}, {});
+    addWptEnd: func (wptData = nil) {
+        if (wptData == nil) {
+            wptData = {};
+        }
+
+        wptData.name = "END";
+
+        me.addWpt(wptData);
     },
 
     #
-    # Write waypoint to flight plan file
+    # Add new waypoint with given waypoint data
     #
-    # name - The name of waypoint
-    # coordOffset.hdgChange - How the aircraft's heading supposed to change?
-    # coordOffset.dist - Distance in meters to calculate next waypoint coordinates
-    # performance.altChange - How the aircraft's altitude is supposed to change?
-    # performance.elevationPlus - Set aircraft altitude as current terrain elevation + given value in feets.
-    #                             It's best to use for the first point in the air to avoid the plane collapsing into
-    #                             the ground in a bumpy airport
-    # performance.ktas - True air speed of AI plane at the waypoint
-    # groundAir - Allowed value: "ground or "air". The "ground" means that AI plane is on the ground, "air" - in air
-    # sec - Number of seconds for "WAIT" waypoint
+    # wptData = {
+    #     shift: { - Optionally hash with data to calculate next coordinates (lat, lon) and altitude of waypoint
+    #         hdgChange - How the aircraft's heading supposed to change? 0 - keep the same heading.
+    #         dist      - Distance in meters to calculate next waypoint coordinates.
+    #         altChange - How the aircraft's altitude is supposed to change? 0 - keep the same altitude.
+    #         elevation - Set aircraft altitude as current terrain elevation + given value in feets.
+    #                     It's best to use for the first point in the air to avoid the plane collapsing into
+    #                     the ground in a bumpy airport.
+    #     },
+    #     coord     - The geo.Coord object, required if shift is not given
+    #     crossAt   - Altitude in feet, required if shift is not given
+    #     ktas      - True airspeed in knots, required
+    #     onGround  - If true then set on ground, otherwise set in air
+    #     flapsDown - If true then set flaps down, otherwise set flaps up
+    #     gearDown  - If true then set gear down, otherwise set gear up
+    #     waitSec   - Number of seconds for WIAT waypoint
+    # }
     #
-    wrireWpt: func (
-        name,
-        coordOffset,
-        performance,
-        groundAir = nil,
-        sec = nil
-    ) {
-        var coord = nil;
-        if (contains(coordOffset, "hdgChange") and contains(coordOffset, "dist")) {
-            me.heading += coordOffset.hdgChange;
-            if (me.heading < 0) {
-                me.heading += 360;
-            }
+    addWpt: func (wptData) {
+        if (contains(wptData, "shift")) {
+            me.shiftWpt(wptData.shift);
 
-            if (me.heading > 360) {
-                me.heading -= 360;
-            }
-
-            me.coord.apply_course_distance(me.heading, coordOffset.dist);
-            coord = me.coord;
+            # Set coord and crossAt updated by shiftWpt()
+            wptData.coord   = me.coord;
+            wptData.crossAt = me.altitude;
         }
 
-        var alt = nil;
-        if (coord != nil and contains(performance, "elevationPlus")) {
-            var elevation = geo.elevation(coord.lat(), coord.lon());
-            me.altitude = elevation == nil
-                ? me.altitude + performance.elevationPlus
-                : elevation * globals.M2FT + performance.elevationPlus;
-            alt = me.altitude;
+        var wpt = Waypoint.new().setHashData(wptData);
+
+        me.flightPlanWriter.write(wpt);
+    },
+
+    #
+    # Calculate heading, coordinates and altitude from data in wptShift hash
+    #
+    # wptShift - hash object with data
+    #
+    shiftWpt: func (wptShift) {
+        if (!contains(wptShift, "hdgChange")) {
+            die("ERROR aerotow add-on: missing 'hdgChange' for computeWptShift");
         }
-        else if (contains(performance, "altChange")) {
-            me.altitude += performance.altChange;
-            alt = me.altitude;
+
+        if (!contains(wptShift, "dist")) {
+            die("ERROR aerotow add-on: missing 'dist' for computeWptShift");
         }
 
-        var ktas = contains(performance, "ktas") ? performance.ktas : nil;
+        # Shift heading and coordinates
+        me.heading = me.correctHeading(me.heading + wptShift.hdgChange);
+        me.coord.apply_course_distance(me.heading, wptShift.dist);
 
-        name = name == nil ? me.wptCount : name;
-        me.flightPlanWriter.write(name, coord, alt, ktas, groundAir, sec);
+        if (contains(wptShift, "elevation")) {
+            # Set the altitude as the elevation for coordinates of the point plus the given elevation
+            me.altitude = me.getEleveationInFt(me.coord) + wptShift.elevation;
+            return;
+        }
 
-        me.wptCount += 1;
+        if (contains(wptShift, "altChange")) {
+            # Change altitude by given altChange
+            me.altitude += wptShift.altChange;
+        }
+    },
+
+    #
+    # Correct the heading value that to be from 0 to 360
+    #
+    # heading - heading for correction
+    # Return heading in range from 0 to 360.
+    #
+    correctHeading: func (heading) {
+        if (heading < 0) {
+            heading += 360;
+        }
+
+        if (heading > 360) {
+            heading -= 360;
+        }
+
+        return heading;
+    },
+
+    #
+    # Get elevation of given coordinates in feet
+    #
+    # coord - geo.Coord object
+    #
+    getEleveationInFt: func (coord) {
+        if (coord == nil) {
+            return nil;
+        }
+
+        return geo.elevation(coord.lat(), coord.lon()) * globals.M2FT;
     },
 };

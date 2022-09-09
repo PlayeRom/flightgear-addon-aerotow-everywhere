@@ -84,7 +84,7 @@ var Scenario = {
                         "class":      "aerotow-dragger",
                         "model":      Aircraft.getSelected(me.addon).modelPath,
                         "flightplan": FlightPlan.FILENAME_FLIGHTPLAN,
-                        "repeat":     true, # start again indefinitely
+                        "repeat":     true, # start again indefinitely, it will work if the aircraft stops on the ground
                     }
                 }
             }

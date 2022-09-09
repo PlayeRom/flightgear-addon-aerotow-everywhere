@@ -49,6 +49,7 @@ var loadExtraNasalFiles = func (addon) {
         "nasal/dialogs/thermal",
         "nasal/flight-plan",
         "nasal/scenario",
+        "nasal/io/waypoint",
         "nasal/io/flight-plan-writer",
         "nasal/aerotow",
         "aerotow",

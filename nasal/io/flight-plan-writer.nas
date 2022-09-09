@@ -23,6 +23,7 @@ var FlightPlanWriter = {
 
         obj.fpFileHandler = nil; # Handler for wrire flight plan to file
         obj.flightPlanPath = addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
+        obj.wptCount = 1;
 
         return obj;
     },
@@ -31,6 +32,8 @@ var FlightPlanWriter = {
     # Open XML file to wrire flight plan
     #
     open: func () {
+        me.wptCount = 1;
+
         me.fpFileHandler = io.open(me.flightPlanPath, "w");
 
         if (me.fpFileHandler) {
@@ -47,50 +50,61 @@ var FlightPlanWriter = {
     #
     # Write single waypoint to XML file with flight plan
     #
-    # name - Name of waypoint. Special names are: "WAIT", "END".
-    # coord - The Coord object
-    # alt - Altitude AMSL of AI plane
-    # ktas - True air speed of AI plane
-    # groundAir - Allowe value: "ground or "air". The "ground" means that AI plane is on the ground, "air" - in air
-    # sec - Number of seconds for "WAIT" waypoint
+    # wpt - Waypoint object
     #
-    write: func (name, coord = nil, alt = nil, ktas = nil, groundAir = nil, sec = nil) {
+    write: func (wpt) {
         if (!me.fpFileHandler) {
             return;
         }
 
-        var str = "        <wpt>\n"
-                ~ "            <name>" ~ name ~ "</name>\n";
+        if (wpt.name == nil) {
+            wpt.setName(me.wptCount);
+        }
 
-        if (coord != nil) {
-            str ~= "            <lat>" ~ coord.lat() ~ "</lat>\n";
-            str ~= "            <lon>" ~ coord.lon() ~ "</lon>\n";
+        var str = "        <wpt>\n"
+                ~ "            <name>" ~ wpt.name ~ "</name>\n";
+
+        if (wpt.coord != nil) {
+            str ~= "            <lat>" ~ wpt.coord.lat() ~ "</lat>\n";
+            str ~= "            <lon>" ~ wpt.coord.lon() ~ "</lon>\n";
             str ~= "            <!--\n"
-                 ~ "                 " ~ coord.lat() ~ "," ~ coord.lon() ~ "\n"
+                 ~ "                 " ~ wpt.coord.lat() ~ "," ~ wpt.coord.lon() ~ "\n"
                  ~ "            -->\n";
         }
 
-        if (alt != nil) {
-            # str ~= "            <alt>" ~ alt ~ "</alt>\n";
-            str ~= "            <crossat>" ~ alt ~ "</crossat>\n";
+        if (wpt.alt != nil) {
+            str ~= "            <alt>" ~ wpt.alt ~ "</alt>\n";
         }
 
-        if (ktas != nil) {
-            str ~= "            <ktas>" ~ ktas ~ "</ktas>\n";
+        if (wpt.crossAt != nil) {
+            str ~= "            <crossat>" ~ wpt.crossAt ~ "</crossat>\n";
         }
 
-        if (groundAir != nil) {
-            var onGround = groundAir == "ground" ? "true" : "false";
-            str ~= "            <on-ground>" ~ onGround ~ "</on-ground>\n";
+        if (wpt.ktas != nil) {
+            str ~= "            <ktas>" ~ wpt.ktas ~ "</ktas>\n";
         }
 
-        if (sec != nil) {
-            str ~= "            <time-sec>" ~ sec ~ "</time-sec>\n";
+        if (wpt.onGround != nil) {
+            str ~= "            <on-ground>" ~ (wpt.onGround ? "true" : "false") ~ "</on-ground>\n";
+        }
+
+        if (wpt.waitSec != nil) {
+            str ~= "            <time-sec>" ~ wpt.waitSec ~ "</time-sec>\n";
+        }
+
+        if (wpt.flapsDown != nil) {
+            str ~= "            <flaps-down>" ~ (wpt.flapsDown ? "true" : "false") ~ "</flaps-down>\n";
+        }
+
+        if (wpt.gearDown != nil) {
+            str ~= "            <gear-down>" ~ (wpt.gearDown ? "true" : "false") ~ "</gear-down>\n";
         }
 
         str ~= "        </wpt>\n";
 
         io.write(me.fpFileHandler, str);
+
+        me.wptCount += 1;
     },
 
     #
