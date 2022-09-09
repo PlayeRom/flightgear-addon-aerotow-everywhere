@@ -28,7 +28,7 @@ You can also take off in the bush. Then the tow plane will position itself in fr
 
 ## How does the AI tow aircraft fly by default?
 
-The tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then when it has completed the entire set route it turns to unknown direction and flies at a constant altitude.
+The tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then, after having flown the entire given route, it lands at the airport from which it took off or when start in the bush turns in an unknown direction and flies at a constant altitude. If the aircraft lands at the airport, the scenario starts again, i.e. the aircraft respawn to take-off again.
 
 You can disconnect from the aircraft at any time, most often by pressing the `o` key (check help of your glider).
 
@@ -38,20 +38,20 @@ Default route
 1 - 1st waypoint
 2 - 2nd waypoint, etc.
 
-    2 . . 1   7
-    .     .   .
-    .     .   .
-    3     .   .
+    2 . . 1   5
     .     .   .
     .     .   .
     .     .   .
     .     .   .
     .     .   .
     .     .   .
-    .     ^   6
+    .     .   .
+    .     .   .
+    .     .   .
+    .     ^   .
     .         .
     .         .
-    4 . . . . 5
+    3 . . . . 4
 ```
 
 ## Menu of add-on
