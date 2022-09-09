@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.8.0
+
+- The tow plane, after completing its route, returns to the runway from which it took off. For a bush take-off it does not land.
+
 ## v.1.7.0
 
 - Add possibility to set max altitude in route dialog
