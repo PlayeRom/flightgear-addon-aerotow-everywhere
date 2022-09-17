@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.8.1
+
+- Improve the approach to landing
+
 ## v.1.8.0
 
 - The tow plane, after completing its route, returns to the runway from which it took off. For a bush take-off it does not land.
