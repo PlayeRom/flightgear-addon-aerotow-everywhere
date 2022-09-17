@@ -315,10 +315,10 @@ var FlightPlan = {
             me.addWptAir({"shift": {"hdgChange": 90, "dist": halfRwyLenght, "elevation": elevation}, "ktas": aircraft.speed});
 
             # Fly downwind away of threshold, how far depend of the altitude
-            var desiredElevation = 2000;
-            var distance = (((elevation - desiredElevation) / (aircraft.vs * 3)) * 1000);
-            if (distance < 3000) {
-                distance = 3000;
+            var desiredElevation = 1400;
+            var distance = (((elevation - desiredElevation) / (aircraft.vs * 2)) * 1000);
+            if (distance < aircraft.minFinalLegDist) {
+                distance = aircraft.minFinalLegDist;
             }
             me.addWptAir({"shift": {"hdgChange": -180, "dist": halfRwyLenght + distance, "elevation": desiredElevation}, "ktas": aircraft.speed});
 

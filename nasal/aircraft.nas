@@ -26,21 +26,23 @@ var Aircraft = {
     # speedLimit - max speed
     # rolling - factor for rolling
     # minRwyLength - minimum runway length required, in meters
+    # minFinalLegDist - minimum distance for final leg in meters (for landing)
     # name - full name of aircraft used in route dialog
     # nameMenuCall - short name of aircraft for call a plane from menu
     # modelPath - Path to the aircraft model
     #
-    new: func (vs, speed, speedLimit, rolling, minRwyLength, name, nameMenuCall, modelPath) {
+    new: func (vs, speed, speedLimit, rolling, minRwyLength, minFinalLegDist, name, nameMenuCall, modelPath) {
         var obj = { parents: [Aircraft] };
 
-        obj.vs           = vs;
-        obj.speed        = speed;
-        obj.speedLimit   = speedLimit;
-        obj.rolling      = rolling;
-        obj.minRwyLength = minRwyLength;
-        obj.name         = name;
-        obj.nameMenuCall = nameMenuCall;
-        obj.modelPath    = modelPath;
+        obj.vs              = vs;
+        obj.speed           = speed;
+        obj.speedLimit      = speedLimit;
+        obj.rolling         = rolling;
+        obj.minRwyLength    = minRwyLength;
+        obj.minFinalLegDist = minFinalLegDist;
+        obj.name            = name;
+        obj.nameMenuCall    = nameMenuCall;
+        obj.modelPath       = modelPath;
 
         return obj;
     },
@@ -114,15 +116,16 @@ var AircraftCub = {
     #
     new: func () {
         return {
-            parents:      [Aircraft],
-            vs:           200,
-            speed:        55,
-            speedLimit:   60,
-            rolling:      1,
-            minRwyLength: 280,
-            name:         "Piper J3 Cub",
-            nameMenuCall: "Cub",
-            modelPath:    "Aircraft/Aerotow/Cub/Models/Cub-ai.xml",
+            parents:         [Aircraft],
+            vs:              200,
+            speed:           55,
+            speedLimit:      60,
+            rolling:         1,
+            minRwyLength:    280,
+            minFinalLegDist: 5000,
+            name:            "Piper J3 Cub",
+            nameMenuCall:    "Cub",
+            modelPath:       "Aircraft/Aerotow/Cub/Models/Cub-ai.xml",
         };
     },
 };
@@ -140,15 +143,16 @@ var AircraftRobin = {
     #
     new: func () {
         return {
-            parents:      [Aircraft],
-            vs:           285,
-            speed:        70,
-            speedLimit:   75,
-            rolling:      2,
-            minRwyLength: 470,
-            name:         "Robin DR400",
-            nameMenuCall: "DR400",
-            modelPath:    "Aircraft/Aerotow/DR400/Models/dr400-ai.xml",
+            parents:         [Aircraft],
+            vs:              285,
+            speed:           70,
+            speedLimit:      75,
+            rolling:         2,
+            minRwyLength:    470,
+            minFinalLegDist: 5400,
+            name:            "Robin DR400",
+            nameMenuCall:    "DR400",
+            modelPath:       "Aircraft/Aerotow/DR400/Models/dr400-ai.xml",
         };
     },
 };
@@ -163,15 +167,16 @@ var AircraftRobin = {
 var AircraftC182 = {
     new: func () {
         return {
-            parents:      [Aircraft],
-            vs:           295,
-            speed:        75,
-            speedLimit:   80,
-            rolling:      2.2,
-            minRwyLength: 508,
-            name:         "Cessna 182",
-            nameMenuCall: "c182",
-            modelPath:    "Aircraft/Aerotow/c182/Models/c182-ai.xml",
+            parents:         [Aircraft],
+            vs:              295,
+            speed:           75,
+            speedLimit:      80,
+            rolling:         2.2,
+            minRwyLength:    508,
+            minFinalLegDist: 5500,
+            name:            "Cessna 182",
+            nameMenuCall:    "c182",
+            modelPath:       "Aircraft/Aerotow/c182/Models/c182-ai.xml",
         };
     },
 };
@@ -186,15 +191,16 @@ var AircraftC182 = {
 var AircraftC47 = {
     new: func () {
         return {
-            parents:      [Aircraft],
-            vs:           310,
-            speed:        85,
-            speedLimit:   90,
-            rolling:      2.2,
-            minRwyLength: 508,
-            name:         "Douglas C-47",
-            nameMenuCall: "C47",
-            modelPath:    "Aircraft/Aerotow/C-47/Models/c-47-ai.xml",
+            parents:         [Aircraft],
+            vs:              310,
+            speed:           85,
+            speedLimit:      90,
+            rolling:         2.2,
+            minRwyLength:    508,
+            minFinalLegDist: 6000,
+            name:            "Douglas C-47",
+            nameMenuCall:    "C47",
+            modelPath:       "Aircraft/Aerotow/C-47/Models/c-47-ai.xml",
         };
     },
 };
