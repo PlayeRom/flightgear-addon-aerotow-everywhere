@@ -44,6 +44,13 @@ var FlightPlan = {
     },
 
     #
+    # Destructor
+    #
+    del: func () {
+        me.flightPlanWriter.del();
+    },
+
+    #
     # Get inital location of glider.
     #
     # Return object with "lat", "lon" and "heading".

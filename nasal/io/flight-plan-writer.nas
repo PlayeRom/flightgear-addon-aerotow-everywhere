@@ -21,7 +21,7 @@ var FlightPlanWriter = {
     new: func (addon) {
         var obj = { parents: [FlightPlanWriter] };
 
-        obj.fpFileHandler = nil; # Handler for wrire flight plan to file
+        obj.fpFileHandler = nil; # Handler for wrire flight plan to the file
         obj.flightPlanPath = addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
         obj.wptCount = 1;
 
@@ -29,10 +29,21 @@ var FlightPlanWriter = {
     },
 
     #
+    # Destructor
+    #
+    del: func () {
+        me.close();
+    },
+
+    #
     # Open XML file to wrire flight plan
     #
     open: func () {
         me.wptCount = 1;
+
+        if (me.fpFileHandler) {
+            io.close(me.fpFileHandler);
+        }
 
         me.fpFileHandler = io.open(me.flightPlanPath, "w");
 

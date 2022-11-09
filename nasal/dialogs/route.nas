@@ -17,11 +17,13 @@ var RouteDialog = {
     # Constants
     #
     ROUTE_SAVES_DIR: "route-saves",
+    MAX_ROUTE_WAYPOINTS: 10,
 
     #
     # Constructor
     #
     # addon - Addon object
+    # message - Message object
     #
     new: func (addon, message) {
         var obj = { parents: [RouteDialog] };
@@ -31,7 +33,6 @@ var RouteDialog = {
         obj.addonNodePath = addon.node.getPath();
 
         obj.savePath = addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR;
-        obj.maxRouteWaypoints = 10;
         obj.listeners = [];
 
         # Set listener for aerotow combo box value in route dialog for recalculate altitude change
@@ -45,7 +46,7 @@ var RouteDialog = {
         }));
 
         # Set listeners for distance fields for calculate altitude change
-        for (var i = 0; i < obj.maxRouteWaypoints; i += 1) {
+        for (var i = 0; i < RouteDialog.MAX_ROUTE_WAYPOINTS; i += 1) {
             append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m", func () {
                 obj.calculateAltChangeAndTotals();
             }));
@@ -78,7 +79,7 @@ var RouteDialog = {
         # 0 means without altitude limits
         var maxAltAgl = getprop(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl") or 0;
 
-        for (var i = 0; i < me.maxRouteWaypoints; i += 1) {
+        for (var i = 0; i < RouteDialog.MAX_ROUTE_WAYPOINTS; i += 1) {
             var distance = getprop(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m") or 0;
 
             # If we have reached the altitude limit, the altitude no longer changes (0)

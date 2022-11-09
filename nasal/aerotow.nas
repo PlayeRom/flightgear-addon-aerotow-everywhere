@@ -42,6 +42,7 @@ var Aerotow = {
     #
     del: func () {
         me.thermal.del();
+        me.scenario.del();
 
         foreach (var listener; me.listeners) {
             removelistener(listener);

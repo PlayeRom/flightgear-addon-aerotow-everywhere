@@ -56,6 +56,7 @@ var Scenario = {
     #
     del: func () {
         me.routeDialog.del();
+        me.flightPlan.del();
 
         foreach (var listener; me.listeners) {
             removelistener(listener);
