@@ -58,10 +58,10 @@
                     </sound>
                     <help-text type="string">=== How to start? ===
 
-From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" (yes, you can choose from many aircrafts).
-The tow aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by `Ctrl-o` key (check help of your glider). The aircraft will begin to accelerate and take off.
+From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400", "Cessna 182" or "Douglas C-47". (Yes, you can choose from many aircrafts.)
+The tow aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by `Ctrl-o` key. Check help of your glider. The aircraft will begin to accelerate and take off.
 
-By default, the tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then when it has completed the entire set route it simply turns right 90 degrees and flies at a constant altitude.
+The tow plane always takes off in front of your runway and flies along the runway for 5 km, then turns back and flies downwind for 6 km, then turns back again and flies another 6 km. During this flight it is constantly gaining altitude. Then, after having flown the entire given route, it lands at the airport from which it took off or when start in the bush turns in an unknown direction and flies at a constant altitude. If the aircraft lands at the airport, the scenario starts again, i.e. the aircraft respawn to take-off again.
 
 You can disconnect from the aircraft at any time, most often by pressing the `o` key.
 

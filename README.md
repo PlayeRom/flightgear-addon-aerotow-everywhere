@@ -22,7 +22,7 @@ Where `{username}` is the name of the user logged into the operating system.
 
 Start FlightGear at any airport with your aircraft as a glider, such as ASK 21.
 
-From the top menu, select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400` or `Cessna 182` (yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
+From the top menu, select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400`,  `Cessna 182` or `Douglas C-47`. (Yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
 
 You can also take off in the bush. Then the tow plane will position itself in front of you (glider's course), so what heading you have is important. If you move away from the runway threshold further than 100 m, then the take-off of the tow plane will be as in the bush, i.e. according to the glider heading and not the runway.
 
@@ -122,7 +122,7 @@ Many thanks to the FG forum user "wlbragg" for proposing and presenting a soluti
 
 ## Troubleshotting
 
-1. When I select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400` or `Cessana 182` from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
+1. When I select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400`, `Cessana 182` or `Douglas C-47` from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
 
 Probably you didn't include the `--data` command line option with the path where FlightGear should look for additional flight plan files for AI. Unfortunately, the simulator does not inform us that there was a problem with finding the flight plan file, so everything looks like it should work but does not.
 
