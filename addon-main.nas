@@ -59,7 +59,7 @@ var loadExtraNasalFiles = func (addon) {
         var fileName = addon.basePath ~ "/" ~ scriptName ~ ".nas";
 
         if (io.load_nasal(fileName, "aerotow")) {
-            print("Aerotown Add-on module \"", scriptName, "\" loaded OK");
+            print("Aerotow Add-on module \"", scriptName, "\" loaded OK");
         }
     }
 }

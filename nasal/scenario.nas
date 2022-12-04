@@ -19,7 +19,7 @@ var Scenario = {
     SCENARIO_ID:       "aerotow_addon",
     SCENARIO_NAME:     "Aerotow Add-on",
     SCENARIO_DESC:     "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.",
-    FILENAME_SCENARIO: "aerotown-addon.xml",
+    FILENAME_SCENARIO: "aerotow-addon.xml",
 
     #
     # Constructor
@@ -65,7 +65,7 @@ var Scenario = {
 
     #
     # Generate the XML file with the AI scenario.
-    # The file will be stored to $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/aerotown-addon.xml.
+    # The file will be stored to $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/aerotow-addon.xml.
     #
     # Return true on successful, otherwise false
     #
@@ -164,19 +164,19 @@ var Scenario = {
                 me.isScenarioLoaded = false;
 
                 if (withMessages) {
-                    me.message.success("Aerotown disabled");
+                    me.message.success("Aerotow disabled");
                 }
                 return true;
             }
 
             if (withMessages) {
-                me.message.error("Aerotown disable failed");
+                me.message.error("Aerotow disable failed");
             }
             return false;
         }
 
         if (withMessages) {
-            me.message.success("Aerotown already disabled");
+            me.message.success("Aerotow already disabled");
         }
         return true;
     },
