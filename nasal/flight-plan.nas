@@ -307,7 +307,7 @@ var FlightPlan = {
             me.heading = location.heading; # runway heading
             me.coord = coordRwyThreshold;
 
-            # Move o the left of the runway threshold
+            # Move to the left of the runway threshold
             me.heading = me.correctHeading(me.heading - 90);
             me.coord.apply_course_distance(me.heading, 1000);
 
