@@ -16,20 +16,21 @@ var Timer = {
     #
     # Constructor
     #
-    new: func () {
+    # @return me
+    #
+    new: func() {
         return { parents: [Timer] };
     },
 
     #
     # Run timer as single shot
     #
-    # delaySec - Delay in seconds for execute timer's callback.
-    # self - Specifying what any "me" references in the function being called will refer to.
-    # callback - Function to be called after given delay.
+    # @param double delaySec - Delay in seconds for execute timer's callback.
+    # @param hash self - Specifying what any "me" references in the function being called will refer to.
+    # @param func callback - Function to be called after given delay.
+    # @return hash - Return timer object
     #
-    # Return timer handler object
-    #
-    singleShot: func (delaySec, self, callback) {
+    singleShot: func(delaySec, self, callback) {
         var timer = maketimer(delaySec, self, func () {
             callback();
         });

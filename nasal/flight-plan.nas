@@ -22,11 +22,12 @@ var FlightPlan = {
     #
     # Constructor
     #
-    # addon - Addon object
-    # message - Message object
-    # routeDialog - RouteDialog object
+    # @param hash addon - addons.Addon object
+    # @param hash message - Message object
+    # @param hash routeDialog - RouteDialog object
+    # @return me
     #
-    new: func (addon, message, routeDialog) {
+    new: func(addon, message, routeDialog) {
         var obj = { parents: [FlightPlan] };
 
         obj.addon            = addon;
@@ -46,16 +47,18 @@ var FlightPlan = {
     #
     # Destructor
     #
-    del: func () {
+    # @return void
+    #
+    del: func() {
         me.flightPlanWriter.del();
     },
 
     #
     # Get inital location of glider.
     #
-    # Return object with "lat", "lon" and "heading".
+    # @return hash|nil - Return object with "lat", "lon" and "heading" or nil when failed.
     #
-    getLocation: func () {
+    getLocation: func() {
         var icao = getprop("/sim/airport/closest-airport-id");
         if (icao == nil or icao == "") {
             me.message.error("Airport code cannot be obtained.");
@@ -110,9 +113,11 @@ var FlightPlan = {
     #
     # Find nearest runway for given airport
     #
-    # Return hash with distance to nearest runway threshold and runway object itself.
+    # @param hash airport
+    # @param hash gliderCoord - geo.Coord object
+    # @return hash - Return hash with distance to nearest runway threshold and runway object itself.
     #
-    findRunway: func (airport, gliderCoord) {
+    findRunway: func(airport, gliderCoord) {
         var result = {
             "runway"   : nil,
             "distance" : 999999999,
@@ -135,9 +140,9 @@ var FlightPlan = {
     #
     # Initialize flight plan and set it to property tree
     #
-    # Return true on successful, otherwise false.
+    # @return bool - Return true on successful, otherwise false.
     #
-    initial: func () {
+    initial: func() {
         var location = me.getLocation();
         if (location == nil) {
             return false;
@@ -210,9 +215,9 @@ var FlightPlan = {
     # Generate the XML file with the flight plane for our plane for AI scenario.
     # The file will be stored to $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/AI/FlightPlans/aerotow-addon-flightplan.xml.
     #
-    # Return true on successful, otherwise false.
+    # @return bool - Return true on successful, otherwise false.
     #
-    generateXml: func () {
+    generateXml: func() {
         var location = me.getLocation();
         if (location == nil) {
             return false;
@@ -298,7 +303,7 @@ var FlightPlan = {
             # Add extra near waypoint to keep plane in whole designed track
             me.addWptAir({"shift": {"hdgChange": hdgChange, "dist": 100, "altChange": altChange}, "ktas": ktas});
 
-            var coordRwyThreshold = geo.Coord.new().set_latlon(location.lat, location.lon);;
+            var coordRwyThreshold = geo.Coord.new().set_latlon(location.lat, location.lon);
 
             # Check distance to runway threshold
             var dostanceToThreshold = me.coord.distance_to(coordRwyThreshold);
@@ -379,9 +384,9 @@ var FlightPlan = {
     #
     # Get initial distance AI plane from the glider that the tow is nearly tautened.
     #
-    # Return distance in meters.
+    # @return double - Return distance in meters.
     #
-    getInitialDistance: func () {
+    getInitialDistance: func() {
         var ropeLengthM = getprop("/sim/hitches/aerotow/tow/length") or 60;
         var tautenRelative = 0.68;
         return ropeLengthM * tautenRelative;
@@ -390,10 +395,12 @@ var FlightPlan = {
     #
     # Initialize AI aircraft variable
     #
-    # location - Object of location from which the glider start.
-    # isGliderPos - Pass true for set AI aircraft's coordinates as glider position, false set coordinates as runway threshold.
+    # @param hash location - Object of location from which the glider start.
+    # @param bool isGliderPos - Pass true for set AI aircraft's coordinates as glider position,
+    #                           false set coordinates as runway threshold.
+    # @return void
     #
-    initAircraftVariable: func (location, isGliderPos) {
+    initAircraftVariable: func(location, isGliderPos) {
         var gliderCoord = geo.aircraft_position();
 
         # Set coordinates as glider position or runway threshold
@@ -412,10 +419,10 @@ var FlightPlan = {
     #
     # Get distance from glider to runway threshold e.g. in case that the user taxi from the runway threshold
     #
-    # location - Object of location from which the glider start.
-    # Return the distance in metres, of the glider's displacement from the runway threshold.
+    # @param hash location - Object of location from which the glider start.
+    # @return double - Return the distance in metres, of the glider's displacement from the runway threshold.
     #
-    getGliderOffsetFromRunwayThreshold: func (location) {
+    getGliderOffsetFromRunwayThreshold: func(location) {
         if (location.type == "runway") {
             var gliderCoord = geo.aircraft_position();
             var rwyThreshold = geo.Coord.new().set_latlon(location.lat, location.lon);
@@ -430,9 +437,10 @@ var FlightPlan = {
     #
     # Add new waypoint on ground
     #
-    # wptData - hash object with waypoint data
+    # @param hash wptData - hash object with waypoint data
+    # @return void
     #
-    addWptGround: func (wptData) {
+    addWptGround: func(wptData) {
         wptData.onGround = true;
         me.addWpt(wptData);
     },
@@ -440,9 +448,10 @@ var FlightPlan = {
     #
     # Add new waypoint in air
     #
-    # wptData - hash object wtih waypoint data
+    # @param hash wptData - hash object with waypoint data
+    # @return void
     #
-    addWptAir: func (wptData) {
+    addWptAir: func(wptData) {
         if (contains(wptData, "onGround")) {
             wptData.onGround = nil;
         }
@@ -453,16 +462,20 @@ var FlightPlan = {
     #
     # Add "WAIT" waypoint
     #
-    # sec - Number of seconds for wait
+    # @param double sec - Number of seconds for wait
+    # @return void
     #
-    addWptWait: func (sec) {
+    addWptWait: func(sec) {
         me.addWpt({"waitSec": sec});
     },
 
     #
     # Add "END" waypoint with optional waypoint data
     #
-    addWptEnd: func (wptData = nil) {
+    # @param hash|nil wptData - hash object with waypoint data
+    # @return void
+    #
+    addWptEnd: func(wptData = nil) {
         if (wptData == nil) {
             wptData = {};
         }
@@ -475,8 +488,8 @@ var FlightPlan = {
     #
     # Add new waypoint with given waypoint data
     #
-    # wptData = {
-    #     shift: { - Optionally hash with data to calculate next coordinates (lat, lon) and altitude of waypoint
+    # @param hash wptData = {
+    #     hash shift: { - Optionally hash with data to calculate next coordinates (lat, lon) and altitude of waypoint
     #         hdgChange - How the aircraft's heading supposed to change? 0 - keep the same heading.
     #         dist      - Distance in meters to calculate next waypoint coordinates.
     #         altChange - How the aircraft's altitude is supposed to change? 0 - keep the same altitude.
@@ -484,16 +497,17 @@ var FlightPlan = {
     #                     It's best to use for the first point in the air to avoid the plane collapsing into
     #                     the ground in a bumpy airport.
     #     },
-    #     coord     - The geo.Coord object, required if shift is not given
-    #     crossAt   - Altitude in feet, required if shift is not given
-    #     ktas      - True airspeed in knots, required
-    #     onGround  - If true then set on ground, otherwise set in air
-    #     flapsDown - If true then set flaps down, otherwise set flaps up
-    #     gearDown  - If true then set gear down, otherwise set gear up
-    #     waitSec   - Number of seconds for WIAT waypoint
+    #     hash coord     - The geo.Coord object, required if shift is not given
+    #     double crossAt   - Altitude in feet, required if shift is not given
+    #     double ktas      - True airspeed in knots, required
+    #     bool onGround  - If true then set on ground, otherwise set in air
+    #     bool flapsDown - If true then set flaps down, otherwise set flaps up
+    #     bool gearDown  - If true then set gear down, otherwise set gear up
+    #     double waitSec   - Number of seconds for WIAT waypoint
     # }
+    # @return void
     #
-    addWpt: func (wptData) {
+    addWpt: func(wptData) {
         if (contains(wptData, "shift")) {
             me.shiftWpt(wptData.shift);
 
@@ -510,9 +524,10 @@ var FlightPlan = {
     #
     # Calculate heading, coordinates and altitude from data in wptShift hash
     #
-    # wptShift - hash object with data
+    # @param hash wptShift - hash object with data
+    # @return void
     #
-    shiftWpt: func (wptShift) {
+    shiftWpt: func(wptShift) {
         if (!contains(wptShift, "hdgChange")) {
             die("ERROR aerotow add-on: missing 'hdgChange' for computeWptShift");
         }
@@ -540,10 +555,10 @@ var FlightPlan = {
     #
     # Correct the heading value that to be from 0 to 360
     #
-    # heading - heading for correction
-    # Return heading in range from 0 to 360.
+    # @param double heading - heading for correction
+    # @return double - Return heading in range from 0 to 360.
     #
-    correctHeading: func (heading) {
+    correctHeading: func(heading) {
         if (heading < 0) {
             heading += 360;
         }
@@ -558,9 +573,10 @@ var FlightPlan = {
     #
     # Get elevation of given coordinates in feet
     #
-    # coord - geo.Coord object
+    # @param hash coord - geo.Coord object
+    # @return double
     #
-    getEleveationInFt: func (coord) {
+    getEleveationInFt: func(coord) {
         if (coord == nil) {
             return nil;
         }

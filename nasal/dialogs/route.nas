@@ -22,10 +22,11 @@ var RouteDialog = {
     #
     # Constructor
     #
-    # addon - Addon object
-    # message - Message object
+    # @param hash addon - addons.Addon object
+    # @param hash message - Message object
+    # @return me
     #
-    new: func (addon, message) {
+    new: func(addon, message) {
         var obj = { parents: [RouteDialog] };
 
         obj.addon = addon;
@@ -58,7 +59,9 @@ var RouteDialog = {
     #
     # Destructor
     #
-    del: func () {
+    # @return void
+    #
+    del: func() {
         foreach (var listener; me.listeners) {
             removelistener(listener);
         }
@@ -67,7 +70,9 @@ var RouteDialog = {
     #
     # Calculate total distance and altitude and put in to property tree
     #
-    calculateAltChangeAndTotals: func () {
+    # @return void
+    #
+    calculateAltChangeAndTotals: func() {
         var totalDistance = 0.0;
         var totalAlt = 0.0;
         var isEnd = false;
@@ -111,7 +116,9 @@ var RouteDialog = {
     #
     # Save route with description to the XML file.
     #
-    save: func () {
+    # @return void
+    #
+    save: func() {
         me.openFileSelector(
             func (node) {
                 var nodeSave = props.globals.getNode(me.addonNodePath ~ "/addon-devel/route/wpts");
@@ -127,7 +134,9 @@ var RouteDialog = {
     #
     # Load route with description from the XML file.
     #
-    load: func () {
+    # @return void
+    #
+    load: func() {
         me.openFileSelector(
             func (node) {
                 var nodeLoad = props.globals.getNode(me.addonNodePath ~ "/addon-devel/route/wpts");
@@ -143,7 +152,12 @@ var RouteDialog = {
     #
     # Open file selector dialog for save/load XML file with route.
     #
-    openFileSelector: func (callback, title, button) {
+    # @param func callback
+    # @param string title
+    # @param string button
+    # @return void
+    #
+    openFileSelector: func(callback, title, button) {
         var fileSelector = gui.FileSelector.new(callback, title, button, ["*.xml"], me.savePath, "route.xml");
         fileSelector.open();
     },

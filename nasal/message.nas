@@ -16,37 +16,42 @@ var Message = {
     #
     # Constructor
     #
-    new: func () {
+    # @return me
+    #
+    new: func() {
         return { parents: [Message] };
     },
 
     #
     # Display given message as OK.
     #
-    # message - The text message to display on the screen and read by speech synthesizer.
+    # @param string message - The text message to display on the screen and read by speech synthesizer.
+    # @return void
     #
-    success: func (message) {
+    success: func(message) {
         me.display(message, "ok");
     },
 
     #
     # Display given message as an error.
     #
-    # message - The text message to display on the screen and read by speech synthesizer.
+    # @param string message - The text message to display on the screen and read by speech synthesizer.
+    # @return void
     #
-    error: func (message) {
+    error: func(message) {
         me.display(message, "error");
     },
 
     #
     # Display given message.
     #
-    # message - The text message to display on the screen and read by speech synthesizer.
-    # type - The type of message. It can take values as "ok" or "error".
+    # @param string message - The text message to display on the screen and read by speech synthesizer.
+    # @param string type - The type of message. It can take values as "ok" or "error".
+    # @return void
     #
-    display: func (message, type) {
+    display: func(message, type) {
         # Print to console
-        print("Aerotow Everywhere add-on: " ~ message);
+        logprint(LOG_ALERT, "Aerotow Everywhere add-on: ", message);
 
         # Read the message by speech synthesizer
         props.globals.getNode("/sim/sound/voices/ai-plane").setValue(message);

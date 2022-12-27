@@ -56,7 +56,12 @@
         <legend>Open the repository website</legend>
         <binding>
             <command>nasal</command>
-            <script>fgcommand("open-browser", props.Node.new({"url":"https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere"}));</script>
+            <script><![CDATA[
+                fgcommand(
+                    "open-browser",
+                    props.Node.new({"url": "https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere"})
+                );
+            ]]></script>
         </binding>
     </button>
 

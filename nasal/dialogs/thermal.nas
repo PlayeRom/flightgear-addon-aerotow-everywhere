@@ -16,10 +16,11 @@ var Thermal = {
     #
     # Constructor
     #
-    # addon - Addon object
-    # message - Message object
+    # @param hash addon - addons.Addon object
+    # @param hash message - Message object
+    # @return me
     #
-    new: func (addon, message) {
+    new: func(addon, message) {
         var obj = { parents: [Thermal] };
 
         obj.addon = addon;
@@ -53,7 +54,9 @@ var Thermal = {
     #
     # Destructor
     #
-    del: func () {
+    # @return void
+    #
+    del: func() {
         foreach (var listener; me.listeners) {
             removelistener(listener);
         }
@@ -62,9 +65,9 @@ var Thermal = {
     #
     # Add thermal 300 m before glider position.
     #
-    # Return true on successful, otherwise false.
+    # @return bool - Return true on successful, otherwise false.
     #
-    add: func () {
+    add: func() {
         var heading = getprop("/orientation/heading-deg") or 0;
         var distance = getprop(me.addonNodePath ~ "/addon-devel/add-thermal/distance-m") or 300;
 

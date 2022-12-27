@@ -16,9 +16,10 @@ var Aerotow = {
     #
     # Constructor
     #
-    # addon - Addon object
+    # @param hash addon - addons.Addon object
+    # @return me
     #
-    new: func (addon) {
+    new: func(addon) {
         var obj = { parents: [Aerotow] };
 
         obj.addon = addon;
@@ -40,7 +41,9 @@ var Aerotow = {
     #
     # Uninitialize aerotow module
     #
-    del: func () {
+    # @return void
+    #
+    del: func() {
         me.thermal.del();
         me.scenario.del();
 
@@ -52,7 +55,9 @@ var Aerotow = {
     #
     # Function for restart AI scenario with delay when the sound has to stop.
     #
-    restartAerotow: func () {
+    # @return void
+    #
+    restartAerotow: func() {
         me.message.success("Aerotow on the way");
 
         # Stop playing engine sound
@@ -67,7 +72,9 @@ var Aerotow = {
     #
     # Unload scenario and start a new one
     #
-    unloadScenario: func () {
+    # @return void
+    #
+    unloadScenario: func() {
         if (!me.scenario.unload()) {
             return;
         }
@@ -81,9 +88,9 @@ var Aerotow = {
     #
     # Main function to prepare AI scenario and run it.
     #
-    # Return true on successful, otherwise false.
+    # @return bool - Return true on successful, otherwise false.
     #
-    startAerotow: func () {
+    startAerotow: func() {
         if (!me.scenario.unload()) {
             return false;
         }
@@ -98,9 +105,9 @@ var Aerotow = {
     #
     # Function for unload our AI scenario.
     #
-    # Return true on successful, otherwise false.
+    # @return bool - Return true on successful, otherwise false.
     #
-    stopAerotow: func () {
+    stopAerotow: func() {
         var withMessages = true;
         return me.scenario.unload(withMessages);
     },

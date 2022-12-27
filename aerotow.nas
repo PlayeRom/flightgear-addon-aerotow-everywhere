@@ -24,16 +24,19 @@ var g_Aerotow = nil;
 #
 # Initialize Aerotow
 #
-# addon - Addon object
+# @param hash addon - addons.Addon object
+# @return void
 #
-var init = func (addon) {
+var init = func(addon) {
     g_Aerotow = Aerotow.new(addon);
 }
 
 #
 # Uninitialize Aerotow
 #
-var uninit = func () {
+# @return void
+#
+var uninit = func() {
     if (g_Aerotow) {
         g_Aerotow.del();
     }

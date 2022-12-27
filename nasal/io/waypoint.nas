@@ -16,7 +16,9 @@ var Waypoint = {
     #
     # Constructor
     #
-    new: func () {
+    # @return me
+    #
+    new: func() {
         var obj = { parents: [Waypoint] };
 
         obj.name      = nil; # Name of waypoint. Special names are: "WAIT", "END".
@@ -35,9 +37,10 @@ var Waypoint = {
     #
     # Set name of waypoint
     #
-    # name - Name of waypoint
+    # @param string name - Name of waypoint
+    # @return me
     #
-    setName: func (name) {
+    setName: func(name) {
         me.name = name;
 
         return me;
@@ -46,9 +49,10 @@ var Waypoint = {
     #
     # Set coordinates of waypoint
     #
-    # coord - geo.Coord object
+    # @param hash coord - geo.Coord object
+    # @return me
     #
-    setCoord: func (coord) {
+    setCoord: func(coord) {
         me.coord = coord;
 
         return me;
@@ -57,9 +61,10 @@ var Waypoint = {
     #
     # Set altitude in feet of waypoint
     #
-    # alt - altitude in feet
+    # @param double alt - altitude in feet
+    # @return me
     #
-    setAlt: func (alt) {
+    setAlt: func(alt) {
         me.alt = alt;
 
         return me;
@@ -68,9 +73,10 @@ var Waypoint = {
     #
     # Set altitude in feet of waypoint as cross at
     #
-    # alt - altitude in feet
+    # @param double alt - altitude in feet
+    # @return me
     #
-    setCrossAt: func (crossAt) {
+    setCrossAt: func(crossAt) {
         me.crossAt = crossAt;
 
         return me;
@@ -79,9 +85,10 @@ var Waypoint = {
     #
     # Set true airspeed in knots for waypoint
     #
-    # ktas - true airspeed in knots
+    # @param double ktas - true airspeed in knots
+    # @return me
     #
-    setKtas: func (ktas) {
+    setKtas: func(ktas) {
         me.ktas = ktas;
 
         return me;
@@ -90,7 +97,9 @@ var Waypoint = {
     #
     # Set waypoint on the ground
     #
-    setOnGround: func () {
+    # @return me
+    #
+    setOnGround: func() {
         me.onGround = 1;
 
         return me;
@@ -99,7 +108,9 @@ var Waypoint = {
     #
     # Set flaps down
     #
-    setFlapsDown: func () {
+    # @return me
+    #
+    setFlapsDown: func() {
         me.flapsDown = 1;
 
         return me;
@@ -108,7 +119,9 @@ var Waypoint = {
     #
     # Set gear down
     #
-    setGearDown: func () {
+    # @return me
+    #
+    setGearDown: func() {
         me.gearDown = 1;
 
         return me;
@@ -117,9 +130,10 @@ var Waypoint = {
     #
     # Set number of seconds for WAIT waypoint. This force to use "WAIT" name.
     #
-    # waitSec - Number of seconds
+    # @param double waitSec - Number of seconds
+    # @return me
     #
-    setWaitSec: func (waitSec) {
+    setWaitSec: func(waitSec) {
         me.setName("WAIT"); # force WAIT name
         me.waitSec = waitSec;
 
@@ -129,7 +143,10 @@ var Waypoint = {
     #
     # Set all waypoint data from given hash object
     #
-    setHashData: func (wptData) {
+    # @param hash wptData
+    # @return me
+    #
+    setHashData: func(wptData) {
         if (wptData == nil) {
             return me;
         }
@@ -171,5 +188,5 @@ var Waypoint = {
         }
 
         return me;
-    }
+    },
 };

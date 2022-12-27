@@ -21,17 +21,18 @@ var Aircraft = {
     #
     # Constructor
     #
-    # vs - vertical speed in ft per DISTANCE_DETERMINANT m
-    # seed - take-off speed
-    # speedLimit - max speed
-    # rolling - factor for rolling
-    # minRwyLength - minimum runway length required, in meters
-    # minFinalLegDist - minimum distance for final leg in meters (for landing)
-    # name - full name of aircraft used in route dialog
-    # nameMenuCall - short name of aircraft for call a plane from menu
-    # modelPath - Path to the aircraft model
+    # @param double vs - vertical speed in ft per DISTANCE_DETERMINANT m
+    # @param double seed - take-off speed
+    # @param double speedLimit - max speed
+    # @param double rolling - factor for rolling
+    # @param double minRwyLength - minimum runway length required, in meters
+    # @param double minFinalLegDist - minimum distance for final leg in meters (for landing)
+    # @param string name - full name of aircraft used in route dialog
+    # @param string nameMenuCall - short name of aircraft for call a plane from menu
+    # @param string modelPath - Path to the aircraft model
+    # @return me
     #
-    new: func (vs, speed, speedLimit, rolling, minRwyLength, minFinalLegDist, name, nameMenuCall, modelPath) {
+    new: func(vs, speed, speedLimit, rolling, minRwyLength, minFinalLegDist, name, nameMenuCall, modelPath) {
         var obj = { parents: [Aircraft] };
 
         obj.vs              = vs;
@@ -50,31 +51,32 @@ var Aircraft = {
     #
     # Check that given name match to aircraft name
     #
-    # name - Name of aircraft to check.
+    # @param string name - Name of aircraft to check.
+    # @return bool - Return true when match, otherwise false.
     #
-    # Return true when match, otherwise false.
-    #
-    isModelName: func (name) {
+    isModelName: func(name) {
         return name == me.name or name == me.nameMenuCall;
     },
 
     #
     # Return how much the altitide increases for a given vertical speed and distance
     #
-    # distance - distance in meters
+    # @param double distance - distance in meters
+    # @return double
     #
-    getAltChange: func (distance) {
+    getAltChange: func(distance) {
         return me.vs * (distance / Aircraft.DISTANCE_DETERMINANT);
     },
 
     #
     # Return selected Aircraft object
     #
-    # addon - Addon object
-    # isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
-    #               use false (default) for call the airplane for towing.
+    # @param hash addon - addons.Addon object
+    # @param bool isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
+    #                           use false (default) for call the airplane for towing.
+    # @return Aircraft
     #
-    getSelected: func (addon, isRouteMode = 0) {
+    getSelected: func(addon, isRouteMode = 0) {
         var name = Aircraft.getSelectedAircraftName(addon, isRouteMode);
         foreach (var aircraft; g_Aircrafts) {
             if (aircraft.isModelName(name)) {
@@ -90,11 +92,12 @@ var Aircraft = {
     # Return name of selected aircraft. Possible values depend of isRouteMode: "Cub", "DR400", "c182".
     #
     #
-    # addon - Addon object
-    # isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
-    #               use false (default) for call the airplane for towing.
+    # @param hash addon - addons.Addon object
+    # @param bool isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
+    #                           use false (default) for call the airplane for towing.
+    # @return string
     #
-    getSelectedAircraftName: func (addon, isRouteMode) {
+    getSelectedAircraftName: func(addon, isRouteMode) {
         if (isRouteMode) {
             return getprop(addon.node.getPath() ~ "/addon-devel/route/ai-model") or g_Aircrafts[0].name;
         }
@@ -114,7 +117,9 @@ var AircraftCub = {
     #
     # Constructor
     #
-    new: func () {
+    # @return me
+    #
+    new: func() {
         return {
             parents:         [Aircraft],
             vs:              200,
@@ -141,7 +146,9 @@ var AircraftRobin = {
     #
     # Constructor
     #
-    new: func () {
+    # @return me
+    #
+    new: func() {
         return {
             parents:         [Aircraft],
             vs:              285,
@@ -165,7 +172,12 @@ var AircraftRobin = {
 # Best climb: 924 ft/min
 #
 var AircraftC182 = {
-    new: func () {
+    #
+    # Constructor
+    #
+    # @return me
+    #
+    new: func() {
         return {
             parents:         [Aircraft],
             vs:              295,
@@ -189,7 +201,12 @@ var AircraftC182 = {
 # Best climb: 1052 ft/min
 #
 var AircraftC47 = {
-    new: func () {
+    #
+    # Constructor
+    #
+    # @return me
+    #
+    new: func() {
         return {
             parents:         [Aircraft],
             vs:              310,

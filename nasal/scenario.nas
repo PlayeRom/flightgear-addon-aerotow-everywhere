@@ -24,10 +24,11 @@ var Scenario = {
     #
     # Constructor
     #
-    # addon - Addon object
-    # message - Message object
+    # @param hash addon - addons.Addon object
+    # @param hash message - Message object
+    # @return me
     #
-    new: func (addon, message) {
+    new: func(addon, message) {
         var obj = { parents: [Scenario] };
 
         obj.addon = addon;
@@ -54,7 +55,9 @@ var Scenario = {
     #
     # Destructor
     #
-    del: func () {
+    # @return void
+    #
+    del: func() {
         me.routeDialog.del();
         me.flightPlan.del();
 
@@ -67,9 +70,9 @@ var Scenario = {
     # Generate the XML file with the AI scenario.
     # The file will be stored to $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/aerotow-addon.xml.
     #
-    # Return true on successful, otherwise false
+    # @return bool - Return true on successful, otherwise false
     #
-    generateXml: func () {
+    generateXml: func() {
         if (!me.flightPlan.generateXml()) {
             return false;
         }
@@ -103,7 +106,9 @@ var Scenario = {
     # Add our new scenario to the "/sim/ai/scenarios" property list
     # so that FlightGear will be able to load it by "load-scenario" command.
     #
-    addScenarioToPropertyList: func () {
+    # @return void
+    #
+    addScenarioToPropertyList: func() {
         if (!me.isAlreadyAdded()) {
             var scenarioData = {
                 "name":        Scenario.SCENARIO_NAME,
@@ -117,9 +122,9 @@ var Scenario = {
     },
 
     #
-    # Return true if scenario is already added to "/sim/ai/scenarios" property list, otherwise return false.
+    # @return bool - Return true if scenario is already added to "/sim/ai/scenarios" property list, otherwise return false.
     #
-    isAlreadyAdded: func () {
+    isAlreadyAdded: func() {
         foreach (var scenario; props.globals.getNode("/sim/ai/scenarios").getChildren("scenario")) {
             var id = scenario.getChild("id");
             if (id != nil and id.getValue() == Scenario.SCENARIO_ID) {
@@ -133,9 +138,9 @@ var Scenario = {
     #
     # Load scenario
     #
-    # Return true on successful, otherwise false.
+    # @return bool - Return true on successful, otherwise false.
     #
-    load: func () {
+    load: func() {
         var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
         if (fgcommand("load-scenario", args)) {
             me.isScenarioLoaded = true;
@@ -153,11 +158,10 @@ var Scenario = {
     #
     # Unload scenario
     #
-    # withMessages - Set true to display messages.
+    # @param bool withMessages - Set true to display messages.
+    # @return bool - Return true on successful, otherwise false.
     #
-    # Return true on successful, otherwise false.
-    #
-    unload: func (withMessages = 0) {
+    unload: func(withMessages = 0) {
         if (me.isScenarioLoaded) {
             var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
             if (fgcommand("unload-scenario", args)) {

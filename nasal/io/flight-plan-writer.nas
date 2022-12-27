@@ -16,9 +16,10 @@ var FlightPlanWriter = {
     #
     # Constructor
     #
-    # addon - Addon object
+    # @param hash addon - addons.Addon object
+    # @return me
     #
-    new: func (addon) {
+    new: func(addon) {
         var obj = { parents: [FlightPlanWriter] };
 
         obj.fpFileHandler = nil; # Handler for wrire flight plan to the file
@@ -31,14 +32,18 @@ var FlightPlanWriter = {
     #
     # Destructor
     #
-    del: func () {
+    # @return void
+    #
+    del: func() {
         me.close();
     },
 
     #
     # Open XML file to wrire flight plan
     #
-    open: func () {
+    # @return void
+    #
+    open: func() {
         me.wptCount = 1;
 
         if (me.fpFileHandler) {
@@ -61,9 +66,10 @@ var FlightPlanWriter = {
     #
     # Write single waypoint to XML file with flight plan
     #
-    # wpt - Waypoint object
+    # @param hash wpt - Waypoint object
+    # @return void
     #
-    write: func (wpt) {
+    write: func(wpt) {
         if (!me.fpFileHandler) {
             return;
         }
@@ -121,7 +127,9 @@ var FlightPlanWriter = {
     #
     # Close XML file with flight plan
     #
-    close: func () {
+    # @return void
+    #
+    close: func() {
         if (me.fpFileHandler) {
             io.write(
                 me.fpFileHandler,
