@@ -10,13 +10,6 @@
 #
 
 #
-# Global aliases for boolean types to distinguish the use of "int" from "bool".
-# NOTE: unfortunately, it doesn't work as an assignment of a default value for a function parameter!
-#
-var true  = 1;
-var false = 0;
-
-#
 # Global object of Aerotow
 #
 var g_Aerotow = nil;

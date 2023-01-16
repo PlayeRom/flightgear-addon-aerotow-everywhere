@@ -161,7 +161,7 @@ var Scenario = {
     # @param bool withMessages - Set true to display messages.
     # @return bool - Return true on successful, otherwise false.
     #
-    unload: func(withMessages = 0) {
+    unload: func(withMessages = false) {
         if (me.isScenarioLoaded) {
             var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
             if (fgcommand("unload-scenario", args)) {

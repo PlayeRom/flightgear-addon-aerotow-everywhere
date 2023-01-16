@@ -76,7 +76,7 @@ var Aircraft = {
     #                           use false (default) for call the airplane for towing.
     # @return Aircraft
     #
-    getSelected: func(addon, isRouteMode = 0) {
+    getSelected: func(addon, isRouteMode = false) {
         var name = Aircraft.getSelectedAircraftName(addon, isRouteMode);
         foreach (var aircraft; g_Aircrafts) {
             if (aircraft.isModelName(name)) {
