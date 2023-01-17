@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.8.2
+
+- Use Nasal `true` and `false` keywords
+
 ## v.1.8.1
 
 - Improve the approach to landing
