@@ -100,7 +100,7 @@ var Waypoint = {
     # @return me
     #
     setOnGround: func() {
-        me.onGround = 1;
+        me.onGround = true;
 
         return me;
     },
@@ -111,7 +111,7 @@ var Waypoint = {
     # @return me
     #
     setFlapsDown: func() {
-        me.flapsDown = 1;
+        me.flapsDown = true;
 
         return me;
     },
@@ -122,7 +122,7 @@ var Waypoint = {
     # @return me
     #
     setGearDown: func() {
-        me.gearDown = 1;
+        me.gearDown = true;
 
         return me;
     },
