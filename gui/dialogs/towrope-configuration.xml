@@ -76,7 +76,7 @@
                 <label></label>
                 <live>true</live>
                 <format>%.0f N </format>
-                <property>/sim/hitches/aerotow/tow/brake-force</property>
+                <property>/sim/hitches/aerotow/tow/break-force</property>
                 <color>
                     <red>0.2</red>
                     <green>0.9</green>
