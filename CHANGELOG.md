@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.8.4
+
+- Fix towrope property name
+
 ## v.1.8.3
 
 - Code review

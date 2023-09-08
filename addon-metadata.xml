@@ -21,7 +21,7 @@
     <addon>
         <identifier type="string">org.flightgear.addons.Aerotow</identifier>
         <name type="string">Aerotow Everywhere</name>
-        <version type="string">1.8.3</version>
+        <version type="string">1.8.4</version>
 
         <authors>
             <author>
