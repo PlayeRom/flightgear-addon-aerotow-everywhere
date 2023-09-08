@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v.1.8.4
+## v.1.8.4 and v.1.8.5
 
 - Fix towrope property name
 
