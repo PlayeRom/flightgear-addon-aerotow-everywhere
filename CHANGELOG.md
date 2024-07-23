@@ -46,7 +46,7 @@
 
 ## v.1.3.0
 
-- Add engine sound for AI aircrafts
+- Add engine sound for AI aircraft
 
 ## v.1.2.0
 

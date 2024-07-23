@@ -54,7 +54,7 @@ var FlightPlan = {
     },
 
     #
-    # Get inital location of glider.
+    # Get initial location of glider.
     #
     # @return hash|nil - Return object with "lat", "lon" and "heading" or nil when failed.
     #
@@ -83,7 +83,7 @@ var FlightPlan = {
                 "lat"      : gliderCoord.lat(),
                 "lon"      : gliderCoord.lon(),
                 "heading"  : getprop("/orientation/heading-deg"),
-                "elevation": me.getEleveationInFt(gliderCoord),
+                "elevation": me.getElevationInFt(gliderCoord),
             };
         }
 
@@ -103,7 +103,7 @@ var FlightPlan = {
             "lat"      : rwyResult.runway.lat,
             "lon"      : rwyResult.runway.lon,
             "heading"  : rwyResult.runway.heading,
-            "elevation": me.getEleveationInFt(
+            "elevation": me.getElevationInFt(
                 geo.Coord.new().set_latlon(rwyResult.runway.lat, rwyResult.runway.lon)
             ),
             "length"   : rwyResult.runway.length,
@@ -156,7 +156,7 @@ var FlightPlan = {
         # Max altitude without limits
         setprop(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", 0);
 
-        # inittial readonly waypoint
+        # initial readonly waypoint
         setprop(me.addonNodePath ~ "/addon-devel/route/init-wpt/heading-change", me.heading);
         setprop(me.addonNodePath ~ "/addon-devel/route/init-wpt/distance-m", 100);
         setprop(me.addonNodePath ~ "/addon-devel/route/init-wpt/alt-change-agl-ft", aircraft.vs / 10);
@@ -231,7 +231,7 @@ var FlightPlan = {
         me.initAircraftVariable(location, isGliderPos);
 
         # Start at 2 o'clock from the glider...
-        # Inital ktas must be >= 1.0
+        # Initial ktas must be >= 1.0
         me.addWptGround({"shift": {"hdgChange": 60, "dist": 25, "altChange": 0}, "ktas": 5}); # 1
 
         # Reset coord and heading
@@ -542,7 +542,7 @@ var FlightPlan = {
 
         if (contains(wptShift, "elevation")) {
             # Set the altitude as the elevation for coordinates of the point plus the given elevation
-            me.altitude = me.getEleveationInFt(me.coord) + wptShift.elevation;
+            me.altitude = me.getElevationInFt(me.coord) + wptShift.elevation;
             return;
         }
 
@@ -576,7 +576,7 @@ var FlightPlan = {
     # @param hash coord - geo.Coord object
     # @return double
     #
-    getEleveationInFt: func(coord) {
+    getElevationInFt: func(coord) {
         if (coord == nil) {
             return nil;
         }

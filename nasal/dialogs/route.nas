@@ -10,7 +10,7 @@
 #
 
 #
-# Class for hande Route Dialog
+# Class for handle Route Dialog
 #
 var RouteDialog = {
     #

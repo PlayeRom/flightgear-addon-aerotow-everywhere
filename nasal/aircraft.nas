@@ -78,14 +78,14 @@ var Aircraft = {
     #
     getSelected: func(addon, isRouteMode = false) {
         var name = Aircraft.getSelectedAircraftName(addon, isRouteMode);
-        foreach (var aircraft; g_Aircrafts) {
+        foreach (var aircraft; g_Aircraft) {
             if (aircraft.isModelName(name)) {
                 return aircraft;
             }
         }
 
         # Fist as default
-        return g_Aircrafts[0];
+        return g_Aircraft[0];
     },
 
     #
@@ -99,10 +99,10 @@ var Aircraft = {
     #
     getSelectedAircraftName: func(addon, isRouteMode) {
         if (isRouteMode) {
-            return getprop(addon.node.getPath() ~ "/addon-devel/route/ai-model") or g_Aircrafts[0].name;
+            return getprop(addon.node.getPath() ~ "/addon-devel/route/ai-model") or g_Aircraft[0].name;
         }
 
-        return getprop(addon.node.getPath() ~ "/addon-devel/ai-model") or g_Aircrafts[0].nameMenuCall;
+        return getprop(addon.node.getPath() ~ "/addon-devel/ai-model") or g_Aircraft[0].nameMenuCall;
     },
 };
 
@@ -138,7 +138,7 @@ var AircraftCub = {
 #
 # Robin DR 400
 # Cruise Speed 134 kt
-# Max speeed 166 kt
+# Max speed 166 kt
 # Stall speed 51 kt
 # Rate of climb: 825 ft/min
 #
@@ -167,7 +167,7 @@ var AircraftRobin = {
 #
 # Cessna 182
 # Cruise Speed 145 kt
-# Max speeed 175 kt
+# Max speed 175 kt
 # Stall speed 50 kt
 # Best climb: 924 ft/min
 #
@@ -196,7 +196,7 @@ var AircraftC182 = {
 #
 # Douglas C-47
 # Cruise Speed 152 kt
-# Max speeed 199 kt
+# Max speed 199 kt
 # Stall speed 57 kt
 # Best climb: 1052 ft/min
 #
@@ -223,7 +223,7 @@ var AircraftC47 = {
 };
 
 # Create Aircraft objects
-var g_Aircrafts = [
+var g_Aircraft = [
     AircraftCub.new(),
     AircraftRobin.new(),
     AircraftC182.new(),

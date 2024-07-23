@@ -15,14 +15,14 @@ Where `{username}` is the name of the user logged into the operating system.
 1. Download "Aerotow Everywhere" add-on and unzip it.
 2. In Launcher go to "Add-ons" tab. Click "Add" button by "Add-on Module folders" section and select folder with unzipped "Aerotow Everywhere" add-on directory (or add command line options: `--addon=path`), and click "Fly!". After loading the simulator, a `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow` directory should be created.
 3. Close FlightGear for now.
-4. In the file explorer of your operating system, find the directory `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow`. This path must be added by the `--data` command line option, so it will be treated as an additional FGData directory. In Launcher go to "Settings" tab and in "Additionnal Setting" type for example on the Linux system: `--data=/home/{username}/.fgfs/Export/Addons/org.flightgear.addons.Aerotow` or on the Windows: `--data=C:\Users\{username}\AppData\Roaming\flightgear.org\Export\Addons\org.flightgear.addons.Aerotow`.
+4. In the file explorer of your operating system, find the directory `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow`. This path must be added by the `--data` command line option, so it will be treated as an additional FGData directory. In Launcher go to "Settings" tab and in "Additional Setting" type for example on the Linux system: `--data=/home/{username}/.fgfs/Export/Addons/org.flightgear.addons.Aerotow` or on the Windows: `--data=C:\Users\{username}\AppData\Roaming\flightgear.org\Export\Addons\org.flightgear.addons.Aerotow`.
 5. Run simulator again, now everything should be working.
 
 ## How to start?
 
 Start FlightGear at any airport with your aircraft as a glider, such as ASK 21.
 
-From the top menu, select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400`,  `Cessna 182` or `Douglas C-47`. (Yes, you can choose from many aircrafts). The AI aircraft will appear to your right and align to the centreline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
+From the top menu, select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400`,  `Cessna 182` or `Douglas C-47`. (Yes, you can choose from many aircraft). The AI aircraft will appear to your right and align to the centerline of the runway in front of you. At this time you should hook up to the aircraft, most often by pressing the `Ctrl-o` key (check help of your glider). The AI aircraft will begin to accelerate and take off.
 
 You can also take off in the bush. Then the tow plane will position itself in front of you (glider's course), so what heading you have is important. If you move away from the runway threshold further than 100 m, then the take-off of the tow plane will be as in the bush, i.e. according to the glider heading and not the runway.
 
@@ -60,11 +60,11 @@ This add-on add a new item to main menu named `Aerotow Everywhere` with followin
 
 1. `Aerotow Route` - display the dialog for change aerotow route.
 2. `Towrope Configuration` - display the dialog for change towrope parameters.
-3. `Call for Piper J3 Cub aircraft` - load AI tow sceneraio with Piper J3 Cub.
-4. `Call for Robin DR400 aircraft` - load AI tow sceneraio with Robin DR400. This aircraft has better performance and can take you higher then Piper Cub.
-5. `Call for Cessna 182 aircraft` - load AI tow sceneraio with Cessna 182. This aircraft has little bit better performance than Robin.
-6. `Call for Douglas C-47 aircraft` - load AI tow sceneraio with Douglas C-47.
-7. `Disable tow aircraft` - unload AI tow sceneraio.
+3. `Call for Piper J3 Cub aircraft` - load AI tow scenario with Piper J3 Cub.
+4. `Call for Robin DR400 aircraft` - load AI tow scenario with Robin DR400. This aircraft has better performance and can take you higher then Piper Cub.
+5. `Call for Cessna 182 aircraft` - load AI tow scenario with Cessna 182. This aircraft has little bit better performance than Robin.
+6. `Call for Douglas C-47 aircraft` - load AI tow scenario with Douglas C-47.
+7. `Disable tow aircraft` - unload AI tow scenario.
 8. `Add thermal` - display the dialog for configuring and adding thermal.
 9. `Help` - display help dialog.
 10. `About` - display about dialog with add-on information.
@@ -120,13 +120,13 @@ Many thanks to the FG forum user "wlbragg" for proposing and presenting a soluti
 1. This add-on doesn't check if there are any obstacles in the AI aircraft's path, e.g. terrain, buildings, power lines, etc. Keep this in mind when choosing an airport or planning your route.
 2. Minimum FlightGear version: 2020.4.0 (dev/nightly). Because only nightly version is able to search for flight plans in additional FGData folders added by `--data` command line option.
 
-## Troubleshotting
+## Troubleshooting
 
-1. When I select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400`, `Cessana 182` or `Douglas C-47` from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
+1. When I select `Aerotow Everywhere` -> `Call for Piper J3 Cub aircraft`, `Robin DR400`, `Cessna 182` or `Douglas C-47` from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
 
 Probably you didn't include the `--data` command line option with the path where FlightGear should look for additional flight plan files for AI. Unfortunately, the simulator does not inform us that there was a problem with finding the flight plan file, so everything looks like it should work but does not.
 
-For fix it, in the file explorer of your operating system, find the directory `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow`. This path must be added by the `--data` command line option, so it will be treated as an additional FGData directory where FlightGear will find the flight plan. In Launcher go to "Settings" tab and in "Additionnal Setting" type (on the Linux system):
+For fix it, in the file explorer of your operating system, find the directory `$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow`. This path must be added by the `--data` command line option, so it will be treated as an additional FGData directory where FlightGear will find the flight plan. In Launcher go to "Settings" tab and in "Additional Setting" type (on the Linux system):
 
 ```
 --data=/home/{username}/.fgfs/Export/Addons/org.flightgear.addons.Aerotow
