@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.8.6
+
+- Update min FG version to 2024.1.1
+
 ## v.1.8.4 and v.1.8.5
 
 - Fix towrope property name
