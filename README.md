@@ -118,7 +118,7 @@ Many thanks to the FG forum user "wlbragg" for proposing and presenting a soluti
 ## Limitations
 
 1. This add-on doesn't check if there are any obstacles in the AI aircraft's path, e.g. terrain, buildings, power lines, etc. Keep this in mind when choosing an airport or planning your route.
-2. Minimum FlightGear version: 2024.1. Because only nightly version is able to search for flight plans in additional FGData folders added by `--data` command line option.
+2. Minimum FlightGear version: 2024.1. Because only 2024 version is able to search for flight plans in additional FGData folders added by `--data` command line option.
 
 ## Troubleshooting
 
