@@ -39,7 +39,7 @@ var Aerotow = {
     },
 
     #
-    # Uninitialize aerotow module
+    # Destructor
     #
     # @return void
     #

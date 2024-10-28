@@ -59,7 +59,7 @@ var Aircraft = {
     },
 
     #
-    # Return how much the altitide increases for a given vertical speed and distance
+    # Return how much the altitude increases for a given vertical speed and distance
     #
     # @param double distance - distance in meters
     # @return double

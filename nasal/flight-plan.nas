@@ -37,9 +37,9 @@ var FlightPlan = {
 
         obj.addonNodePath = addon.node.getPath();
 
-        obj.coord         = nil; # Coordinates for flight plan
-        obj.heading       = nil; # AI plane heading
-        obj.altitude      = nil; # AI plane altitude
+        obj.coord    = nil; # Coordinates for flight plan
+        obj.heading  = nil; # AI plane heading
+        obj.altitude = nil; # AI plane altitude
 
         return obj;
     },
@@ -306,7 +306,7 @@ var FlightPlan = {
             var coordRwyThreshold = geo.Coord.new().set_latlon(location.lat, location.lon);
 
             # Check distance to runway threshold
-            var dostanceToThreshold = me.coord.distance_to(coordRwyThreshold);
+            var distanceToThreshold = me.coord.distance_to(coordRwyThreshold);
 
             # Reset variables
             me.heading = location.heading; # runway heading
@@ -318,13 +318,13 @@ var FlightPlan = {
 
             # Add a waypoint to the left of the runway + 3000 m to the middle of length
             # Descend as far as you can to max elevation + 3000 ft
-            var halfRwyLenght = location.length / 2;
+            var halfRwyLength = location.length / 2;
             var altAgl = me.altitude - location.elevation;
-            var elevation = altAgl - (aircraft.getAltChange(dostanceToThreshold) * 2);
+            var elevation = altAgl - (aircraft.getAltChange(distanceToThreshold) * 2);
             if (elevation < 3000) {
                 elevation = 3000;
             }
-            me.addWptAir({"shift": {"hdgChange": 90, "dist": halfRwyLenght, "elevation": elevation}, "ktas": aircraft.speed});
+            me.addWptAir({"shift": {"hdgChange": 90, "dist": halfRwyLength, "elevation": elevation}, "ktas": aircraft.speed});
 
             # Fly downwind away of threshold, how far depend of the altitude
             var desiredElevation = 1400;
@@ -332,7 +332,7 @@ var FlightPlan = {
             if (distance < aircraft.minFinalLegDist) {
                 distance = aircraft.minFinalLegDist;
             }
-            me.addWptAir({"shift": {"hdgChange": -180, "dist": halfRwyLenght + distance, "elevation": desiredElevation}, "ktas": aircraft.speed});
+            me.addWptAir({"shift": {"hdgChange": -180, "dist": halfRwyLength + distance, "elevation": desiredElevation}, "ktas": aircraft.speed});
 
             # Turn to base leg
             me.addWptAir({"shift": {"hdgChange": -90, "dist": 1000, "elevation": 1000}, "ktas": aircraft.speed, "flapsDown": true});
@@ -493,7 +493,7 @@ var FlightPlan = {
     #         hdgChange - How the aircraft's heading supposed to change? 0 - keep the same heading.
     #         dist      - Distance in meters to calculate next waypoint coordinates.
     #         altChange - How the aircraft's altitude is supposed to change? 0 - keep the same altitude.
-    #         elevation - Set aircraft altitude as current terrain elevation + given value in feets.
+    #         elevation - Set aircraft altitude as current terrain elevation + given value in feet.
     #                     It's best to use for the first point in the air to avoid the plane collapsing into
     #                     the ground in a bumpy airport.
     #     },
