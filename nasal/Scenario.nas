@@ -34,7 +34,7 @@ var Scenario = {
 
         obj.addonNodePath = g_Addon.node.getPath();
 
-        obj.listeners = [];
+        obj.listeners = std.Vector.new();
         obj.routeDialog = RouteDialog.new(message);
         obj.flightPlan = FlightPlan.new(message, obj.routeDialog);
         obj.isScenarioLoaded = false;
@@ -42,7 +42,7 @@ var Scenario = {
 
         obj.flightPlan.initial();
 
-        append(obj.listeners, setlistener("/sim/presets/longitude-deg", func () {
+        obj.listeners.append(setlistener("/sim/presets/longitude-deg", func () {
             # User change airport/runway
             obj.flightPlan.initial();
         }));
@@ -59,9 +59,11 @@ var Scenario = {
         me.routeDialog.del();
         me.flightPlan.del();
 
-        foreach (var listener; me.listeners) {
+        foreach (var listener; me.listeners.vector) {
             removelistener(listener);
         }
+
+        obj.listeners.clear();
     },
 
     #

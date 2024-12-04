@@ -24,25 +24,25 @@ var Thermal = {
 
         obj.addonNodePath = g_Addon.node.getPath();
         obj.message = message;
-        obj.listeners = [];
+        obj.listeners = std.Vector.new();
 
         # Listener for calculate distance from meters to nautical miles.
-        append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/distance-m", func (node) {
+        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/distance-m", func (node) {
             setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/distance-nm", node.getValue() * globals.M2NM);
         }));
 
         # Listener for calculate strength from ft/s to m/s.
-        append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/strength-fps", func (node) {
+        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/strength-fps", func (node) {
             setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/strength-mps", node.getValue() * globals.FPS2KT * globals.KT2MPS);
         }));
 
         # Listener for calculate diameter from ft to m.
-        append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/diameter-ft", func (node) {
+        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/diameter-ft", func (node) {
             setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/diameter-m", node.getValue() * globals.FT2M);
         }));
 
         # Listener for calculate height from ft to m.
-        append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/height-msl", func (node) {
+        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/height-msl", func (node) {
             setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/height-msl-m", node.getValue() * globals.FT2M);
         }));
 
@@ -55,9 +55,11 @@ var Thermal = {
     # @return void
     #
     del: func() {
-        foreach (var listener; me.listeners) {
+        foreach (var listener; me.listeners.vector) {
             removelistener(listener);
         }
+
+        me.listeners.clear();
     },
 
     #
