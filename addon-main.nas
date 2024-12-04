@@ -51,17 +51,17 @@ var main = func(addon) {
 #
 var loadExtraNasalFiles = func(addon) {
     var modules = [
-        "nasal/timer",
-        "nasal/aircraft",
-        "nasal/message",
-        "nasal/dialogs/route",
-        "nasal/dialogs/thermal",
-        "nasal/flight-plan",
-        "nasal/scenario",
-        "nasal/io/waypoint",
-        "nasal/io/flight-plan-writer",
-        "nasal/aerotow",
-        "aerotow",
+        "nasal/Timer",
+        "nasal/Aircraft",
+        "nasal/Message",
+        "nasal/Dialogs/RouteDialog",
+        "nasal/Dialogs/Thermal",
+        "nasal/FlightPlan",
+        "nasal/Scenario",
+        "nasal/IO/Waypoint",
+        "nasal/IO/FlightPlanWriter",
+        "nasal/Aerotow",
+        "Aerotow",
     ];
 
     foreach (var scriptName; modules) {
