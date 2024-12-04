@@ -71,13 +71,12 @@ var Aircraft = {
     #
     # Return selected Aircraft object
     #
-    # @param hash addon - addons.Addon object
     # @param bool isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
     #                           use false (default) for call the airplane for towing.
     # @return Aircraft
     #
-    getSelected: func(addon, isRouteMode = false) {
-        var name = Aircraft.getSelectedAircraftName(addon, isRouteMode);
+    getSelected: func(isRouteMode = false) {
+        var name = Aircraft.getSelectedAircraftName(isRouteMode);
         foreach (var aircraft; g_Aircraft) {
             if (aircraft.isModelName(name)) {
                 return aircraft;
@@ -92,17 +91,16 @@ var Aircraft = {
     # Return name of selected aircraft. Possible values depend of isRouteMode: "Cub", "DR400", "c182".
     #
     #
-    # @param hash addon - addons.Addon object
     # @param bool isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
     #                           use false (default) for call the airplane for towing.
     # @return string
     #
-    getSelectedAircraftName: func(addon, isRouteMode) {
+    getSelectedAircraftName: func(isRouteMode) {
         if (isRouteMode) {
-            return getprop(addon.node.getPath() ~ "/addon-devel/route/ai-model") or g_Aircraft[0].name;
+            return getprop(g_Addon.node.getPath() ~ "/addon-devel/route/ai-model") or g_Aircraft[0].name;
         }
 
-        return getprop(addon.node.getPath() ~ "/addon-devel/ai-model") or g_Aircraft[0].nameMenuCall;
+        return getprop(g_Addon.node.getPath() ~ "/addon-devel/ai-model") or g_Aircraft[0].nameMenuCall;
     },
 };
 

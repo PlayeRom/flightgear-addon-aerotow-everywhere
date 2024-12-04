@@ -24,23 +24,21 @@ var Scenario = {
     #
     # Constructor
     #
-    # @param hash addon - addons.Addon object
     # @param hash message - Message object
     # @return me
     #
-    new: func(addon, message) {
+    new: func(message) {
         var obj = { parents: [Scenario] };
 
-        obj.addon = addon;
         obj.message = message;
 
-        obj.addonNodePath = addon.node.getPath();
+        obj.addonNodePath = g_Addon.node.getPath();
 
         obj.listeners = [];
-        obj.routeDialog = RouteDialog.new(addon, message);
-        obj.flightPlan = FlightPlan.new(addon, message, obj.routeDialog);
+        obj.routeDialog = RouteDialog.new(message);
+        obj.flightPlan = FlightPlan.new(message, obj.routeDialog);
         obj.isScenarioLoaded = false;
-        obj.scenarioPath = addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
+        obj.scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
 
         obj.flightPlan.initial();
 
@@ -86,7 +84,7 @@ var Scenario = {
                         "callsign":   "FG-TOW",
                         "type":       "aircraft",
                         "class":      "aerotow-dragger",
-                        "model":      Aircraft.getSelected(me.addon).modelPath,
+                        "model":      Aircraft.getSelected().modelPath,
                         "flightplan": FlightPlan.FILENAME_FLIGHTPLAN,
                         "repeat":     true, # start again indefinitely, it will work if the aircraft stops on the ground
                     }

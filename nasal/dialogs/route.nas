@@ -22,18 +22,16 @@ var RouteDialog = {
     #
     # Constructor
     #
-    # @param hash addon - addons.Addon object
     # @param hash message - Message object
     # @return me
     #
-    new: func(addon, message) {
+    new: func(message) {
         var obj = { parents: [RouteDialog] };
 
-        obj.addon = addon;
         obj.message = message;
-        obj.addonNodePath = addon.node.getPath();
+        obj.addonNodePath = g_Addon.node.getPath();
 
-        obj.savePath = addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR;
+        obj.savePath = g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR;
         obj.listeners = [];
 
         # Set listener for aerotow combo box value in route dialog for recalculate altitude change
@@ -79,7 +77,7 @@ var RouteDialog = {
         var isAltLimit = false;
 
         var isRouteMode = true;
-        var aircraft = Aircraft.getSelected(me.addon, isRouteMode);
+        var aircraft = Aircraft.getSelected(isRouteMode);
 
         # 0 means without altitude limits
         var maxAltAgl = getprop(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl") or 0;

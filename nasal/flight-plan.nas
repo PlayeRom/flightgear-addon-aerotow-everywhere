@@ -22,20 +22,18 @@ var FlightPlan = {
     #
     # Constructor
     #
-    # @param hash addon - addons.Addon object
     # @param hash message - Message object
     # @param hash routeDialog - RouteDialog object
     # @return me
     #
-    new: func(addon, message, routeDialog) {
+    new: func(message, routeDialog) {
         var obj = { parents: [FlightPlan] };
 
-        obj.addon            = addon;
         obj.message          = message;
         obj.routeDialog      = routeDialog;
-        obj.flightPlanWriter = FlightPlanWriter.new(addon);
+        obj.flightPlanWriter = FlightPlanWriter.new();
 
-        obj.addonNodePath = addon.node.getPath();
+        obj.addonNodePath = g_Addon.node.getPath();
 
         obj.coord    = nil; # Coordinates for flight plan
         obj.heading  = nil; # AI plane heading
@@ -89,7 +87,7 @@ var FlightPlan = {
 
         # We have a runway
 
-        var minRwyLength = Aircraft.getSelected(me.addon).minRwyLength;
+        var minRwyLength = Aircraft.getSelected().minRwyLength;
         if (rwyResult.runway.length < minRwyLength) {
             me.message.error(
                 "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
@@ -148,7 +146,7 @@ var FlightPlan = {
             return false;
         }
 
-        var aircraft = Aircraft.getSelected(me.addon);
+        var aircraft = Aircraft.getSelected();
 
         var isGliderPos = false;
         me.initAircraftVariable(location, isGliderPos);
@@ -225,7 +223,7 @@ var FlightPlan = {
 
         me.flightPlanWriter.open();
 
-        var aircraft = Aircraft.getSelected(me.addon);
+        var aircraft = Aircraft.getSelected();
 
         var isGliderPos = true;
         me.initAircraftVariable(location, isGliderPos);

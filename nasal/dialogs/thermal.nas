@@ -16,15 +16,13 @@ var Thermal = {
     #
     # Constructor
     #
-    # @param hash addon - addons.Addon object
     # @param hash message - Message object
     # @return me
     #
-    new: func(addon, message) {
+    new: func(message) {
         var obj = { parents: [Thermal] };
 
-        obj.addon = addon;
-        obj.addonNodePath = addon.node.getPath();
+        obj.addonNodePath = g_Addon.node.getPath();
         obj.message = message;
         obj.listeners = [];
 

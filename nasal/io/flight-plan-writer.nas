@@ -16,14 +16,13 @@ var FlightPlanWriter = {
     #
     # Constructor
     #
-    # @param hash addon - addons.Addon object
     # @return me
     #
-    new: func(addon) {
+    new: func() {
         var obj = { parents: [FlightPlanWriter] };
 
         obj.fpFileHandler = nil; # Handler for write flight plan to the file
-        obj.flightPlanPath = addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
+        obj.flightPlanPath = g_Addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
         obj.wptCount = 1;
 
         return obj;

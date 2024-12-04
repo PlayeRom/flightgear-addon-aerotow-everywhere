@@ -10,6 +10,11 @@
 #
 
 #
+# Global object of addons.Addon
+#
+var g_Addon = nil;
+
+#
 # Global object of Aerotow
 #
 var g_Aerotow = nil;
@@ -17,11 +22,12 @@ var g_Aerotow = nil;
 #
 # Initialize Aerotow
 #
-# @param hash addon - addons.Addon object
+# @param ghost addon - addons.Addon object
 # @return void
 #
 var init = func(addon) {
-    g_Aerotow = Aerotow.new(addon);
+    g_Addon = addon;
+    g_Aerotow = Aerotow.new();
 }
 
 #

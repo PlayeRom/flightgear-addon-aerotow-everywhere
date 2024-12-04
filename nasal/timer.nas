@@ -14,15 +14,6 @@
 #
 var Timer = {
     #
-    # Constructor
-    #
-    # @return me
-    #
-    new: func() {
-        return { parents: [Timer] };
-    },
-
-    #
     # Run timer as single shot
     #
     # @param double delaySec - Delay in seconds for execute timer's callback.

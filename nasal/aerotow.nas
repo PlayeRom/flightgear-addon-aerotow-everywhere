@@ -16,19 +16,17 @@ var Aerotow = {
     #
     # Constructor
     #
-    # @param hash addon - addons.Addon object
     # @return me
     #
-    new: func(addon) {
+    new: func() {
         var obj = { parents: [Aerotow] };
 
-        obj.addon = addon;
-        obj.addonNodePath = addon.node.getPath();
+        obj.addonNodePath = g_Addon.node.getPath();
         obj.listeners = [];
 
         obj.message  = Message.new();
-        obj.thermal  = Thermal.new(addon, obj.message);
-        obj.scenario = Scenario.new(addon, obj.message);
+        obj.thermal  = Thermal.new(obj.message);
+        obj.scenario = Scenario.new(obj.message);
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
         append(obj.listeners, setlistener(obj.addonNodePath ~ "/addon-devel/ai-model", func () {
@@ -64,7 +62,7 @@ var Aerotow = {
         setprop(me.addonNodePath ~ "/addon-devel/sound/enable", false);
 
         # Wait a second for the engine sound to turn off
-        Timer.new().singleShot(1, me, func () {
+        Timer.singleShot(1, me, func () {
             me.unloadScenario();
         });
     },
@@ -80,7 +78,7 @@ var Aerotow = {
         }
 
         # Start aerotow with delay to avoid duplicate engine sound playing
-        Timer.new().singleShot(1, me, func () {
+        Timer.singleShot(1, me, func () {
             me.startAerotow();
         });
     },

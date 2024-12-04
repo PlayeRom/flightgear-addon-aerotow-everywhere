@@ -22,7 +22,7 @@
 # Other resources should be freed by adding the corresponding code here,
 # e.g. myCanvas.del();
 #
-# @param hash addon - addons.Addon object
+# @param ghost addon - addons.Addon object
 # @return void
 #
 var unload = func(addon) {
@@ -30,7 +30,7 @@ var unload = func(addon) {
 };
 
 #
-# @param hash addon - addons.Addon object
+# @param ghost addon - addons.Addon object
 # @return void
 #
 var main = func(addon) {
@@ -46,7 +46,7 @@ var main = func(addon) {
 #
 # Load extra Nasal files in main add-on directory
 #
-# @param hash addon - addons.Addon object
+# @param ghost addon - addons.Addon object
 # @return void
 #
 var loadExtraNasalFiles = func(addon) {
@@ -76,7 +76,7 @@ var loadExtraNasalFiles = func(addon) {
 #
 # Create all needed directories.
 #
-# @param hash addon - addons.Addon object
+# @param ghost addon - addons.Addon object
 # @return void
 #
 var createDirectories = func(addon) {
