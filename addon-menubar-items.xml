@@ -44,7 +44,7 @@
                 </binding>
             </item>
             <item>
-                <label>Call for Piper J3 Cub aircraft</label>
+                <label>Call for Piper J3 Cub</label>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -52,7 +52,7 @@
                 </binding>
             </item>
             <item>
-                <label>Call for Robin DR400 aircraft</label>
+                <label>Call for Robin DR400</label>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -60,7 +60,7 @@
                 </binding>
             </item>
             <item>
-                <label>Call for Cessna 182 aircraft</label>
+                <label>Call for Cessna 182</label>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -68,11 +68,19 @@
                 </binding>
             </item>
             <item>
-                <label>Call for Douglas C-47 aircraft</label>
+                <label>Call for Douglas C-47</label>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
                     <value type="string">C47</value>
+                </binding>
+            </item>
+			<item>
+                <label>Call for Handley-Page-Halifax</label>
+                <binding>
+                    <command>property-assign</command>
+                    <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
+                    <value type="string">Halifax</value>
                 </binding>
             </item>
             <item>

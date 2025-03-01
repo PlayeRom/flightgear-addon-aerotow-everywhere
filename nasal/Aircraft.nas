@@ -207,15 +207,45 @@ var AircraftC47 = {
     new: func() {
         return {
             parents:         [Aircraft],
-            vs:              310,
-            speed:           85,
-            speedLimit:      90,
+            vs:              70,
+            speed:           130,
+            speedLimit:      160,
             rolling:         2.2,
-            minRwyLength:    508,
+            minRwyLength:    1100,
             minFinalLegDist: 6000,
             name:            "Douglas C-47",
             nameMenuCall:    "C47",
             modelPath:       "Aircraft/Aerotow/C-47/Models/c-47-ai.xml",
+        };
+    },
+};
+
+#
+# Handley Page Halifax
+# Cruise Speed 184 kt
+# Max speed 224 kt
+# Stall speed 57 kt ?
+# Best climb: 750 ft/min
+# Takeoff speed 1100-1400
+#
+var AircraftHalifax = {
+    #
+    # Constructor
+    #
+    # @return me
+    #
+    new: func() {
+        return {
+            parents:         [Aircraft],
+            vs:              70,
+            speed:           160,
+            speedLimit:      160,
+            rolling:         2.2,
+            minRwyLength:    1100,
+            minFinalLegDist: 6000,
+            name:            "Handley Page Halifax",
+            nameMenuCall:    "Halifax",
+            modelPath:       "Aircraft/Aerotow/Halifax/Models/halifax-ai.xml",
         };
     },
 };
@@ -226,4 +256,5 @@ var g_Aircraft = [
     AircraftRobin.new(),
     AircraftC182.new(),
     AircraftC47.new(),
+	AircraftHalifax.new(),
 ];
