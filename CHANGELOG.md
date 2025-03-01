@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.9.0
+
+- Add Halifax tow aircraft
+
 ## v.1.8.6
 
 - Update min FG version to 2024.1.1
