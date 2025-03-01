@@ -496,12 +496,12 @@ var FlightPlan = {
     #                     the ground in a bumpy airport.
     #     },
     #     hash coord     - The geo.Coord object, required if shift is not given
-    #     double crossAt   - Altitude in feet, required if shift is not given
-    #     double ktas      - True airspeed in knots, required
+    #     double crossAt - Altitude in feet, required if shift is not given
+    #     double ktas    - True airspeed in knots, required
     #     bool onGround  - If true then set on ground, otherwise set in air
     #     bool flapsDown - If true then set flaps down, otherwise set flaps up
     #     bool gearDown  - If true then set gear down, otherwise set gear up
-    #     double waitSec   - Number of seconds for WIAT waypoint
+    #     double waitSec - Number of seconds for WIAT waypoint
     # }
     # @return void
     #
