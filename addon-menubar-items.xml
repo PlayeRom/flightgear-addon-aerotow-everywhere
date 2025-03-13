@@ -75,7 +75,7 @@
                     <value type="string">C47</value>
                 </binding>
             </item>
-			<item>
+            <item>
                 <label>Call for Handley Page Halifax</label>
                 <binding>
                     <command>property-assign</command>

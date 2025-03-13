@@ -256,5 +256,5 @@ var g_Aircraft = [
     AircraftRobin.new(),
     AircraftC182.new(),
     AircraftC47.new(),
-	AircraftHalifax.new(),
+    AircraftHalifax.new(),
 ];

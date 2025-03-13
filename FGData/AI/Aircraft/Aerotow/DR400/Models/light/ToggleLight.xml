@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <PropertyList>
     <path>toggle-white.ac</path>
-	
+
     <animation>
         <type>alpha-test</type>
         <alpha-factor>0.01</alpha-factor>
