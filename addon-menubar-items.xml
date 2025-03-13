@@ -76,7 +76,7 @@
                 </binding>
             </item>
 			<item>
-                <label>Call for Handley-Page-Halifax</label>
+                <label>Call for Handley Page Halifax</label>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
