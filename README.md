@@ -60,14 +60,15 @@ This add-on add a new item to main menu named `Aerotow Everywhere` with followin
 
 1. `Aerotow Route` - display the dialog for change aerotow route.
 2. `Towrope Configuration` - display the dialog for change towrope parameters.
-3. `Call for Piper J3 Cub aircraft` - load AI tow scenario with Piper J3 Cub.
-4. `Call for Robin DR400 aircraft` - load AI tow scenario with Robin DR400. This aircraft has better performance and can take you higher then Piper Cub.
-5. `Call for Cessna 182 aircraft` - load AI tow scenario with Cessna 182. This aircraft has little bit better performance than Robin.
-6. `Call for Douglas C-47 aircraft` - load AI tow scenario with Douglas C-47.
-7. `Disable tow aircraft` - unload AI tow scenario.
-8. `Add thermal` - display the dialog for configuring and adding thermal.
-9. `Help` - display help dialog.
-10. `About` - display about dialog with add-on information.
+3. `Call for Piper J3 Cub` - load AI tow scenario with Piper J3 Cub.
+4. `Call for Robin DR400` - load AI tow scenario with Robin DR400. This aircraft has better performance and can take you higher then Piper Cub.
+5. `Call for Cessna 182` - load AI tow scenario with Cessna 182. This aircraft has little bit better performance than Robin.
+6. `Call for Douglas C-47` - load AI tow scenario with Douglas C-47.
+7. `Call for Handley Page Halifax` - load AI tow scenario with Handley Page Halifax.
+8. `Disable tow aircraft` - unload AI tow scenario.
+9. `Add thermal` - display the dialog for configuring and adding thermal.
+10. `Help` - display help dialog.
+11. `About` - display about dialog with add-on information.
 
 ## Aerotow Route
 
