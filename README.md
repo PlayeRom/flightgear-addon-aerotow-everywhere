@@ -63,8 +63,8 @@ This add-on add a new item to main menu named `Aerotow Everywhere` with followin
 3. `Call for Piper J3 Cub` - load AI tow scenario with Piper J3 Cub.
 4. `Call for Robin DR400` - load AI tow scenario with Robin DR400. This aircraft has better performance and can take you higher then Piper Cub.
 5. `Call for Cessna 182` - load AI tow scenario with Cessna 182. This aircraft has little bit better performance than Robin.
-6. `Call for Douglas C-47` - load AI tow scenario with Douglas C-47.
-7. `Call for Handley Page Halifax` - load AI tow scenario with Handley Page Halifax.
+6. `Call for Douglas C-47` - load AI tow scenario with Douglas C-47. Dedicated mainly to the "Horsa Assault Glider"
+7. `Call for Handley Page Halifax` - load AI tow scenario with Handley Page Halifax. Dedicated mainly to the "Horsa Assault Glider"
 8. `Disable tow aircraft` - unload AI tow scenario.
 9. `Add thermal` - display the dialog for configuring and adding thermal.
 10. `Help` - display help dialog.
