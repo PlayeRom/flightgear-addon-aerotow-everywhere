@@ -19,21 +19,21 @@ var Aerotow = {
     # @return me
     #
     new: func() {
-        var obj = { parents: [Aerotow] };
+        var me = { parents: [Aerotow] };
 
-        obj.addonNodePath = g_Addon.node.getPath();
-        obj.listeners = std.Vector.new();
+        me.addonNodePath = g_Addon.node.getPath();
+        me.listeners = std.Vector.new();
 
-        obj.message  = Message.new();
-        obj.thermal  = Thermal.new(obj.message);
-        obj.scenario = Scenario.new(obj.message);
+        me.message  = Message.new();
+        me.thermal  = Thermal.new(me.message);
+        me.scenario = Scenario.new(me.message);
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
-        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/ai-model", func () {
-            obj.restartAerotow();
+        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/ai-model", func () {
+            me.restartAerotow();
         }));
 
-        return obj;
+        return me;
     },
 
     #

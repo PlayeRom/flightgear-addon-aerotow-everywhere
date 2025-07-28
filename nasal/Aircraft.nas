@@ -33,19 +33,19 @@ var Aircraft = {
     # @return me
     #
     new: func(vs, speed, speedLimit, rolling, minRwyLength, minFinalLegDist, name, nameMenuCall, modelPath) {
-        var obj = { parents: [Aircraft] };
+        var me = { parents: [Aircraft] };
 
-        obj.vs              = vs;
-        obj.speed           = speed;
-        obj.speedLimit      = speedLimit;
-        obj.rolling         = rolling;
-        obj.minRwyLength    = minRwyLength;
-        obj.minFinalLegDist = minFinalLegDist;
-        obj.name            = name;
-        obj.nameMenuCall    = nameMenuCall;
-        obj.modelPath       = modelPath;
+        me.vs              = vs;
+        me.speed           = speed;
+        me.speedLimit      = speedLimit;
+        me.rolling         = rolling;
+        me.minRwyLength    = minRwyLength;
+        me.minFinalLegDist = minFinalLegDist;
+        me.name            = name;
+        me.nameMenuCall    = nameMenuCall;
+        me.modelPath       = modelPath;
 
-        return obj;
+        return me;
     },
 
     #

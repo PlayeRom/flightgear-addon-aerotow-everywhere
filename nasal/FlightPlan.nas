@@ -27,19 +27,19 @@ var FlightPlan = {
     # @return me
     #
     new: func(message, routeDialog) {
-        var obj = { parents: [FlightPlan] };
+        var me = { parents: [FlightPlan] };
 
-        obj.message          = message;
-        obj.routeDialog      = routeDialog;
-        obj.flightPlanWriter = FlightPlanWriter.new();
+        me.message          = message;
+        me.routeDialog      = routeDialog;
+        me.flightPlanWriter = FlightPlanWriter.new();
 
-        obj.addonNodePath = g_Addon.node.getPath();
+        me.addonNodePath = g_Addon.node.getPath();
 
-        obj.coord    = nil; # Coordinates for flight plan
-        obj.heading  = nil; # AI plane heading
-        obj.altitude = nil; # AI plane altitude
+        me.coord    = nil; # Coordinates for flight plan
+        me.heading  = nil; # AI plane heading
+        me.altitude = nil; # AI plane altitude
 
-        return obj;
+        return me;
     },
 
     #

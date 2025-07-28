@@ -28,26 +28,26 @@ var Scenario = {
     # @return me
     #
     new: func(message) {
-        var obj = { parents: [Scenario] };
+        var me = { parents: [Scenario] };
 
-        obj.message = message;
+        me.message = message;
 
-        obj.addonNodePath = g_Addon.node.getPath();
+        me.addonNodePath = g_Addon.node.getPath();
 
-        obj.listeners = std.Vector.new();
-        obj.routeDialog = RouteDialog.new(message);
-        obj.flightPlan = FlightPlan.new(message, obj.routeDialog);
-        obj.isScenarioLoaded = false;
-        obj.scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
+        me.listeners = std.Vector.new();
+        me.routeDialog = RouteDialog.new(message);
+        me.flightPlan = FlightPlan.new(message, me.routeDialog);
+        me.isScenarioLoaded = false;
+        me.scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
 
-        obj.flightPlan.initial();
+        me.flightPlan.initial();
 
-        obj.listeners.append(setlistener("/sim/presets/longitude-deg", func () {
+        me.listeners.append(setlistener("/sim/presets/longitude-deg", func () {
             # User change airport/runway
-            obj.flightPlan.initial();
+            me.flightPlan.initial();
         }));
 
-        return obj;
+        return me;
     },
 
     #

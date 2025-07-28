@@ -19,13 +19,13 @@ var FlightPlanWriter = {
     # @return me
     #
     new: func() {
-        var obj = { parents: [FlightPlanWriter] };
+        var me = { parents: [FlightPlanWriter] };
 
-        obj.fpFileHandler = nil; # Handler for write flight plan to the file
-        obj.flightPlanPath = g_Addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
-        obj.wptCount = 1;
+        me.fpFileHandler = nil; # Handler for write flight plan to the file
+        me.flightPlanPath = g_Addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
+        me.wptCount = 1;
 
-        return obj;
+        return me;
     },
 
     #

@@ -19,19 +19,19 @@ var Waypoint = {
     # @return me
     #
     new: func() {
-        var obj = { parents: [Waypoint] };
+        var me = { parents: [Waypoint] };
 
-        obj.name      = nil; # Name of waypoint. Special names are: "WAIT", "END".
-        obj.coord     = nil; # geo.Coord object
-        obj.alt       = nil; # Altitude AMSL in feet
-        obj.crossAt   = nil; # Altitude AMSL in feet
-        obj.ktas      = nil; # True airspeed in knots
-        obj.onGround  = nil; # If true then on the ground, otherwise in air
-        obj.flapsDown = nil; # If true then flaps down, otherwise up
-        obj.gearDown  = nil; # If true then gear down, otherwise up
-        obj.waitSec   = nil; # Number of seconds for "WAIT" waypoint
+        me.name      = nil; # Name of waypoint. Special names are: "WAIT", "END".
+        me.coord     = nil; # geo.Coord object
+        me.alt       = nil; # Altitude AMSL in feet
+        me.crossAt   = nil; # Altitude AMSL in feet
+        me.ktas      = nil; # True airspeed in knots
+        me.onGround  = nil; # If true then on the ground, otherwise in air
+        me.flapsDown = nil; # If true then flaps down, otherwise up
+        me.gearDown  = nil; # If true then gear down, otherwise up
+        me.waitSec   = nil; # Number of seconds for "WAIT" waypoint
 
-        return obj;
+        return me;
     },
 
     #

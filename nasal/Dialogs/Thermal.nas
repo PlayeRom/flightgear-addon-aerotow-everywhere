@@ -20,33 +20,33 @@ var Thermal = {
     # @return me
     #
     new: func(message) {
-        var obj = { parents: [Thermal] };
+        var me = { parents: [Thermal] };
 
-        obj.addonNodePath = g_Addon.node.getPath();
-        obj.message = message;
-        obj.listeners = std.Vector.new();
+        me.addonNodePath = g_Addon.node.getPath();
+        me.message = message;
+        me.listeners = std.Vector.new();
 
         # Listener for calculate distance from meters to nautical miles.
-        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/distance-m", func (node) {
-            setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/distance-nm", node.getValue() * globals.M2NM);
+        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/distance-m", func (node) {
+            setprop(me.addonNodePath ~ "/addon-devel/add-thermal/distance-nm", node.getValue() * globals.M2NM);
         }));
 
         # Listener for calculate strength from ft/s to m/s.
-        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/strength-fps", func (node) {
-            setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/strength-mps", node.getValue() * globals.FPS2KT * globals.KT2MPS);
+        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/strength-fps", func (node) {
+            setprop(me.addonNodePath ~ "/addon-devel/add-thermal/strength-mps", node.getValue() * globals.FPS2KT * globals.KT2MPS);
         }));
 
         # Listener for calculate diameter from ft to m.
-        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/diameter-ft", func (node) {
-            setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/diameter-m", node.getValue() * globals.FT2M);
+        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/diameter-ft", func (node) {
+            setprop(me.addonNodePath ~ "/addon-devel/add-thermal/diameter-m", node.getValue() * globals.FT2M);
         }));
 
         # Listener for calculate height from ft to m.
-        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/add-thermal/height-msl", func (node) {
-            setprop(obj.addonNodePath ~ "/addon-devel/add-thermal/height-msl-m", node.getValue() * globals.FT2M);
+        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/height-msl", func (node) {
+            setprop(me.addonNodePath ~ "/addon-devel/add-thermal/height-msl-m", node.getValue() * globals.FT2M);
         }));
 
-        return obj;
+        return me;
     },
 
     #

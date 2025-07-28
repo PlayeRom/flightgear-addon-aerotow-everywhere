@@ -26,32 +26,32 @@ var RouteDialog = {
     # @return me
     #
     new: func(message) {
-        var obj = { parents: [RouteDialog] };
+        var me = { parents: [RouteDialog] };
 
-        obj.message = message;
-        obj.addonNodePath = g_Addon.node.getPath();
+        me.message = message;
+        me.addonNodePath = g_Addon.node.getPath();
 
-        obj.savePath = g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR;
-        obj.listeners = std.Vector.new();
+        me.savePath = g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR;
+        me.listeners = std.Vector.new();
 
         # Set listener for aerotow combo box value in route dialog for recalculate altitude change
-        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/route/ai-model", func () {
-            obj.calculateAltChangeAndTotals();
+        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/route/ai-model", func () {
+            me.calculateAltChangeAndTotals();
         }));
 
         # Set listener for Max altitude AGL value in route dialog for recalculate altitude change
-        obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", func () {
-            obj.calculateAltChangeAndTotals();
+        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", func () {
+            me.calculateAltChangeAndTotals();
         }));
 
         # Set listeners for distance fields for calculate altitude change
         for (var i = 0; i < RouteDialog.MAX_ROUTE_WAYPOINTS; i += 1) {
-            obj.listeners.append(setlistener(obj.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m", func () {
-                obj.calculateAltChangeAndTotals();
+            me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m", func () {
+                me.calculateAltChangeAndTotals();
             }));
         }
 
-        return obj;
+        return me;
     },
 
     #
