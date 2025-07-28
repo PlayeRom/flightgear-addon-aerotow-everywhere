@@ -63,7 +63,7 @@ var Scenario = {
             removelistener(listener);
         }
 
-        obj.listeners.clear();
+        me.listeners.clear();
     },
 
     #
