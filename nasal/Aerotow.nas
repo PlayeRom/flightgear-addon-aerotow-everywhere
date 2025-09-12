@@ -22,16 +22,16 @@ var Aerotow = {
         var me = { parents: [Aerotow] };
 
         me.addonNodePath = g_Addon.node.getPath();
-        me.listeners = std.Vector.new();
+        me.listeners = Listeners.new();
 
         me.message  = Message.new();
         me.thermal  = Thermal.new(me.message);
         me.scenario = Scenario.new(me.message);
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
-        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/ai-model", func () {
+        me.listeners.add(me.addonNodePath ~ "/addon-devel/ai-model", func () {
             me.restartAerotow();
-        }));
+        });
 
         return me;
     },
@@ -42,14 +42,9 @@ var Aerotow = {
     # @return void
     #
     del: func() {
+        me.listeners.del();
         me.thermal.del();
         me.scenario.del();
-
-        foreach (var listener; me.listeners.vector) {
-            removelistener(listener);
-        }
-
-        me.listeners.clear();
     },
 
     #

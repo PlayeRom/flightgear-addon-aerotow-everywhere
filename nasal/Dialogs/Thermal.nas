@@ -24,27 +24,27 @@ var Thermal = {
 
         me.addonNodePath = g_Addon.node.getPath();
         me.message = message;
-        me.listeners = std.Vector.new();
+        me.listeners = Listeners.new();
 
         # Listener for calculate distance from meters to nautical miles.
-        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/distance-m", func (node) {
+        me.listeners.add(me.addonNodePath ~ "/addon-devel/add-thermal/distance-m", func (node) {
             setprop(me.addonNodePath ~ "/addon-devel/add-thermal/distance-nm", node.getValue() * globals.M2NM);
-        }));
+        });
 
         # Listener for calculate strength from ft/s to m/s.
-        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/strength-fps", func (node) {
+        me.listeners.add(me.addonNodePath ~ "/addon-devel/add-thermal/strength-fps", func (node) {
             setprop(me.addonNodePath ~ "/addon-devel/add-thermal/strength-mps", node.getValue() * globals.FPS2KT * globals.KT2MPS);
-        }));
+        });
 
         # Listener for calculate diameter from ft to m.
-        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/diameter-ft", func (node) {
+        me.listeners.add(me.addonNodePath ~ "/addon-devel/add-thermal/diameter-ft", func (node) {
             setprop(me.addonNodePath ~ "/addon-devel/add-thermal/diameter-m", node.getValue() * globals.FT2M);
-        }));
+        });
 
         # Listener for calculate height from ft to m.
-        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/add-thermal/height-msl", func (node) {
+        me.listeners.add(me.addonNodePath ~ "/addon-devel/add-thermal/height-msl", func (node) {
             setprop(me.addonNodePath ~ "/addon-devel/add-thermal/height-msl-m", node.getValue() * globals.FT2M);
-        }));
+        });
 
         return me;
     },
@@ -55,11 +55,7 @@ var Thermal = {
     # @return void
     #
     del: func() {
-        foreach (var listener; me.listeners.vector) {
-            removelistener(listener);
-        }
-
-        me.listeners.clear();
+        me.listeners.del();
     },
 
     #

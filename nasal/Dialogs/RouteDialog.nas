@@ -32,23 +32,23 @@ var RouteDialog = {
         me.addonNodePath = g_Addon.node.getPath();
 
         me.savePath = g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR;
-        me.listeners = std.Vector.new();
+        me.listeners = Listeners.new();
 
         # Set listener for aerotow combo box value in route dialog for recalculate altitude change
-        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/route/ai-model", func () {
+        me.listeners.add(me.addonNodePath ~ "/addon-devel/route/ai-model", func () {
             me.calculateAltChangeAndTotals();
-        }));
+        });
 
         # Set listener for Max altitude AGL value in route dialog for recalculate altitude change
-        me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", func () {
+        me.listeners.add(me.addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", func () {
             me.calculateAltChangeAndTotals();
-        }));
+        });
 
         # Set listeners for distance fields for calculate altitude change
         for (var i = 0; i < RouteDialog.MAX_ROUTE_WAYPOINTS; i += 1) {
-            me.listeners.append(setlistener(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m", func () {
+            me.listeners.add(me.addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ i ~ "]/distance-m", func () {
                 me.calculateAltChangeAndTotals();
-            }));
+            });
         }
 
         return me;
@@ -60,11 +60,7 @@ var RouteDialog = {
     # @return void
     #
     del: func() {
-        foreach (var listener; me.listeners.vector) {
-            removelistener(listener);
-        }
-
-        me.listeners.clear();
+        me.listeners.del();
     },
 
     #
