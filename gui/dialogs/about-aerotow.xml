@@ -51,7 +51,7 @@
     </text>
 
     <button>
-        <legend>Open the repository website</legend>
+        <legend>Open the repository website...</legend>
         <binding>
             <command>open-browser</command>
             <url>https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere</url>
