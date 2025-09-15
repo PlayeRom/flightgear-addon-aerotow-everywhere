@@ -10,26 +10,26 @@
 #
 
 #
-# Class FlightPlanWriter for write flight plan to the XML file
+# Class FlightPlanWriter for write flight plan to the XML file.
 #
 var FlightPlanWriter = {
     #
-    # Constructor
+    # Constructor.
     #
     # @return me
     #
     new: func() {
         var me = { parents: [FlightPlanWriter] };
 
-        me.fpFileHandler = nil; # Handler for write flight plan to the file
-        me.flightPlanPath = g_Addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
-        me.wptCount = 1;
+        me._fpFileHandler = nil; # Handler for write flight plan to the file
+        me._flightPlanPath = g_Addon.storagePath ~ "/AI/FlightPlans/" ~ FlightPlan.FILENAME_FLIGHTPLAN;
+        me._wptCount = 1;
 
         return me;
     },
 
     #
-    # Destructor
+    # Destructor.
     #
     # @return void
     #
@@ -38,22 +38,22 @@ var FlightPlanWriter = {
     },
 
     #
-    # Open XML file to write flight plan
+    # Open XML file to write flight plan.
     #
     # @return void
     #
     open: func() {
-        me.wptCount = 1;
+        me._wptCount = 1;
 
-        if (me.fpFileHandler) {
-            io.close(me.fpFileHandler);
+        if (me._fpFileHandler) {
+            io.close(me._fpFileHandler);
         }
 
-        me.fpFileHandler = io.open(me.flightPlanPath, "w");
+        me._fpFileHandler = io.open(me._flightPlanPath, "w");
 
-        if (me.fpFileHandler) {
+        if (me._fpFileHandler) {
             io.write(
-                me.fpFileHandler,
+                me._fpFileHandler,
                 "<?xml version=\"1.0\"?>\n\n" ~
                 "<!-- This file is generated automatically by the Aerotow Everywhere add-on -->\n\n" ~
                 "<PropertyList>\n" ~
@@ -63,18 +63,18 @@ var FlightPlanWriter = {
     },
 
     #
-    # Write single waypoint to XML file with flight plan
+    # Write single waypoint to XML file with flight plan.
     #
-    # @param hash wpt - Waypoint object
+    # @param  hash  wpt  Waypoint object.
     # @return void
     #
     write: func(wpt) {
-        if (!me.fpFileHandler) {
+        if (!me._fpFileHandler) {
             return;
         }
 
         if (wpt.name == nil) {
-            wpt.setName(me.wptCount);
+            wpt.setName(me._wptCount);
         }
 
         var str = "        <wpt>\n"
@@ -118,26 +118,26 @@ var FlightPlanWriter = {
 
         str ~= "        </wpt>\n";
 
-        io.write(me.fpFileHandler, str);
+        io.write(me._fpFileHandler, str);
 
-        me.wptCount += 1;
+        me._wptCount += 1;
     },
 
     #
-    # Close XML file with flight plan
+    # Close XML file with flight plan.
     #
     # @return void
     #
     close: func() {
-        if (me.fpFileHandler) {
+        if (me._fpFileHandler) {
             io.write(
-                me.fpFileHandler,
+                me._fpFileHandler,
                 "    </flightplan>\n" ~
                 "</PropertyList>\n\n"
             );
 
-            io.close(me.fpFileHandler);
-            me.fpFileHandler = nil;
+            io.close(me._fpFileHandler);
+            me._fpFileHandler = nil;
         }
     },
 };

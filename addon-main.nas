@@ -22,7 +22,7 @@
 # Other resources should be freed by adding the corresponding code here,
 # e.g. myCanvas.del();
 #
-# @param ghost addon - addons.Addon object
+# @param  ghost  addon  The addons.Addon object.
 # @return void
 #
 var unload = func(addon) {
@@ -30,11 +30,11 @@ var unload = func(addon) {
 };
 
 #
-# @param ghost addon - addons.Addon object
+# @param  ghost  addon  The addons.Addon object.
 # @return void
 #
 var main = func(addon) {
-    logprint(LOG_INFO, "Aerotow Everywhere add-on initialized from path ", addon.basePath);
+    logprint(LOG_ALERT, "Aerotow Everywhere add-on initialized from path ", addon.basePath);
 
     loadExtraNasalFiles(addon);
 
@@ -44,9 +44,9 @@ var main = func(addon) {
 };
 
 #
-# Load extra Nasal files in main add-on directory
+# Load extra Nasal files in main add-on directory.
 #
-# @param ghost addon - addons.Addon object
+# @param  ghost  addon  The addons.Addon object.
 # @return void
 #
 var loadExtraNasalFiles = func(addon) {
@@ -77,7 +77,7 @@ var loadExtraNasalFiles = func(addon) {
 #
 # Create all needed directories.
 #
-# @param ghost addon - addons.Addon object
+# @param  ghost  addon  The addons.Addon object.
 # @return void
 #
 var createDirectories = func(addon) {

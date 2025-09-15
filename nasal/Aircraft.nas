@@ -10,7 +10,7 @@
 #
 
 #
-# Parent class of Aircraft
+# Parent class of Aircraft.
 #
 var Aircraft = {
     #
@@ -19,17 +19,17 @@ var Aircraft = {
     DISTANCE_DETERMINANT: 1000, # meters
 
     #
-    # Constructor
+    # Constructor.
     #
-    # @param double vs - vertical speed in ft per DISTANCE_DETERMINANT m
-    # @param double seed - take-off speed
-    # @param double speedLimit - max speed
-    # @param double rolling - factor for rolling
-    # @param double minRwyLength - minimum runway length required, in meters
-    # @param double minFinalLegDist - minimum distance for final leg in meters (for landing)
-    # @param string name - full name of aircraft used in route dialog
-    # @param string nameMenuCall - short name of aircraft for call a plane from menu
-    # @param string modelPath - Path to the aircraft model
+    # @param  double  vs  Vertical speed in ft per DISTANCE_DETERMINANT m.
+    # @param  double  seed  Take-off speed.
+    # @param  double  speedLimit  Max speed.
+    # @param  double  rolling  Factor for rolling.
+    # @param  double  minRwyLength  Minimum runway length required, in meters.
+    # @param  double  minFinalLegDist  Minimum distance for final leg in meters (for landing).
+    # @param  string  name  Full name of aircraft used in route dialog.
+    # @param  string  nameMenuCall  Short name of aircraft for call a plane from menu.
+    # @param  string  modelPath  Path to the aircraft model.
     # @return me
     #
     new: func(vs, speed, speedLimit, rolling, minRwyLength, minFinalLegDist, name, nameMenuCall, modelPath) {
@@ -49,19 +49,19 @@ var Aircraft = {
     },
 
     #
-    # Check that given name match to aircraft name
+    # Check that given name match to aircraft name.
     #
-    # @param string name - Name of aircraft to check.
-    # @return bool - Return true when match, otherwise false.
+    # @param  string  name  Name of aircraft to check.
+    # @return bool  Return true when match, otherwise false.
     #
     isModelName: func(name) {
         return name == me.name or name == me.nameMenuCall;
     },
 
     #
-    # Return how much the altitude increases for a given vertical speed and distance
+    # Return how much the altitude increases for a given vertical speed and distance.
     #
-    # @param double distance - distance in meters
+    # @param  double  distance  Distance in meters.
     # @return double
     #
     getAltChange: func(distance) {
@@ -69,10 +69,10 @@ var Aircraft = {
     },
 
     #
-    # Return selected Aircraft object
+    # Return selected Aircraft object.
     #
-    # @param bool isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
-    #                           use false (default) for call the airplane for towing.
+    # @param  bool  isRouteMode  Use true to get the plane for the "Aerotow Route" dialog,
+    #                            use false (default) for call the airplane for towing.
     # @return Aircraft
     #
     getSelected: func(isRouteMode = false) {
@@ -91,8 +91,8 @@ var Aircraft = {
     # Return name of selected aircraft. Possible values depend of isRouteMode: "Cub", "DR400", "c182".
     #
     #
-    # @param bool isRouteMode - Use true to get the plane for the "Aerotow Route" dialog,
-    #                           use false (default) for call the airplane for towing.
+    # @param  bool  isRouteMode  Use true to get the plane for the "Aerotow Route" dialog,
+    #                            use false (default) for call the airplane for towing.
     # @return string
     #
     getSelectedAircraftName: func(isRouteMode) {

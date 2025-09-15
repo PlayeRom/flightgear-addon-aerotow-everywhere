@@ -14,37 +14,37 @@
 #
 var Aerotow = {
     #
-    # Constructor
+    # Constructor.
     #
     # @return me
     #
     new: func() {
         var me = { parents: [Aerotow] };
 
-        me.addonNodePath = g_Addon.node.getPath();
-        me.listeners = Listeners.new();
+        me._addonNodePath = g_Addon.node.getPath();
+        me._listeners = Listeners.new();
 
-        me.message  = Message.new();
-        me.thermal  = Thermal.new(me.message);
-        me.scenario = Scenario.new(me.message);
+        me._message  = Message.new();
+        me._thermal  = Thermal.new(me._message);
+        me._scenario = Scenario.new(me._message);
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
-        me.listeners.add(me.addonNodePath ~ "/addon-devel/ai-model", func () {
-            me.restartAerotow();
+        me._listeners.add(me._addonNodePath ~ "/addon-devel/ai-model", func () {
+            me._restartAerotow();
         });
 
         return me;
     },
 
     #
-    # Destructor
+    # Destructor.
     #
     # @return void
     #
     del: func() {
-        me.listeners.del();
-        me.thermal.del();
-        me.scenario.del();
+        me._listeners.del();
+        me._thermal.del();
+        me._scenario.del();
     },
 
     #
@@ -52,58 +52,58 @@ var Aerotow = {
     #
     # @return void
     #
-    restartAerotow: func() {
-        me.message.success("Aerotow on the way");
+    _restartAerotow: func() {
+        me._message.success("Aerotow on the way");
 
         # Stop playing engine sound
-        setprop(me.addonNodePath ~ "/addon-devel/sound/enable", false);
+        setprop(me._addonNodePath ~ "/addon-devel/sound/enable", false);
 
         # Wait a second for the engine sound to turn off
         Timer.singleShot(1, me, func () {
-            me.unloadScenario();
+            me._unloadScenario();
         });
     },
 
     #
-    # Unload scenario and start a new one
+    # Unload scenario and start a new one.
     #
     # @return void
     #
-    unloadScenario: func() {
-        if (!me.scenario.unload()) {
+    _unloadScenario: func() {
+        if (!me._scenario.unload()) {
             return;
         }
 
         # Start aerotow with delay to avoid duplicate engine sound playing
         Timer.singleShot(1, me, func () {
-            me.startAerotow();
+            me._startAerotow();
         });
     },
 
     #
     # Main function to prepare AI scenario and run it.
     #
-    # @return bool - Return true on successful, otherwise false.
+    # @return bool  Return true on successful, otherwise false.
     #
-    startAerotow: func() {
-        if (!me.scenario.unload()) {
+    _startAerotow: func() {
+        if (!me._scenario.unload()) {
             return false;
         }
 
-        if (!me.scenario.generateXml()) {
+        if (!me._scenario.generateXml()) {
             return false;
         }
 
-        return me.scenario.load();
+        return me._scenario.load();
     },
 
     #
     # Function for unload our AI scenario.
     #
-    # @return bool - Return true on successful, otherwise false.
+    # @return bool  Return true on successful, otherwise false.
     #
     stopAerotow: func() {
         var withMessages = true;
-        return me.scenario.unload(withMessages);
+        return me._scenario.unload(withMessages);
     },
 };

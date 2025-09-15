@@ -12,8 +12,6 @@
 #
 -->
 
-<!-- This file requires FlightGear version 2018.2 or newer -->
-
 <PropertyList>
     <name>route-aerotow</name>
     <resizable>false</resizable>

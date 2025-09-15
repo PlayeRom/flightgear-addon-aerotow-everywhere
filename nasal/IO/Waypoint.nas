@@ -14,7 +14,7 @@
 #
 var Waypoint = {
     #
-    # Constructor
+    # Constructor.
     #
     # @return me
     #
@@ -35,9 +35,9 @@ var Waypoint = {
     },
 
     #
-    # Set name of waypoint
+    # Set name of waypoint.
     #
-    # @param string name - Name of waypoint
+    # @param  string  name  Name of waypoint.
     # @return me
     #
     setName: func(name) {
@@ -47,12 +47,12 @@ var Waypoint = {
     },
 
     #
-    # Set coordinates of waypoint
+    # Set coordinates of waypoint.
     #
-    # @param hash coord - geo.Coord object
+    # @param  hash coord  The geo.Coord object.
     # @return me
     #
-    setCoord: func(coord) {
+    _setCoord: func(coord) {
         me.coord = coord;
 
         return me;
@@ -61,19 +61,19 @@ var Waypoint = {
     #
     # Set altitude in feet of waypoint
     #
-    # @param double alt - altitude in feet
+    # @param  double  alt  Altitude in feet.
     # @return me
     #
-    setAlt: func(alt) {
+    _setAlt: func(alt) {
         me.alt = alt;
 
         return me;
     },
 
     #
-    # Set altitude in feet of waypoint as cross at
+    # Set altitude in feet of waypoint as cross at.
     #
-    # @param double alt - altitude in feet
+    # @param  double  alt  Altitude in feet.
     # @return me
     #
     setCrossAt: func(crossAt) {
@@ -83,45 +83,45 @@ var Waypoint = {
     },
 
     #
-    # Set true airspeed in knots for waypoint
+    # Set true airspeed in knots for waypoint.
     #
-    # @param double ktas - true airspeed in knots
+    # @param  double  ktas  True airspeed in knots.
     # @return me
     #
-    setKtas: func(ktas) {
+    _setKtas: func(ktas) {
         me.ktas = ktas;
 
         return me;
     },
 
     #
-    # Set waypoint on the ground
+    # Set waypoint on the ground.
     #
     # @return me
     #
-    setOnGround: func() {
+    _setOnGround: func() {
         me.onGround = true;
 
         return me;
     },
 
     #
-    # Set flaps down
+    # Set flaps down.
     #
     # @return me
     #
-    setFlapsDown: func() {
+    _setFlapsDown: func() {
         me.flapsDown = true;
 
         return me;
     },
 
     #
-    # Set gear down
+    # Set gear down.
     #
     # @return me
     #
-    setGearDown: func() {
+    _setGearDown: func() {
         me.gearDown = true;
 
         return me;
@@ -130,10 +130,10 @@ var Waypoint = {
     #
     # Set number of seconds for WAIT waypoint. This force to use "WAIT" name.
     #
-    # @param double waitSec - Number of seconds
+    # @param  double  waitSec  Number of seconds.
     # @return me
     #
-    setWaitSec: func(waitSec) {
+    _setWaitSec: func(waitSec) {
         me.setName("WAIT"); # force WAIT name
         me.waitSec = waitSec;
 
@@ -141,9 +141,9 @@ var Waypoint = {
     },
 
     #
-    # Set all waypoint data from given hash object
+    # Set all waypoint data from given hash object.
     #
-    # @param hash wptData
+    # @param  hash  wptData
     # @return me
     #
     setHashData: func(wptData) {
@@ -156,7 +156,7 @@ var Waypoint = {
         }
 
         if (contains(wptData, "coord")) {
-            me.setCoord(wptData.coord);
+            me._setCoord(wptData.coord);
         }
 
         if (contains(wptData, "crossAt")) {
@@ -164,27 +164,27 @@ var Waypoint = {
         }
 
         if (contains(wptData, "alt")) {
-            me.setAlt(wptData.alt);
+            me._setAlt(wptData.alt);
         }
 
         if (contains(wptData, "ktas")) {
-            me.setKtas(wptData.ktas);
+            me._setKtas(wptData.ktas);
         }
 
         if (contains(wptData, "onGround") and wptData.onGround) {
-            me.setOnGround();
+            me._setOnGround();
         }
 
         if (contains(wptData, "flapsDown") and wptData.flapsDown) {
-            me.setFlapsDown();
+            me._setFlapsDown();
         }
 
         if (contains(wptData, "gearDown") and wptData.gearDown) {
-            me.setGearDown();
+            me._setGearDown();
         }
 
         if (contains(wptData, "waitSec")) {
-            me.setWaitSec(wptData.waitSec);
+            me._setWaitSec(wptData.waitSec);
         }
 
         return me;

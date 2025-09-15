@@ -14,7 +14,7 @@
 #
 var Message = {
     #
-    # Constructor
+    # Constructor.
     #
     # @return me
     #
@@ -25,31 +25,31 @@ var Message = {
     #
     # Display given message as OK.
     #
-    # @param string message - The text message to display on the screen and read by speech synthesizer.
+    # @param  string  message  The text message to display on the screen and read by speech synthesizer.
     # @return void
     #
     success: func(message) {
-        me.display(message, "ok");
+        me._display(message, "ok");
     },
 
     #
     # Display given message as an error.
     #
-    # @param string message - The text message to display on the screen and read by speech synthesizer.
+    # @param  string  message  The text message to display on the screen and read by speech synthesizer.
     # @return void
     #
     error: func(message) {
-        me.display(message, "error");
+        me._display(message, "error");
     },
 
     #
     # Display given message.
     #
-    # @param string message - The text message to display on the screen and read by speech synthesizer.
-    # @param string type - The type of message. It can take values as "ok" or "error".
+    # @param  string  message  The text message to display on the screen and read by speech synthesizer.
+    # @param  string  type  The type of message. It can take values as "ok" or "error".
     # @return void
     #
-    display: func(message, type) {
+    _display: func(message, type) {
         # Print to console
         logprint(LOG_ALERT, "Aerotow Everywhere add-on: ", message);
 

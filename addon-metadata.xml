@@ -34,9 +34,7 @@
         <maintainers>
             <maintainer>
                 <name type="string">Roman Ludwicki</name>
-                <url type="string">
-                    https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere
-                </url>
+                <url type="string">https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere</url>
             </maintainer>
         </maintainers>
 
@@ -72,13 +70,7 @@
 
         <license>
             <designation type="string">GNU GPL version 3 or later</designation>
-
-            <file type="string">
-            <!-- Use a relative, slash-separated path to a file under the add-on
-                    base directory that contains the add-on license text. -->
-                LICENSE
-            </file>
-
+            <file type="string">LICENSE</file>
             <url type="string">https://www.gnu.org/licenses/gpl-3.0.html</url>
         </license>
 
@@ -86,21 +78,10 @@
         <max-FG-version type="string">none</max-FG-version>
 
         <urls>
-            <home-page type="string">
-                https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere
-            </home-page>
-
-            <download type="string">
-                https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere/releases/latest
-            </download>
-
-            <support type="string">
-                https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere
-            </support>
-
-            <code-repository type="string">
-                https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere
-            </code-repository>
+            <home-page type="string">https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere</home-page>
+            <download type="string">https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere/releases/latest</download>
+            <support type="string">https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere</support>
+            <code-repository type="string">https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere</code-repository>
         </urls>
 
         <tags>

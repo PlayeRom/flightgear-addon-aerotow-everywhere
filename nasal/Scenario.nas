@@ -14,7 +14,7 @@
 #
 var Scenario = {
     #
-    # Constants
+    # Constants.
     #
     SCENARIO_ID:       "aerotow_addon",
     SCENARIO_NAME:     "Aerotow Add-on",
@@ -24,51 +24,51 @@ var Scenario = {
     #
     # Constructor
     #
-    # @param hash message - Message object
+    # @param  hash  message  Message object.
     # @return me
     #
     new: func(message) {
         var me = { parents: [Scenario] };
 
-        me.message = message;
+        me._message = message;
 
-        me.addonNodePath = g_Addon.node.getPath();
+        me._addonNodePath = g_Addon.node.getPath();
 
-        me.listeners = Listeners.new();
-        me.routeDialog = RouteDialog.new(message);
-        me.flightPlan = FlightPlan.new(message, me.routeDialog);
-        me.isScenarioLoaded = false;
-        me.scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
+        me._listeners = Listeners.new();
+        me._routeDialog = RouteDialog.new(message);
+        me._flightPlan = FlightPlan.new(message, me._routeDialog);
+        me._isScenarioLoaded = false;
+        me._scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
 
-        me.flightPlan.initial();
+        me._flightPlan.initial();
 
-        me.listeners.add("/sim/presets/longitude-deg", func () {
+        me._listeners.add("/sim/presets/longitude-deg", func () {
             # User change airport/runway
-            me.flightPlan.initial();
+            me._flightPlan.initial();
         });
 
         return me;
     },
 
     #
-    # Destructor
+    # Destructor.
     #
     # @return void
     #
     del: func() {
-        me.listeners.del();
-        me.routeDialog.del();
-        me.flightPlan.del();
+        me._listeners.del();
+        me._routeDialog.del();
+        me._flightPlan.del();
     },
 
     #
     # Generate the XML file with the AI scenario.
     # The file will be stored to $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/aerotow-addon.xml.
     #
-    # @return bool - Return true on successful, otherwise false
+    # @return bool  Return true on successful, otherwise false.
     #
     generateXml: func() {
-        if (!me.flightPlan.generateXml()) {
+        if (!me._flightPlan.generateXml()) {
             return false;
         }
 
@@ -90,9 +90,9 @@ var Scenario = {
         };
 
         var node = props.Node.new(scenarioXml);
-        io.writexml(me.scenarioPath, node);
+        io.writexml(me._scenarioPath, node);
 
-        me.addScenarioToPropertyList();
+        me._addScenarioToPropertyList();
 
         return true;
     },
@@ -103,13 +103,13 @@ var Scenario = {
     #
     # @return void
     #
-    addScenarioToPropertyList: func() {
-        if (!me.isAlreadyAdded()) {
+    _addScenarioToPropertyList: func() {
+        if (!me._isAlreadyAdded()) {
             var scenarioData = {
                 "name":        Scenario.SCENARIO_NAME,
                 "id":          Scenario.SCENARIO_ID,
                 "description": Scenario.SCENARIO_DESC,
-                "path":        me.scenarioPath,
+                "path":        me._scenarioPath,
             };
 
             props.globals.getNode("/sim/ai/scenarios").addChild("scenario").setValues(scenarioData);
@@ -117,9 +117,9 @@ var Scenario = {
     },
 
     #
-    # @return bool - Return true if scenario is already added to "/sim/ai/scenarios" property list, otherwise return false.
+    # @return bool  Return true if scenario is already added to "/sim/ai/scenarios" property list, otherwise return false.
     #
-    isAlreadyAdded: func() {
+    _isAlreadyAdded: func() {
         foreach (var scenario; props.globals.getNode("/sim/ai/scenarios").getChildren("scenario")) {
             var id = scenario.getChild("id");
             if (id != nil and id.getValue() == Scenario.SCENARIO_ID) {
@@ -131,51 +131,51 @@ var Scenario = {
     },
 
     #
-    # Load scenario
+    # Load scenario.
     #
-    # @return bool - Return true on successful, otherwise false.
+    # @return bool  Return true on successful, otherwise false.
     #
     load: func() {
         var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
         if (fgcommand("load-scenario", args)) {
-            me.isScenarioLoaded = true;
-            me.message.success("Let's fly!");
+            me._isScenarioLoaded = true;
+            me._message.success("Let's fly!");
 
             # Enable engine sound
-            setprop(me.addonNodePath ~ "/addon-devel/sound/enable", true);
+            setprop(me._addonNodePath ~ "/addon-devel/sound/enable", true);
             return true;
         }
 
-        me.message.error("Tow failed!");
+        me._message.error("Tow failed!");
         return false;
     },
 
     #
-    # Unload scenario
+    # Unload scenario.
     #
-    # @param bool withMessages - Set true to display messages.
-    # @return bool - Return true on successful, otherwise false.
+    # @param  bool  withMessages  Set true to display messages.
+    # @return bool  Return true on successful, otherwise false.
     #
     unload: func(withMessages = false) {
-        if (me.isScenarioLoaded) {
+        if (me._isScenarioLoaded) {
             var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
             if (fgcommand("unload-scenario", args)) {
-                me.isScenarioLoaded = false;
+                me._isScenarioLoaded = false;
 
                 if (withMessages) {
-                    me.message.success("Aerotow disabled");
+                    me._message.success("Aerotow disabled");
                 }
                 return true;
             }
 
             if (withMessages) {
-                me.message.error("Aerotow disable failed");
+                me._message.error("Aerotow disable failed");
             }
             return false;
         }
 
         if (withMessages) {
-            me.message.success("Aerotow already disabled");
+            me._message.success("Aerotow already disabled");
         }
         return true;
     },

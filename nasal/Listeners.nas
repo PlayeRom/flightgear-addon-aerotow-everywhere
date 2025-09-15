@@ -10,7 +10,7 @@
 #
 
 #
-# Class to handle listeners
+# Class to handle listeners.
 #
 var Listeners = {
     #
@@ -21,7 +21,7 @@ var Listeners = {
     ON_CHILD_CHANGE: 2, # Triggered always, event if child properties has been changed.
 
     #
-    # Constructor
+    # Constructor.
     #
     # @return me
     #
@@ -34,7 +34,7 @@ var Listeners = {
     },
 
     #
-    # Destructor
+    # Destructor.
     #
     # @return void
     #
