@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.9.1
+
+- Fix iCCP color profile for PNG file
+
 ## v.1.9.0
 
 - Add Halifax tow aircraft
