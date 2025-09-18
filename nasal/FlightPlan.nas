@@ -311,7 +311,7 @@ var FlightPlan = {
             me._coord = coordRwyThreshold;
 
             # Move to the left of the runway threshold
-            me._heading = me._correctHeading(me._heading - 90);
+            me._heading = globals.geo.normdeg(me._heading - 90);
             me._coord.apply_course_distance(me._heading, 1000);
 
             # Add a waypoint to the left of the runway + 3000 m to the middle of length
@@ -535,7 +535,7 @@ var FlightPlan = {
         }
 
         # Shift heading and coordinates
-        me._heading = me._correctHeading(me._heading + wptShift.hdgChange);
+        me._heading = globals.geo.normdeg(me._heading + wptShift.hdgChange);
         me._coord.apply_course_distance(me._heading, wptShift.dist);
 
         if (contains(wptShift, "elevation")) {
@@ -548,24 +548,6 @@ var FlightPlan = {
             # Change altitude by given altChange
             me._altitude += wptShift.altChange;
         }
-    },
-
-    #
-    # Correct the heading value that to be from 0 to 360.
-    #
-    # @param  double  heading  Heading for correction.
-    # @return double  Return heading in range from 0 to 360.
-    #
-    _correctHeading: func(heading) {
-        if (heading < 0) {
-            heading += 360;
-        }
-
-        if (heading > 360) {
-            heading -= 360;
-        }
-
-        return heading;
     },
 
     #
