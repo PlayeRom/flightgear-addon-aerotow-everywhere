@@ -16,7 +16,7 @@ var Waypoint = {
     #
     # Constructor.
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         var me = { parents: [Waypoint] };
@@ -38,7 +38,7 @@ var Waypoint = {
     # Set name of waypoint.
     #
     # @param  string  name  Name of waypoint.
-    # @return me
+    # @return hash
     #
     setName: func(name) {
         me.name = name;
@@ -50,7 +50,7 @@ var Waypoint = {
     # Set coordinates of waypoint.
     #
     # @param  hash coord  The geo.Coord object.
-    # @return me
+    # @return hash
     #
     _setCoord: func(coord) {
         me.coord = coord;
@@ -62,7 +62,7 @@ var Waypoint = {
     # Set altitude in feet of waypoint
     #
     # @param  double  alt  Altitude in feet.
-    # @return me
+    # @return hash
     #
     _setAlt: func(alt) {
         me.alt = alt;
@@ -74,7 +74,7 @@ var Waypoint = {
     # Set altitude in feet of waypoint as cross at.
     #
     # @param  double  alt  Altitude in feet.
-    # @return me
+    # @return hash
     #
     setCrossAt: func(crossAt) {
         me.crossAt = crossAt;
@@ -86,7 +86,7 @@ var Waypoint = {
     # Set true airspeed in knots for waypoint.
     #
     # @param  double  ktas  True airspeed in knots.
-    # @return me
+    # @return hash
     #
     _setKtas: func(ktas) {
         me.ktas = ktas;
@@ -97,7 +97,7 @@ var Waypoint = {
     #
     # Set waypoint on the ground.
     #
-    # @return me
+    # @return hash
     #
     _setOnGround: func() {
         me.onGround = true;
@@ -108,7 +108,7 @@ var Waypoint = {
     #
     # Set flaps down.
     #
-    # @return me
+    # @return hash
     #
     _setFlapsDown: func() {
         me.flapsDown = true;
@@ -119,7 +119,7 @@ var Waypoint = {
     #
     # Set gear down.
     #
-    # @return me
+    # @return hash
     #
     _setGearDown: func() {
         me.gearDown = true;
@@ -131,7 +131,7 @@ var Waypoint = {
     # Set number of seconds for WAIT waypoint. This force to use "WAIT" name.
     #
     # @param  double  waitSec  Number of seconds.
-    # @return me
+    # @return hash
     #
     _setWaitSec: func(waitSec) {
         me.setName("WAIT"); # force WAIT name
@@ -144,7 +144,7 @@ var Waypoint = {
     # Set all waypoint data from given hash object.
     #
     # @param  hash  wptData
-    # @return me
+    # @return hash
     #
     setHashData: func(wptData) {
         if (wptData == nil) {

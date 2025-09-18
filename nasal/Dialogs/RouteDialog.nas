@@ -23,12 +23,14 @@ var RouteDialog = {
     # Constructor.
     #
     # @param  hash  message  Message object.
-    # @return me
+    # @return hash
     #
     new: func(message) {
-        var me = { parents: [RouteDialog] };
+        var me = {
+            parents : [RouteDialog],
+            _message: message,
+        };
 
-        me._message = message;
         me._addonNodePath = g_Addon.node.getPath();
 
         me._savePath = g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR;

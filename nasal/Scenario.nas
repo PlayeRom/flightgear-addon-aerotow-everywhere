@@ -16,21 +16,22 @@ var Scenario = {
     #
     # Constants.
     #
-    SCENARIO_ID:       "aerotow_addon",
-    SCENARIO_NAME:     "Aerotow Add-on",
-    SCENARIO_DESC:     "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.",
+    SCENARIO_ID      : "aerotow_addon",
+    SCENARIO_NAME    : "Aerotow Add-on",
+    SCENARIO_DESC    : "This scenario starts the towing plane at the airport where the pilot with the glider is located. Use Ctrl-o to hook the plane.",
     FILENAME_SCENARIO: "aerotow-addon.xml",
 
     #
     # Constructor
     #
     # @param  hash  message  Message object.
-    # @return me
+    # @return hash
     #
     new: func(message) {
-        var me = { parents: [Scenario] };
-
-        me._message = message;
+        var me = {
+            parents : [Scenario],
+            _message: message,
+        };
 
         me._addonNodePath = g_Addon.node.getPath();
 
@@ -75,15 +76,15 @@ var Scenario = {
         var scenarioXml = {
             "PropertyList": {
                 "scenario": {
-                    "name": Scenario.SCENARIO_NAME,
+                    "name"       : Scenario.SCENARIO_NAME,
                     "description": Scenario.SCENARIO_DESC,
                     "entry": {
-                        "callsign":   "FG-TOW",
-                        "type":       "aircraft",
-                        "class":      "aerotow-dragger",
-                        "model":      Aircraft.getSelected().modelPath,
+                        "callsign"  : "FG-TOW",
+                        "type"      : "aircraft",
+                        "class"     : "aerotow-dragger",
+                        "model"     : Aircraft.getSelected().modelPath,
                         "flightplan": FlightPlan.FILENAME_FLIGHTPLAN,
-                        "repeat":     true, # start again indefinitely, it will work if the aircraft stops on the ground
+                        "repeat"    : true, # start again indefinitely, it will work if the aircraft stops on the ground
                     }
                 }
             }
@@ -106,10 +107,10 @@ var Scenario = {
     _addScenarioToPropertyList: func() {
         if (!me._isAlreadyAdded()) {
             var scenarioData = {
-                "name":        Scenario.SCENARIO_NAME,
-                "id":          Scenario.SCENARIO_ID,
+                "name"       : Scenario.SCENARIO_NAME,
+                "id"         : Scenario.SCENARIO_ID,
                 "description": Scenario.SCENARIO_DESC,
-                "path":        me._scenarioPath,
+                "path"       : me._scenarioPath,
             };
 
             props.globals.getNode("/sim/ai/scenarios").addChild("scenario").setValues(scenarioData);

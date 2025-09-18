@@ -16,7 +16,7 @@ var Message = {
     #
     # Constructor.
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         return { parents: [Message] };

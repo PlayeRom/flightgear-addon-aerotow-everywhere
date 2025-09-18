@@ -24,13 +24,15 @@ var FlightPlan = {
     #
     # @param  hash  message  Message object.
     # @param  hash  routeDialog  RouteDialog object.
-    # @return me
+    # @return hash
     #
     new: func(message, routeDialog) {
-        var me = { parents: [FlightPlan] };
+        var me = {
+            parents     : [FlightPlan],
+            _message    : message,
+            _routeDialog: routeDialog,
+        };
 
-        me._message          = message;
-        me._routeDialog      = routeDialog;
         me._flightPlanWriter = FlightPlanWriter.new();
 
         me._addonNodePath = g_Addon.node.getPath();

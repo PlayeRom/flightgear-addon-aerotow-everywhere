@@ -17,13 +17,15 @@ var Thermal = {
     # Constructor
     #
     # @param  hash  message  Message object.
-    # @return me
+    # @return hash
     #
     new: func(message) {
-        var me = { parents: [Thermal] };
+        var me = {
+            parents : [Thermal],
+            _message: message,
+        };
 
         me._addonNodePath = g_Addon.node.getPath();
-        me._message = message;
         me._listeners = Listeners.new();
 
         # Listener for calculate distance from meters to nautical miles.

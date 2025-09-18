@@ -16,7 +16,7 @@ var FlightPlanWriter = {
     #
     # Constructor.
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         var me = { parents: [FlightPlanWriter] };

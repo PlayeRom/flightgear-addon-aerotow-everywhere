@@ -30,20 +30,21 @@ var Aircraft = {
     # @param  string  name  Full name of aircraft used in route dialog.
     # @param  string  nameMenuCall  Short name of aircraft for call a plane from menu.
     # @param  string  modelPath  Path to the aircraft model.
-    # @return me
+    # @return hash
     #
     new: func(vs, speed, speedLimit, rolling, minRwyLength, minFinalLegDist, name, nameMenuCall, modelPath) {
-        var me = { parents: [Aircraft] };
-
-        me.vs              = vs;
-        me.speed           = speed;
-        me.speedLimit      = speedLimit;
-        me.rolling         = rolling;
-        me.minRwyLength    = minRwyLength;
-        me.minFinalLegDist = minFinalLegDist;
-        me.name            = name;
-        me.nameMenuCall    = nameMenuCall;
-        me.modelPath       = modelPath;
+        var me = {
+            parents        : [Aircraft],
+            vs             : vs,
+            speed          : speed,
+            speedLimit     : speedLimit,
+            rolling        : rolling,
+            minRwyLength   : minRwyLength,
+            minFinalLegDist: minFinalLegDist,
+            name           : name,
+            nameMenuCall   : nameMenuCall,
+            modelPath      : modelPath,
+        };
 
         return me;
     },
@@ -115,7 +116,7 @@ var AircraftCub = {
     #
     # Constructor
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         return {
@@ -144,7 +145,7 @@ var AircraftRobin = {
     #
     # Constructor
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         return {
@@ -173,7 +174,7 @@ var AircraftC182 = {
     #
     # Constructor
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         return {
@@ -202,7 +203,7 @@ var AircraftC47 = {
     #
     # Constructor
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         return {
@@ -232,7 +233,7 @@ var AircraftHalifax = {
     #
     # Constructor
     #
-    # @return me
+    # @return hash
     #
     new: func() {
         return {
