@@ -14,7 +14,7 @@
 # @return void
 #
 var main = func(addon) {
-    logprint(LOG_ALERT, "Aerotow Everywhere add-on initialized from path ", addon.basePath);
+    logprint(LOG_ALERT, addon.name, " Add-on initialized from path ", addon.basePath);
 
     loadExtraNasalFiles(addon);
 
@@ -50,7 +50,7 @@ var loadExtraNasalFiles = func(addon) {
         var fileName = addon.basePath ~ "/" ~ scriptName ~ ".nas";
 
         if (!io.load_nasal(fileName, "aerotow")) {
-            logprint(LOG_ALERT, "Aerotow Add-on module \"", scriptName, "\" loading failed");
+            logprint(LOG_ALERT, addon.name, " Add-on module \"", scriptName, "\" loading failed");
         }
     }
 };
