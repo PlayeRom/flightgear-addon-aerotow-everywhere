@@ -10,26 +10,6 @@
 #
 
 #
-# This function is for addon development only. It is called on addon
-# reload. The addons system will replace setlistener() and maketimer() to
-# track this resources automatically for you.
-#
-# Listeners created with setlistener() will be removed automatically for you.
-# Timers created with maketimer() will have their stop() method called
-# automatically for you. You should NOT use settimer anymore, see wiki at
-# http://wiki.flightgear.org/Nasal_library#maketimer.28.29
-#
-# Other resources should be freed by adding the corresponding code here,
-# e.g. myCanvas.del();
-#
-# @param  ghost  addon  The addons.Addon object.
-# @return void
-#
-var unload = func(addon) {
-    aerotow.uninit();
-};
-
-#
 # @param  ghost  addon  The addons.Addon object.
 # @return void
 #
@@ -51,10 +31,11 @@ var main = func(addon) {
 #
 var loadExtraNasalFiles = func(addon) {
     var modules = [
-        "nasal/Listeners",
-        "nasal/Timer",
+        "nasal/Utils/Listeners",
+        "nasal/Utils/Log",
+        "nasal/Utils/Message",
+        "nasal/Utils/Timer",
         "nasal/Aircraft",
-        "nasal/Message",
         "nasal/Dialogs/RouteDialog",
         "nasal/Dialogs/Thermal",
         "nasal/FlightPlan",
@@ -93,4 +74,24 @@ var createDirectories = func(addon) {
     # Create /route-saves directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
     path = os.path.new(addon.storagePath ~ "/" ~ aerotow.RouteDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
     path.create_dir();
+};
+
+#
+# This function is for addon development only. It is called on addon
+# reload. The addons system will replace setlistener() and maketimer() to
+# track this resources automatically for you.
+#
+# Listeners created with setlistener() will be removed automatically for you.
+# Timers created with maketimer() will have their stop() method called
+# automatically for you. You should NOT use settimer anymore, see wiki at
+# http://wiki.flightgear.org/Nasal_library#maketimer.28.29
+#
+# Other resources should be freed by adding the corresponding code here,
+# e.g. myCanvas.del();
+#
+# @param  ghost  addon  The addons.Addon object.
+# @return void
+#
+var unload = func(addon) {
+    aerotow.uninit();
 };

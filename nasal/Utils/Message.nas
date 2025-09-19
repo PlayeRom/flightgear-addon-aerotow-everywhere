@@ -51,7 +51,7 @@ var Message = {
     #
     _display: func(message, type) {
         # Print to console
-        logprint(LOG_ALERT, "Aerotow Everywhere add-on: ", message);
+        Log.alert(message);
 
         # Read the message by speech synthesizer
         props.globals.getNode("/sim/sound/voices/ai-plane").setValue(message);

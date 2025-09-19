@@ -10,6 +10,12 @@
 #
 
 #
+# MY_LOG_LEVEL is using in logprint() to quickly change all logs visibility used in "aerotow" namespace.
+# Possible flags: LOG_ALERT, LOG_WARN, LOG_INFO, LOG_DEBUG, LOG_BULK.
+#
+var MY_LOG_LEVEL = LOG_WARN;
+
+#
 # Global object of addons.Addon.
 #
 var g_Addon = nil;
