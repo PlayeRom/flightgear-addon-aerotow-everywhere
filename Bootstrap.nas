@@ -38,10 +38,21 @@ var Bootstrap = {
     init: func(addon) {
         g_Addon = addon;
 
-        Bootstrap.initDevMode();
-        Bootstrap.createDirectories();
+        Bootstrap._initDevMode();
+        Bootstrap._createDirectories();
 
         g_Aerotow = Aerotow.new();
+    },
+
+    #
+    # Uninitialize addon's namespace
+    #
+    # @return void
+    #
+    uninit: func() {
+        if (g_Aerotow) {
+            g_Aerotow.del();
+        }
     },
 
     #
@@ -49,7 +60,7 @@ var Bootstrap = {
     #
     # @return void
     #
-    createDirectories: func() {
+    _createDirectories: func() {
         # Create $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow directory
         g_Addon.createStorageDir();
 
@@ -69,7 +80,7 @@ var Bootstrap = {
     #
     # @return void
     #
-    initDevMode: func() {
+    _initDevMode: func() {
         var reloadMenu = DevReload.new();
         var env = DevEnv.new();
 
@@ -80,17 +91,6 @@ var Bootstrap = {
         var logLevel = env.getValue("MY_LOG_LEVEL");
         if (logLevel != nil) {
             MY_LOG_LEVEL = logLevel;
-        }
-    },
-
-    #
-    # Uninitialize addon's namespace
-    #
-    # @return void
-    #
-    uninit: func() {
-        if (g_Aerotow) {
-            g_Aerotow.del();
         }
     },
 };
