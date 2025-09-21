@@ -22,14 +22,10 @@ var RouteDialog = {
     #
     # Constructor.
     #
-    # @param  hash  message  Message object.
     # @return hash
     #
-    new: func(message) {
-        var me = {
-            parents : [RouteDialog],
-            _message: message,
-        };
+    new: func() {
+        var me = { parents : [RouteDialog] };
 
         me._addonNodePath = g_Addon.node.getPath();
 
@@ -121,7 +117,7 @@ var RouteDialog = {
             func (node) {
                 var nodeSave = props.globals.getNode(me._addonNodePath ~ "/addon-devel/route/wpts");
                 if (io.write_properties(node.getValue(), nodeSave)) {
-                    me._message.success("The route has been saved");
+                    Message.success("The route has been saved");
                 }
             },
             "Save route",
@@ -139,7 +135,7 @@ var RouteDialog = {
             func (node) {
                 var nodeLoad = props.globals.getNode(me._addonNodePath ~ "/addon-devel/route/wpts");
                 if (io.read_properties(node.getValue(), nodeLoad)) {
-                    me._message.success("The route has been loaded");
+                    Message.success("The route has been loaded");
                 }
             },
             "Load route",

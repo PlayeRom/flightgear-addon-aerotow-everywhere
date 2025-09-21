@@ -24,9 +24,8 @@ var Aerotow = {
         me._addonNodePath = g_Addon.node.getPath();
         me._listeners = Listeners.new();
 
-        me._message  = Message.new();
-        me._thermal  = Thermal.new(me._message);
-        me._scenario = Scenario.new(me._message);
+        me._thermal  = Thermal.new();
+        me._scenario = Scenario.new();
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
         me._listeners.add(me._addonNodePath ~ "/addon-devel/ai-model", func () {
@@ -53,7 +52,7 @@ var Aerotow = {
     # @return void
     #
     _restartAerotow: func() {
-        me._message.success("Aerotow on the way");
+        Message.success("Aerotow on the way");
 
         # Stop playing engine sound
         setprop(me._addonNodePath ~ "/addon-devel/sound/enable", false);

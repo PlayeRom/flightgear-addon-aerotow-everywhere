@@ -22,14 +22,12 @@ var FlightPlan = {
     #
     # Constructor.
     #
-    # @param  hash  message  Message object.
     # @param  hash  routeDialog  RouteDialog object.
     # @return hash
     #
-    new: func(message, routeDialog) {
+    new: func(routeDialog) {
         var me = {
             parents     : [FlightPlan],
-            _message    : message,
             _routeDialog: routeDialog,
         };
 
@@ -61,14 +59,14 @@ var FlightPlan = {
     _getLocation: func() {
         var icao = getprop("/sim/airport/closest-airport-id");
         if (icao == nil or icao == "") {
-            me._message.error("Airport code cannot be obtained.");
+            Message.error("Airport code cannot be obtained.");
             return nil;
         }
 
         # Find nearest runway threshold
         var airport = airportinfo(icao);
         if (airport == nil) {
-            me._message.error("An airport with the code " ~ icao ~ " cannot be found.");
+            Message.error("An airport with the code " ~ icao ~ " cannot be found.");
             return nil;
         }
 
@@ -91,7 +89,7 @@ var FlightPlan = {
 
         var minRwyLength = Aircraft.getSelected().minRwyLength;
         if (rwyResult.runway.length < minRwyLength) {
-            me._message.error(
+            Message.error(
                 "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
                 ~ "(" ~ math.round(minRwyLength * globals.M2FT) ~ " ft)."
             );

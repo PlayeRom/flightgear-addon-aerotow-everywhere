@@ -16,14 +16,10 @@ var Thermal = {
     #
     # Constructor
     #
-    # @param  hash  message  Message object.
     # @return hash
     #
-    new: func(message) {
-        var me = {
-            parents : [Thermal],
-            _message: message,
-        };
+    new: func() {
+        var me = { parents : [Thermal] };
 
         me._addonNodePath = g_Addon.node.getPath();
         me._listeners = Listeners.new();
@@ -87,11 +83,11 @@ var Thermal = {
         });
 
         if (fgcommand("add-aiobject", args)) {
-            me._message.success("The thermal has been added");
+            Message.success("The thermal has been added");
             return true;
         }
 
-        me._message.error("Adding thermal failed");
+        Message.error("Adding thermal failed");
         return false;
     },
 };

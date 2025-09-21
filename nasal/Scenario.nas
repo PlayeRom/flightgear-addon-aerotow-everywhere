@@ -24,20 +24,16 @@ var Scenario = {
     #
     # Constructor
     #
-    # @param  hash  message  Message object.
     # @return hash
     #
-    new: func(message) {
-        var me = {
-            parents : [Scenario],
-            _message: message,
-        };
+    new: func() {
+        var me = { parents : [Scenario] };
 
         me._addonNodePath = g_Addon.node.getPath();
 
         me._listeners = Listeners.new();
-        me._routeDialog = RouteDialog.new(message);
-        me._flightPlan = FlightPlan.new(message, me._routeDialog);
+        me._routeDialog = RouteDialog.new();
+        me._flightPlan = FlightPlan.new(me._routeDialog);
         me._isScenarioLoaded = false;
         me._scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
 
@@ -140,14 +136,14 @@ var Scenario = {
         var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
         if (fgcommand("load-scenario", args)) {
             me._isScenarioLoaded = true;
-            me._message.success("Let's fly!");
+            Message.success("Let's fly!");
 
             # Enable engine sound
             setprop(me._addonNodePath ~ "/addon-devel/sound/enable", true);
             return true;
         }
 
-        me._message.error("Tow failed!");
+        Message.error("Tow failed!");
         return false;
     },
 
@@ -164,19 +160,19 @@ var Scenario = {
                 me._isScenarioLoaded = false;
 
                 if (withMessages) {
-                    me._message.success("Aerotow disabled");
+                    Message.success("Aerotow disabled");
                 }
                 return true;
             }
 
             if (withMessages) {
-                me._message.error("Aerotow disable failed");
+                Message.error("Aerotow disable failed");
             }
             return false;
         }
 
         if (withMessages) {
-            me._message.success("Aerotow already disabled");
+            Message.success("Aerotow already disabled");
         }
         return true;
     },

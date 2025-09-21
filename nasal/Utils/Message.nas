@@ -14,22 +14,13 @@
 #
 var Message = {
     #
-    # Constructor.
-    #
-    # @return hash
-    #
-    new: func() {
-        return { parents: [Message] };
-    },
-
-    #
     # Display given message as OK.
     #
     # @param  string  message  The text message to display on the screen and read by speech synthesizer.
     # @return void
     #
     success: func(message) {
-        me._display(message, "ok");
+        Message._display(message, "ok");
     },
 
     #
@@ -39,7 +30,7 @@ var Message = {
     # @return void
     #
     error: func(message) {
-        me._display(message, "error");
+        Message._display(message, "error");
     },
 
     #
