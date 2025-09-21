@@ -16,64 +16,52 @@
 var main = func(addon) {
     logprint(LOG_ALERT, addon.name, " Add-on initialized from path ", addon.basePath);
 
-    loadExtraNasalFiles(addon);
+    loadNasalFiles(addon.basePath, "aerotow");
 
-    createDirectories(addon);
-
-    aerotow.init(addon);
+    aerotow.Bootstrap.init(addon);
 };
 
 #
-# Load extra Nasal files in main add-on directory.
+# Search for ".nas" files recursively and load them.
 #
-# @param  ghost  addon  The addons.Addon object.
+# @param  string  path  Starts as base path of add-on.
+# @param  string  namespace  Namespace of add-on.
+# @param  int  level  Starts from 0, each subsequent subdirectory gets level + 1.
+# @param  bool  isWidget  If true then we are in Widgets folder which means that we need add file to separate namespace.
 # @return void
 #
-var loadExtraNasalFiles = func(addon) {
-    var modules = [
-        "nasal/Utils/Listeners",
-        "nasal/Utils/Log",
-        "nasal/Utils/Message",
-        "nasal/Utils/Timer",
-        "nasal/Aircraft",
-        "nasal/Dialogs/RouteDialog",
-        "nasal/Dialogs/Thermal",
-        "nasal/FlightPlan",
-        "nasal/Scenario",
-        "nasal/IO/Waypoint",
-        "nasal/IO/FlightPlanWriter",
-        "nasal/Aerotow",
-        "Aerotow",
-    ];
+var loadNasalFiles = func(path, namespace, level = 0, isWidget = false) {
+    var files = globals.directory(path);
 
-    foreach (var scriptName; modules) {
-        var fileName = addon.basePath ~ "/" ~ scriptName ~ ".nas";
-
-        if (!io.load_nasal(fileName, "aerotow")) {
-            logprint(LOG_ALERT, addon.name, " Add-on module \"", scriptName, "\" loading failed");
+    foreach (var file; files) {
+        if (file == "." or file == ".." or (level == 0 and file == "addon-main.nas")) {
+            continue;
         }
+
+        var fullPath = path ~ "/" ~ file;
+        var fileUc = string.uc(file);
+
+        if (io.is_regular_file(fullPath) and substr(fileUc, size(file) - 4) == ".NAS") {
+            io.load_nasal(fullPath, isWidget ? "canvas" : namespace);
+            continue;
+        }
+
+        if (level == 0 and fileUc != "NASAL") {
+            # At level 0 we are only interested in the "nasal" directory.
+            continue;
+        }
+
+        if (!io.is_directory(fullPath)) {
+            continue;
+        }
+
+        if (!isWidget) {
+            # Mark that we are entering the "Widgets" directory ("canvas" namespace).
+            isWidget = fileUc == "WIDGETS";
+        }
+
+        loadNasalFiles(fullPath, namespace, level + 1, isWidget);
     }
-};
-
-#
-# Create all needed directories.
-#
-# @param  ghost  addon  The addons.Addon object.
-# @return void
-#
-var createDirectories = func(addon) {
-    # Create $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow directory
-    addon.createStorageDir();
-
-    # Create /AI/FlightPlans/ directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
-    # User has to add the path as --data=$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow
-    # Then the FG will be able to read flight plan file
-    var path = os.path.new(addon.storagePath ~ "/AI/FlightPlans/dummy-file.txt");
-    path.create_dir();
-
-    # Create /route-saves directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
-    path = os.path.new(addon.storagePath ~ "/" ~ aerotow.RouteDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
-    path.create_dir();
 };
 
 #
@@ -93,5 +81,6 @@ var createDirectories = func(addon) {
 # @return void
 #
 var unload = func(addon) {
-    aerotow.uninit();
+    aerotow.Log.print("unload");
+    aerotow.Bootstrap.uninit();
 };
