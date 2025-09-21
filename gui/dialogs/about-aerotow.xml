@@ -29,11 +29,11 @@
             <stretch>1</stretch>
         </empty>
         <button>
-            <pref-width>16</pref-width>
-            <pref-height>16</pref-height>
+            <legend>X</legend>
+            <pref-width>20</pref-width>
+            <pref-height>20</pref-height>
             <legend></legend>
-            <keynum>27</keynum>
-            <border>2</border>
+            <key>Esc</key>
             <binding>
                 <command>dialog-close</command>
             </binding>
@@ -51,7 +51,7 @@
     </text>
 
     <button>
-        <legend>Open the repository website...</legend>
+        <legend>Open the Repository Website</legend>
         <binding>
             <command>open-browser</command>
             <url>https://github.com/PlayeRom/flightgear-addon-aerotow-everywhere</url>
