@@ -66,7 +66,7 @@ var FlightPlan = {
         # Find nearest runway threshold
         var airport = airportinfo(icao);
         if (airport == nil) {
-            Message.error("An airport with the code " ~ icao ~ " cannot be found.");
+            Message.error("An airport with the code ", icao, " cannot be found.");
             return nil;
         }
 
@@ -90,8 +90,8 @@ var FlightPlan = {
         var minRwyLength = Aircraft.getSelected().minRwyLength;
         if (rwyResult.runway.length < minRwyLength) {
             Message.error(
-                "This runway is too short. Please choose a longer one than " ~ minRwyLength ~ " m "
-                ~ "(" ~ math.round(minRwyLength * globals.M2FT) ~ " ft)."
+                "This runway is too short. Please choose a longer one than ", minRwyLength, " m ",
+                "(", math.round(minRwyLength * globals.M2FT), " ft)."
             );
             return nil;
         }

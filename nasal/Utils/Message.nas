@@ -16,21 +16,21 @@ var Message = {
     #
     # Display given message as OK.
     #
-    # @param  string  message  The text message to display on the screen and read by speech synthesizer.
+    # @param  string  msgs  The text message to display on the screen and read by speech synthesizer.
     # @return void
     #
-    success: func(message) {
-        Message._display(message, "ok");
+    success: func(msgs...) {
+        Message._display(string.join("", msgs), "ok");
     },
 
     #
     # Display given message as an error.
     #
-    # @param  string  message  The text message to display on the screen and read by speech synthesizer.
+    # @param  string  msgs  The text message to display on the screen and read by speech synthesizer.
     # @return void
     #
-    error: func(message) {
-        Message._display(message, "error");
+    error: func(msgs...) {
+        Message._display(string.join("", msgs), "error");
     },
 
     #
