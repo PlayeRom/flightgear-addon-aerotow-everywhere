@@ -66,9 +66,8 @@ var Loader = {
                 continue;
             }
 
-               if (me._isNamespaceChange(entry, fullPath, "Widgets")) me.load(fullPath, "canvas", level + 1);
-            elsif (me._isNamespaceChange(entry, fullPath, "Dev"))     me.load(fullPath, "dev", level + 1);
-            else                                                      me.load(fullPath, namespace, level + 1);
+            if (me._isNamespaceChange(entry, fullPath, "Widgets")) me.load(fullPath, "canvas", level + 1);
+            else                                                   me.load(fullPath, namespace, level + 1);
         }
     },
 
