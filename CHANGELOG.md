@@ -3,6 +3,7 @@
 ## v.1.9.2
 
 - Fix adding thermal
+- Fix save and load aerotow route
 
 ## v.1.9.1
 

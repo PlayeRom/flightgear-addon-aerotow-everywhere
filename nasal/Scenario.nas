@@ -37,11 +37,11 @@ var Scenario = {
         me._isScenarioLoaded = false;
         me._scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
 
-        me._flightPlan.initial();
+        me.initialFlightPlan();
 
         me._listeners.add("/sim/presets/longitude-deg", func () {
             # User change airport/runway
-            me._flightPlan.initial();
+            me.initialFlightPlan();
         });
 
         return me;
@@ -175,5 +175,26 @@ var Scenario = {
             Message.success("Aerotow already disabled");
         }
         return true;
+    },
+
+    #
+    # @return void
+    #
+    initialFlightPlan: func() {
+        me._flightPlan.initial();
+    },
+
+    #
+    # @return void
+    #
+    routeDialogSave: func() {
+        me._routeDialog.save();
+    },
+
+    #
+    # @return void
+    #
+    routeDialogLoad: func() {
+        me._routeDialog.load();
     },
 };

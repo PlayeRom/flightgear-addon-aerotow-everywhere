@@ -109,9 +109,30 @@ var Aerotow = {
     #
     # Add thermal
     #
-    # @@return bool  Return true on successful, otherwise false.
+    # @return bool  Return true on successful, otherwise false.
     #
     addThermal: func() {
         me._thermal.add();
+    },
+
+    #
+    # @return void
+    #
+    initialFlightPlan: func() {
+        me._scenario.initialFlightPlan();
+    },
+
+    #
+    # @return void
+    #
+    routeDialogSave: func() {
+        me._scenario.routeDialogSave();
+    },
+
+    #
+    # @return void
+    #
+    routeDialogLoad: func() {
+        me._scenario.routeDialogLoad();
     },
 };
