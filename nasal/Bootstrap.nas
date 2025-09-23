@@ -35,6 +35,11 @@ var g_Addon = nil;
 var g_Aerotow = nil;
 
 #
+# Global object of add thermal dialog.
+#
+var g_AddThermalDialog = nil;
+
+#
 # Global object of help dialog.
 #
 var g_HelpDialog = nil;
@@ -63,6 +68,7 @@ var Bootstrap = {
         g_Aerotow = Aerotow.new();
 
         # Disable the menu as it loads with delay.
+        gui.menuEnable("aerotow-everywhere-add-thermal-dialog", false);
         gui.menuEnable("aerotow-everywhere-help-dialog", false);
         gui.menuEnable("aerotow-everywhere-about-dialog", false);
 
@@ -73,10 +79,12 @@ var Bootstrap = {
         # then the textures of this add-on.
 
         Timer.singleShot(3, func() {
+            g_AddThermalDialog = ThermalDialog.new();
             g_HelpDialog = HelpDialog.new();
             g_AboutDialog = AboutDialog.new();
 
             # Enable the menu as the entire Canvas should now be loaded.
+            gui.menuEnable("aerotow-everywhere-add-thermal-dialog", true);
             gui.menuEnable("aerotow-everywhere-help-dialog", true);
             gui.menuEnable("aerotow-everywhere-about-dialog", true);
         });
@@ -90,6 +98,10 @@ var Bootstrap = {
     uninit: func() {
         if (g_Aerotow) {
             g_Aerotow.del();
+        }
+
+        if (g_AddThermalDialog) {
+            g_AddThermalDialog.del();
         }
 
         if (g_HelpDialog) {

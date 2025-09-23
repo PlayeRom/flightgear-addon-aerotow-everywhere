@@ -106,9 +106,10 @@
             </item>
             <item>
                 <label>Add thermal...</label>
+                <name>aerotow-everywhere-add-thermal-dialog</name>
                 <binding>
-                    <command>dialog-show</command>
-                    <dialog-name>add-thermal</dialog-name>
+                    <command>nasal</command>
+                    <script>aerotowAddon.g_AddThermalDialog.show();</script>
                 </binding>
             </item>
             <item>
@@ -120,7 +121,7 @@
                 <name>aerotow-everywhere-help-dialog</name>
                 <binding>
                     <command>nasal</command>
-                    <script>aerotow.g_HelpDialog.show();</script>
+                    <script>aerotowAddon.g_HelpDialog.show();</script>
                 </binding>
             </item>
             <item>
@@ -128,7 +129,7 @@
                 <name>aerotow-everywhere-about-dialog</name>
                 <binding>
                     <command>nasal</command>
-                    <script>aerotow.g_AboutDialog.show();</script>
+                    <script>aerotowAddon.g_AboutDialog.show();</script>
                 </binding>
             </item>
 
