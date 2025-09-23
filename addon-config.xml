@@ -29,13 +29,9 @@
                     <ai-model type="string">Cub</ai-model>
                     <add-thermal>
                         <distance-m type="int">300</distance-m>
-                        <distance-nm type="double">0.16</distance-nm>
                         <strength-fps type="double">16.0</strength-fps>
-                        <strength-mps type="double">4.88</strength-mps>
                         <diameter-ft type="int">4000</diameter-ft>
-                        <diameter-m type="int">1219</diameter-m>
                         <height-msl type="int">9000</height-msl>
-                        <height-msl-m type="int">2742</height-msl-m>
                     </add-thermal>
                     <route>
                         <ai-model>Piper J3 Cub</ai-model>

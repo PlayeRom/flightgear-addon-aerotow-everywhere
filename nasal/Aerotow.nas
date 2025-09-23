@@ -24,8 +24,7 @@ var Aerotow = {
         obj._addonNodePath = g_Addon.node.getPath();
         obj._listeners = Listeners.new();
 
-        obj._thermal  = Thermal.new();
-        obj._scenario = Scenario.new();
+        me._scenario = Scenario.new();
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
         obj._listeners.add(obj._addonNodePath ~ "/addon-devel/ai-model", func () {
@@ -42,7 +41,6 @@ var Aerotow = {
     #
     del: func() {
         me._listeners.del();
-        me._thermal.del();
         me._scenario.del();
     },
 
@@ -104,15 +102,6 @@ var Aerotow = {
     stopAerotow: func() {
         var withMessages = true;
         return me._scenario.unload(withMessages);
-    },
-
-    #
-    # Add thermal
-    #
-    # @return bool  Return true on successful, otherwise false.
-    #
-    addThermal: func() {
-        me._thermal.add();
     },
 
     #
