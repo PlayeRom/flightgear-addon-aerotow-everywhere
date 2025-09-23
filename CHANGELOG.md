@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.9.2
+
+- Fix adding thermal
+
 ## v.1.9.1
 
 - Fix iCCP color profile for PNG file
