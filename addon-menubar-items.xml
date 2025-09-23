@@ -106,9 +106,10 @@
             </item>
             <item>
                 <label>Add thermal...</label>
+                <name>aerotow-everywhere-add-thermal-dialog</name>
                 <binding>
-                    <command>dialog-show</command>
-                    <dialog-name>add-thermal</dialog-name>
+                    <command>nasal</command>
+                    <script>aerotow.g_AddThermalDialog.show();</script>
                 </binding>
             </item>
             <item>
