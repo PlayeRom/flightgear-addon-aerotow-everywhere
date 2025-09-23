@@ -56,8 +56,11 @@
                     <sound>
                         <enable type="bool">false</enable>
                     </sound>
-                    <help-text type="string">=== How to start? ===
-
+                    <help-text type="string">
+                        <paragraph type="string">
+How to start?
+                        </paragraph>
+                        <paragraph type="string">
 From the top menu, select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400", "Cessna 182" or "Douglas C-47". (Yes, you can choose from many aircraft.)
 The tow aircraft will appear to your right and align to the centerline of the runway in front of you. At this time you should hook up to the aircraft, most often by `Ctrl-o` key. Check help of your glider. The aircraft will begin to accelerate and take off.
 
@@ -66,9 +69,11 @@ The tow plane always takes off in front of your runway and flies along the runwa
 You can disconnect from the aircraft at any time, most often by pressing the `o` key.
 
 Before start you can change route of AI aircraft by menu "Aerotow Everywhere" -> "Aerotow Route".
-
-=== Troubleshooting ===
-
+                        </paragraph>
+                        <paragraph type="string">
+Troubleshooting
+                        </paragraph>
+                        <paragraph type="string">
 1. When I select "Aerotow Everywhere" -> "Call for Piper J3 Cub aircraft", "Robin DR400" or "Cessna 182" from menu, I see "Let's fly!" message but nothing happened. The tow plane does not appear.
 
 Probably you didn't include the `--data` command line option with the path where FlightGear should look for additional flight plan files for AI. Unfortunately, the simulator does not inform us that there was a problem with finding the flight plan file, so everything looks like it should work but does not.
@@ -81,7 +86,7 @@ or on the Windows:
 --data=C:\Users\{username}\AppData\Roaming\flightgear.org\Export\Addons\org.flightgear.addons.Aerotow
 
 Run simulator again, now everything should be working.
-
+                        </paragraph>
                     </help-text>
                 </addon-devel>
             </org.flightgear.addons.Aerotow>
