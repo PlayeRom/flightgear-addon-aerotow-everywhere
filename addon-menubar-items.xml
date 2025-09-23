@@ -118,9 +118,10 @@
             </item>
             <item>
                 <label>About...</label>
+                <name>aerotow-everywhere-about-dialog</name>
                 <binding>
-                    <command>dialog-show</command>
-                    <dialog-name>about-aerotow</dialog-name>
+                    <command>nasal</command>
+                    <script>aerotow.g_AboutDialog.show();</script>
                 </binding>
             </item>
 

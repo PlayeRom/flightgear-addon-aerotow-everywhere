@@ -35,6 +35,11 @@ var g_Addon = nil;
 var g_Aerotow = nil;
 
 #
+# Global object of about dialog.
+#
+var g_AboutDialog = nil;
+
+#
 # Create objects from add-on namespace.
 #
 var Bootstrap = {
@@ -51,6 +56,22 @@ var Bootstrap = {
         me._createDirectories();
 
         g_Aerotow = Aerotow.new();
+
+        # Disable the menu as it loads with delay.
+        gui.menuEnable("aerotow-everywhere-about-dialog", false);
+
+        # Delay loading of the whole addon so as not to break the MCDUs for aircraft like A320, A330. The point is that,
+        # for example, the A320 hard-coded the texture index from /canvas/by-index/texture[15]. But add-on can creates
+        # its canvas textures earlier than the airplane, which will cause that at index 15 there will be no MCDU texture
+        # but the texture from the add-on. So thanks to this delay, the textures of the plane will be created first, and
+        # then the textures of this add-on.
+
+        Timer.singleShot(3, func() {
+            g_AboutDialog = AboutDialog.new();
+
+            # Enable the menu as the entire Canvas should now be loaded.
+            gui.menuEnable("aerotow-everywhere-about-dialog", true);
+        });
     },
 
     #
@@ -61,6 +82,10 @@ var Bootstrap = {
     uninit: func() {
         if (g_Aerotow) {
             g_Aerotow.del();
+        }
+
+        if (g_AboutDialog) {
+            g_AboutDialog.del();
         }
     },
 
