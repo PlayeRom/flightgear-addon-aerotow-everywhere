@@ -26,6 +26,11 @@ var g_Addon = nil;
 var g_Aerotow = nil;
 
 #
+# Global object of help dialog.
+#
+var g_HelpDialog = nil;
+
+#
 # Global object of about dialog.
 #
 var g_AboutDialog = nil;
@@ -49,6 +54,7 @@ var Bootstrap = {
         g_Aerotow = Aerotow.new();
 
         # Disable the menu as it loads with delay.
+        gui.menuEnable("aerotow-everywhere-help-dialog", false);
         gui.menuEnable("aerotow-everywhere-about-dialog", false);
 
         # Delay loading of the whole addon so as not to break the MCDUs for aircraft like A320, A330. The point is that,
@@ -58,9 +64,11 @@ var Bootstrap = {
         # then the textures of this add-on.
 
         Timer.singleShot(3, func() {
+            g_HelpDialog = HelpDialog.new();
             g_AboutDialog = AboutDialog.new();
 
             # Enable the menu as the entire Canvas should now be loaded.
+            gui.menuEnable("aerotow-everywhere-help-dialog", true);
             gui.menuEnable("aerotow-everywhere-about-dialog", true);
         });
     },
@@ -73,6 +81,10 @@ var Bootstrap = {
     uninit: func() {
         if (g_Aerotow) {
             g_Aerotow.del();
+        }
+
+        if (g_HelpDialog) {
+            g_HelpDialog.del();
         }
 
         if (g_AboutDialog) {
