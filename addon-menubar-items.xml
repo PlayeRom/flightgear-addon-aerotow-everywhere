@@ -111,9 +111,10 @@
             </item>
             <item>
                 <label>Help...</label>
+                <name>aerotow-everywhere-help-dialog</name>
                 <binding>
-                    <command>dialog-show</command>
-                    <dialog-name>help-aerotow</dialog-name>
+                    <command>nasal</command>
+                    <script>aerotow.g_HelpDialog.show();</script>
                 </binding>
             </item>
             <item>
