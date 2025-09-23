@@ -10,7 +10,7 @@
 #
 
 #
-# ThermalDialog class to display about info.
+# ThermalDialog class to add thermal.
 #
 var ThermalDialog = {
     #
