@@ -105,4 +105,13 @@ var Aerotow = {
         var withMessages = true;
         return me._scenario.unload(withMessages);
     },
+
+    #
+    # Add thermal
+    #
+    # @@return bool  Return true on successful, otherwise false.
+    #
+    addThermal: func() {
+        me._thermal.add();
+    },
 };
