@@ -77,7 +77,7 @@ var Aircraft = {
     # @return Aircraft
     #
     getSelected: func(isRouteMode = false) {
-        var name = Aircraft.getSelectedAircraftName(isRouteMode);
+        var name = Aircraft._getSelectedAircraftName(isRouteMode);
         foreach (var aircraft; g_Aircraft) {
             if (aircraft.isModelName(name)) {
                 return aircraft;
@@ -96,7 +96,7 @@ var Aircraft = {
     #                            use false (default) for call the airplane for towing.
     # @return string
     #
-    getSelectedAircraftName: func(isRouteMode) {
+    _getSelectedAircraftName: func(isRouteMode) {
         if (isRouteMode) {
             return getprop(g_Addon.node.getPath() ~ "/addon-devel/route/ai-model") or g_Aircraft[0].name;
         }

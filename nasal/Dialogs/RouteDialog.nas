@@ -72,8 +72,7 @@ var RouteDialog = {
         var isEnd = false;
         var isAltLimit = false;
 
-        var isRouteMode = true;
-        var aircraft = Aircraft.getSelected(isRouteMode);
+        var aircraft = Aircraft.getSelected(isRouteMode: true);
 
         # 0 means without altitude limits
         var maxAltAgl = getprop(me._addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl") or 0;
