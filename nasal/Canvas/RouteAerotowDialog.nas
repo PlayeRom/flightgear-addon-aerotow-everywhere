@@ -80,9 +80,15 @@ var RouteAerotowDialog = {
     # @return ghost  Horizontal box layout.
     #
     _buildLayoutTopDesc: func() {
+        var vBox = canvas.VBoxLayout.new();
+        vBox.addItem(me._getLabel("Here you can change the default flight path of the tow plane.", true));
+        vBox.addItem(me._getLabel("You cannot change the initial point, the AI plane always takes-off in front of the runway you are on.", true));
+        vBox.addSpacing(10);
+        vBox.addItem(me._getLabel("A distance with a value of 0 terminates the flight plan.", true));
+
         var hBox = canvas.HBoxLayout.new();
         hBox.addSpacing(RouteAerotowDialog.PADDING);
-        hBox.addItem(me._getLabel("Here you can change the default flight path of the tow plane. You cannot change the initial point, the AI plane always takes-off in front of the runway you are on. Set 0 for `Distance` for completing the flight plan.", true));
+        hBox.addItem(vBox);
         hBox.addSpacing(RouteAerotowDialog.PADDING);
 
         return hBox;
