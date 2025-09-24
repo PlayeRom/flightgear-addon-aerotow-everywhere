@@ -32,8 +32,7 @@ var Scenario = {
         me._addonNodePath = g_Addon.node.getPath();
 
         me._listeners = Listeners.new();
-        me._routeDialog = RouteDialog.new();
-        me._flightPlan = FlightPlan.new(me._routeDialog);
+        me._flightPlan = FlightPlan.new();
         me._isScenarioLoaded = false;
         me._scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
 
@@ -54,7 +53,6 @@ var Scenario = {
     #
     del: func() {
         me._listeners.del();
-        me._routeDialog.del();
         me._flightPlan.del();
     },
 
@@ -70,17 +68,17 @@ var Scenario = {
         }
 
         var scenarioXml = {
-            "PropertyList": {
-                "scenario": {
-                    "name"       : Scenario.SCENARIO_NAME,
-                    "description": Scenario.SCENARIO_DESC,
-                    "entry": {
-                        "callsign"  : "FG-TOW",
-                        "type"      : "aircraft",
-                        "class"     : "aerotow-dragger",
-                        "model"     : Aircraft.getSelected().modelPath,
-                        "flightplan": FlightPlan.FILENAME_FLIGHTPLAN,
-                        "repeat"    : true, # start again indefinitely, it will work if the aircraft stops on the ground
+            PropertyList: {
+                scenario: {
+                    name       : Scenario.SCENARIO_NAME,
+                    description: Scenario.SCENARIO_DESC,
+                    entry: {
+                        callsign  : "FG-TOW",
+                        type      : "aircraft",
+                        class     : "aerotow-dragger",
+                        model     : Aircraft.getSelected().modelPath,
+                        flightplan: FlightPlan.FILENAME_FLIGHTPLAN,
+                        repeat    : true, # start again indefinitely, it will work if the aircraft stops on the ground
                     }
                 }
             }
@@ -103,10 +101,10 @@ var Scenario = {
     _addScenarioToPropertyList: func() {
         if (!me._isAlreadyAdded()) {
             var scenarioData = {
-                "name"       : Scenario.SCENARIO_NAME,
-                "id"         : Scenario.SCENARIO_ID,
-                "description": Scenario.SCENARIO_DESC,
-                "path"       : me._scenarioPath,
+                name       : Scenario.SCENARIO_NAME,
+                id         : Scenario.SCENARIO_ID,
+                description: Scenario.SCENARIO_DESC,
+                path       : me._scenarioPath,
             };
 
             props.globals.getNode("/sim/ai/scenarios").addChild("scenario").setValues(scenarioData);
@@ -182,19 +180,5 @@ var Scenario = {
     #
     initialFlightPlan: func() {
         me._flightPlan.initial();
-    },
-
-    #
-    # @return void
-    #
-    routeDialogSave: func() {
-        me._routeDialog.save();
-    },
-
-    #
-    # @return void
-    #
-    routeDialogLoad: func() {
-        me._routeDialog.load();
     },
 };
