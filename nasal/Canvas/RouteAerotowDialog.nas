@@ -35,6 +35,9 @@ var RouteAerotowDialog = {
             _scenario: scenario,
         };
 
+        # Let the parent know who their child is.
+        me.parents[1].setChild(me, RouteAerotowDialog);
+
         me.setPositionOnCenter();
 
         me._addonNodePath = g_Addon.node.getPath();

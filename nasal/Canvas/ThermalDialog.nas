@@ -29,6 +29,9 @@ var ThermalDialog = {
             Dialog.new(width: 450, height: 250, title: "Add Thermal"),
         ] };
 
+        # Let the parent know who their child is.
+        me.parents[1].setChild(me, ThermalDialog);
+
         me.setPositionOnCenter();
 
         me._addonNodePath = g_Addon.node.getPath();
@@ -94,9 +97,9 @@ var ThermalDialog = {
 
         var buttonAdd = me._getButton("Add thermal", func {
             me._addThermal();
-            me._window.hide();
+            me.hide();
         });
-        var buttonCancel = me._getButton("Cancel", func { me._window.hide(); });
+        var buttonCancel = me._getButton("Cancel", func { me.hide(); });
 
         var hBoxBtns = canvas.HBoxLayout.new();
         hBoxBtns.addStretch(1);
