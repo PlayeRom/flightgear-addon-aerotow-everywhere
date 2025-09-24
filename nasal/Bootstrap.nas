@@ -65,9 +65,15 @@ var Bootstrap = {
         me._initDevMode();
         me._createDirectories();
 
-        g_Aerotow = Aerotow.new();
-
         # Disable the menu as it loads with delay.
+        gui.menuEnable("aerotow-everywhere-route-dialog", false);
+        gui.menuEnable("aerotow-everywhere-towrope-dialog", false);
+        gui.menuEnable("aerotow-everywhere-call-cub", false);
+        gui.menuEnable("aerotow-everywhere-call-robin", false);
+        gui.menuEnable("aerotow-everywhere-call-c182", false);
+        gui.menuEnable("aerotow-everywhere-call-c47", false);
+        gui.menuEnable("aerotow-everywhere-call-halifax", false);
+        gui.menuEnable("aerotow-everywhere-disable-aircraft", false);
         gui.menuEnable("aerotow-everywhere-add-thermal-dialog", false);
         gui.menuEnable("aerotow-everywhere-help-dialog", false);
         gui.menuEnable("aerotow-everywhere-about-dialog", false);
@@ -79,11 +85,20 @@ var Bootstrap = {
         # then the textures of this add-on.
 
         Timer.singleShot(3, func() {
+            g_Aerotow = Aerotow.new();
             g_AddThermalDialog = ThermalDialog.new();
             g_HelpDialog = HelpDialog.new();
             g_AboutDialog = AboutDialog.new();
 
             # Enable the menu as the entire Canvas should now be loaded.
+            gui.menuEnable("aerotow-everywhere-route-dialog", true);
+            gui.menuEnable("aerotow-everywhere-towrope-dialog", true);
+            gui.menuEnable("aerotow-everywhere-call-cub", true);
+            gui.menuEnable("aerotow-everywhere-call-robin", true);
+            gui.menuEnable("aerotow-everywhere-call-c182", true);
+            gui.menuEnable("aerotow-everywhere-call-c47", true);
+            gui.menuEnable("aerotow-everywhere-call-halifax", true);
+            gui.menuEnable("aerotow-everywhere-disable-aircraft", true);
             gui.menuEnable("aerotow-everywhere-add-thermal-dialog", true);
             gui.menuEnable("aerotow-everywhere-help-dialog", true);
             gui.menuEnable("aerotow-everywhere-about-dialog", true);
@@ -129,7 +144,7 @@ var Bootstrap = {
         path.create_dir();
 
         # Create /route-saves directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
-        path = os.path.new(g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
+        path = os.path.new(g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
         path.create_dir();
     },
 

@@ -25,13 +25,15 @@
 
             <item>
                 <label>Aerotow Route...</label>
+                <name>aerotow-everywhere-route-dialog</name>
                 <binding>
-                    <command>dialog-show</command>
-                    <dialog-name>route-aerotow</dialog-name>
+                    <command>nasal</command>
+                    <script>aerotowAddon.g_Aerotow.showRouteAerotowDialog();</script>
                 </binding>
             </item>
             <item>
                 <label>Towrope Configuration...</label>
+                <name>aerotow-everywhere-towrope-dialog</name>
                 <binding>
                     <command>dialog-show</command>
                     <dialog-name>towrope-config</dialog-name>
@@ -39,6 +41,7 @@
             </item>
             <item>
                 <label>Call for Piper J3 Cub</label>
+                <name>aerotow-everywhere-call-cub</name>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -47,6 +50,7 @@
             </item>
             <item>
                 <label>Call for Robin DR400</label>
+                <name>aerotow-everywhere-call-robin</name>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -55,6 +59,7 @@
             </item>
             <item>
                 <label>Call for Cessna 182</label>
+                <name>aerotow-everywhere-call-c182</name>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -63,6 +68,7 @@
             </item>
             <item>
                 <label>Call for Douglas C-47</label>
+                <name>aerotow-everywhere-call-c47</name>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -71,6 +77,7 @@
             </item>
             <item>
                 <label>Call for Handley Page Halifax</label>
+                <name>aerotow-everywhere-call-halifax</name>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/ai-model</property>
@@ -79,6 +86,7 @@
             </item>
             <item>
                 <label>Disable tow aircraft</label>
+                <name>aerotow-everywhere-disable-aircraft</name>
                 <binding>
                     <command>property-assign</command>
                     <property>/addons/by-id/org.flightgear.addons.Aerotow/addon-devel/sound/enable</property>

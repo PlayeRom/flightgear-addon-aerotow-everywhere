@@ -22,14 +22,10 @@ var FlightPlan = {
     #
     # Constructor.
     #
-    # @param  hash  routeDialog  RouteDialog object.
     # @return hash
     #
-    new: func(routeDialog) {
-        var me = {
-            parents     : [FlightPlan],
-            _routeDialog: routeDialog,
-        };
+    new: func() {
+        var me = { parents: [FlightPlan] };
 
         me._flightPlanWriter = FlightPlanWriter.new();
 
@@ -77,11 +73,11 @@ var FlightPlan = {
         if (rwyResult.distance > FlightPlan.MAX_RUNWAY_DISTANCE) {
             # The runway is too far away, we assume a bush start
             return {
-                "type"     : "bush",
-                "lat"      : gliderCoord.lat(),
-                "lon"      : gliderCoord.lon(),
-                "heading"  : getprop("/orientation/heading-deg"),
-                "elevation": me._getElevationInFt(gliderCoord),
+                type     : "bush",
+                lat      : gliderCoord.lat(),
+                lon      : gliderCoord.lon(),
+                heading  : getprop("/orientation/heading-deg"),
+                elevation: me._getElevationInFt(gliderCoord),
             };
         }
 
@@ -97,14 +93,14 @@ var FlightPlan = {
         }
 
         return {
-            "type"     : "runway",
-            "lat"      : rwyResult.runway.lat,
-            "lon"      : rwyResult.runway.lon,
-            "heading"  : rwyResult.runway.heading,
-            "elevation": me._getElevationInFt(
+            type     : "runway",
+            lat      : rwyResult.runway.lat,
+            lon      : rwyResult.runway.lon,
+            heading  : rwyResult.runway.heading,
+            elevation: me._getElevationInFt(
                 geo.Coord.new().set_latlon(rwyResult.runway.lat, rwyResult.runway.lon)
             ),
-            "length"   : rwyResult.runway.length,
+            length   : rwyResult.runway.length,
         };
     },
 
@@ -117,8 +113,8 @@ var FlightPlan = {
     #
     _findRunway: func(airport, gliderCoord) {
         var result = {
-            "runway"   : nil,
-            "distance" : 999999999,
+            runway  : nil,
+            distance: 999999999,
         };
 
         foreach (var runwayName; keys(airport.runways)) {
@@ -161,16 +157,16 @@ var FlightPlan = {
 
         # in air
         var wptData = [
-            {"hdgChange": 0,   "dist": 5000, "altChange": aircraft.vs * 5},
-            {"hdgChange": -90, "dist": 1000, "altChange": aircraft.vs},
-            {"hdgChange": -90, "dist": 6000, "altChange": aircraft.vs * 6},
-            {"hdgChange": -90, "dist": 1500, "altChange": aircraft.vs * 1.5},
-            {"hdgChange": -90, "dist": 6000, "altChange": aircraft.vs * 6},
-            {"hdgChange": 0,   "dist": 0,    "altChange": 0},
-            {"hdgChange": 0,   "dist": 0,    "altChange": 0},
-            {"hdgChange": 0,   "dist": 0,    "altChange": 0},
-            {"hdgChange": 0,   "dist": 0,    "altChange": 0},
-            {"hdgChange": 0,   "dist": 0,    "altChange": 0},
+            { hdgChange: 0,   dist: 5000, altChange: aircraft.vs * 5 },
+            { hdgChange: -90, dist: 1000, altChange: aircraft.vs },
+            { hdgChange: -90, dist: 6000, altChange: aircraft.vs * 6 },
+            { hdgChange: -90, dist: 1500, altChange: aircraft.vs * 1.5 },
+            { hdgChange: -90, dist: 6000, altChange: aircraft.vs * 6 },
+            { hdgChange: 0,   dist: 0,    altChange: 0 },
+            { hdgChange: 0,   dist: 0,    altChange: 0 },
+            { hdgChange: 0,   dist: 0,    altChange: 0 },
+            { hdgChange: 0,   dist: 0,    altChange: 0 },
+            { hdgChange: 0,   dist: 0,    altChange: 0 },
         ];
 
         # Default route
@@ -202,7 +198,8 @@ var FlightPlan = {
             index += 1;
         }
 
-        me._routeDialog.calculateAltChangeAndTotals();
+        # TODO: check is it still needed
+        # me._routeDialog.calculateAltChangeAndTotals();
 
         setprop(me._addonNodePath ~ "/addon-devel/route/wpts/description", "Default route around the start location");
 
@@ -230,7 +227,7 @@ var FlightPlan = {
 
         # Start at 2 o'clock from the glider...
         # Initial ktas must be >= 1.0
-        me._addWptGround({"shift": {"hdgChange": 60, "dist": 25, "altChange": 0}, "ktas": 5}); # 1
+        me._addWptGround({ shift: { hdgChange: 60, dist: 25, altChange: 0 }, ktas: 5 }); # 1
 
         # Reset coord and heading
         isGliderPos = false;
@@ -239,26 +236,26 @@ var FlightPlan = {
         var gliderOffsetM = me._getGliderOffsetFromRunwayThreshold(location);
 
         # ... and line up with the runway
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": me._getInitialDistance() + gliderOffsetM, "altChange": 0}, "ktas": 2.5}); # 2
+        me._addWptGround({ shift: { hdgChange: 0, dist: me._getInitialDistance() + gliderOffsetM, altChange: 0 }, ktas: 2.5 }); # 2
 
         # Rolling
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10,                    "altChange": 0}, "ktas": 5}); # 3
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 20,                    "altChange": 0}, "ktas": 5}); # 4
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 20,                    "altChange": 0}, "ktas": aircraft.speed / 6}); # 5
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10,                    "altChange": 0}, "ktas": aircraft.speed / 5}); # 6
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 4}); # 7
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 3.5}); # 8
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 3}); # 9
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 2.5}); # 10
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 2}); # 11
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 1.75}); # 12
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 1.5}); # 13
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed / 1.25}); # 14
-        me._addWptGround({"shift": {"hdgChange": 0, "dist": 10 * aircraft.rolling, "altChange": 0}, "ktas": aircraft.speed}); # 15
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10,                    altChange: 0 }, ktas: 5}); # 3
+        me._addWptGround({ shift: { hdgChange: 0, dist: 20,                    altChange: 0 }, ktas: 5}); # 4
+        me._addWptGround({ shift: { hdgChange: 0, dist: 20,                    altChange: 0 }, ktas: aircraft.speed / 6 }); # 5
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10,                    altChange: 0 }, ktas: aircraft.speed / 5 }); # 6
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 4 }); # 7
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 3.5 }); # 8
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 3 }); # 9
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 2.5 }); # 10
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 2 }); # 11
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 1.75 }); # 12
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 1.5 }); # 13
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed / 1.25 }); # 14
+        me._addWptGround({ shift: { hdgChange: 0, dist: 10 * aircraft.rolling, altChange: 0 }, ktas: aircraft.speed }); # 15
 
         # Take-off
-        me._addWptAir({   "shift": {"hdgChange": 0, "dist": 100 * aircraft.rolling, "elevation": 3}, "ktas": aircraft.speed * 1.05}); # 16
-        me._addWptAir({   "shift": {"hdgChange": 0, "dist": 100,     "altChange": aircraft.vs / 10}, "ktas": aircraft.speed * 1.025}); # 17
+        me._addWptAir({    shift: { hdgChange: 0, dist: 100 * aircraft.rolling, elevation: 3 }, ktas: aircraft.speed * 1.05 }); # 16
+        me._addWptAir({    shift: { hdgChange: 0, dist: 100,     altChange: aircraft.vs / 10 }, ktas: aircraft.speed * 1.025 }); # 17
 
 
         # 0 means without altitude limits
@@ -293,13 +290,13 @@ var FlightPlan = {
 
             totalAlt += altChange;
 
-            me._addWptAir({"shift": {"hdgChange": hdgChange, "dist": distance, "altChange": altChange}, "ktas": ktas});
+            me._addWptAir({ shift: { hdgChange: hdgChange, dist: distance, altChange: altChange }, ktas: ktas });
         }
 
         # Back to airport if possible
         if (location.type == "runway") {
             # Add extra near waypoint to keep plane in whole designed track
-            me._addWptAir({"shift": {"hdgChange": hdgChange, "dist": 100, "altChange": altChange}, "ktas": ktas});
+            me._addWptAir({ shift: { hdgChange: hdgChange, dist: 100, altChange: altChange }, ktas: ktas});
 
             var coordRwyThreshold = geo.Coord.new().set_latlon(location.lat, location.lon);
 
@@ -322,7 +319,7 @@ var FlightPlan = {
             if (elevation < 3000) {
                 elevation = 3000;
             }
-            me._addWptAir({"shift": {"hdgChange": 90, "dist": halfRwyLength, "elevation": elevation}, "ktas": aircraft.speed});
+            me._addWptAir({ shift: { hdgChange: 90, dist: halfRwyLength, elevation: elevation }, ktas: aircraft.speed });
 
             # Fly downwind away of threshold, how far depend of the altitude
             var desiredElevation = 1400;
@@ -330,21 +327,21 @@ var FlightPlan = {
             if (distance < aircraft.minFinalLegDist) {
                 distance = aircraft.minFinalLegDist;
             }
-            me._addWptAir({"shift": {"hdgChange": -180, "dist": halfRwyLength + distance, "elevation": desiredElevation}, "ktas": aircraft.speed});
+            me._addWptAir({ shift: { hdgChange: -180, dist: halfRwyLength + distance, elevation: desiredElevation }, ktas: aircraft.speed });
 
             # Turn to base leg
-            me._addWptAir({"shift": {"hdgChange": -90, "dist": 1000, "elevation": 1000}, "ktas": aircraft.speed, "flapsDown": true});
+            me._addWptAir({ shift: { hdgChange: -90, dist: 1000, elevation: 1000 }, ktas: aircraft.speed, flapsDown: true });
 
             # Reset variables
             me._coord = geo.Coord.new().set_latlon(location.lat, location.lon); # runway threshold
 
             # Turn on final
             me._addWptAir({
-                "coord"    : me._coord,
-                "crossAt"  : location.elevation + 10,
-                "ktas"     : aircraft.speed * 0.75,
-                "flapsDown": true,
-                "gearDown" : true,
+                coord    : me._coord,
+                crossAt  : location.elevation + 10,
+                ktas     : aircraft.speed * 0.75,
+                flapsDown: true,
+                gearDown : true,
             });
 
             # Reset variables
@@ -352,23 +349,23 @@ var FlightPlan = {
 
             # Flare
             me._addWptAir({
-                "shift"    : {"hdgChange": 0, "dist": 100, "elevation": 10},
-                "ktas"     : aircraft.speed * 0.7,
-                "flapsDown": true,
-                "gearDown" : true,
+                shift    : { hdgChange: 0, dist: 100, elevation: 10 },
+                ktas     : aircraft.speed * 0.7,
+                flapsDown: true,
+                gearDown : true,
             });
 
             # Touchdown
-            me._addWptGround({"shift": {"hdgChange": 0, "dist": 200, "elevation": 0}, "ktas": aircraft.speed * 0.6});
+            me._addWptGround({ shift: { hdgChange: 0, dist: 200, elevation: 0 }, ktas: aircraft.speed * 0.6 });
 
             # Break
-            me._addWptGround({"shift": {"hdgChange": 0, "dist": 200, "elevation": 0}, "ktas": aircraft.speed * 0.4});
+            me._addWptGround({ shift: { hdgChange: 0, dist: 200, elevation: 0 }, ktas: aircraft.speed * 0.4 });
 
             # Slow down to 5 kt
-            me._addWptGround({"shift": {"hdgChange": 0, "dist": 50, "elevation": 0}, "ktas": 5});
+            me._addWptGround({ shift: { hdgChange: 0, dist: 50, elevation: 0 }, ktas: 5 });
 
             # Turn right out of runway and full stop
-            me._addWptEnd({"shift": {"hdgChange": 90, "dist": 100, "elevation": 0}, "ktas": 0, "onGround": true});
+            me._addWptEnd({ shift: { hdgChange: 90, dist: 100, elevation: 0 }, ktas: 0, onGround: true });
         }
         else {
             me._addWptEnd();
