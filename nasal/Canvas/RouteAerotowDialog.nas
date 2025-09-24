@@ -38,6 +38,7 @@ var RouteAerotowDialog = {
         me.setPositionOnCenter();
 
         me._addonNodePath = g_Addon.node.getPath();
+        me._savePath = g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR;
 
         me._bindings = {};
 
