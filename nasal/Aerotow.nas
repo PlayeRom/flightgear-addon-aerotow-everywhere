@@ -26,6 +26,8 @@ var Aerotow = {
 
         me._scenario = Scenario.new();
 
+        me._routeAerotowDialog = RouteAerotowDialog.new(me._scenario);
+
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
         me._listeners.add(me._addonNodePath ~ "/addon-devel/ai-model", func () {
             me._restartAerotow();
@@ -42,6 +44,7 @@ var Aerotow = {
     del: func() {
         me._listeners.del();
         me._scenario.del();
+        me._routeAerotowDialog.del();
     },
 
     #
@@ -105,23 +108,11 @@ var Aerotow = {
     },
 
     #
-    # @return void
-    #
-    initialFlightPlan: func() {
-        me._scenario.initialFlightPlan();
-    },
-
+    # Show RouteAerotowDialog.
     #
     # @return void
     #
-    routeDialogSave: func() {
-        me._scenario.routeDialogSave();
-    },
-
-    #
-    # @return void
-    #
-    routeDialogLoad: func() {
-        me._scenario.routeDialogLoad();
+    showRouteAerotowDialog: func() {
+        me._routeAerotowDialog.show();
     },
 };
