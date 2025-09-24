@@ -22,14 +22,10 @@ var FlightPlan = {
     #
     # Constructor.
     #
-    # @param  hash  routeDialog  RouteDialog object.
     # @return hash
     #
-    new: func(routeDialog) {
-        var obj = {
-            parents     : [FlightPlan],
-            _routeDialog: routeDialog,
-        };
+    new: func() {
+        var obj = { parents: [FlightPlan] };
 
         obj._flightPlanWriter = FlightPlanWriter.new();
 
@@ -202,7 +198,8 @@ var FlightPlan = {
             index += 1;
         }
 
-        me._routeDialog.calculateAltChangeAndTotals();
+        # TODO: check is it still needed
+        # me._routeDialog.calculateAltChangeAndTotals();
 
         setprop(me._addonNodePath ~ "/addon-devel/route/wpts/description", "Default route around the start location");
 

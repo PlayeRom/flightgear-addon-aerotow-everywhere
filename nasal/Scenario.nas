@@ -32,8 +32,7 @@ var Scenario = {
         obj._addonNodePath = g_Addon.node.getPath();
 
         obj._listeners = Listeners.new();
-        obj._routeDialog = RouteDialog.new();
-        obj._flightPlan = FlightPlan.new(obj._routeDialog);
+        obj._flightPlan = FlightPlan.new();
         obj._isScenarioLoaded = false;
         obj._scenarioPath = g_Addon.storagePath ~ "/" ~ me.FILENAME_SCENARIO;
 
@@ -54,7 +53,6 @@ var Scenario = {
     #
     del: func() {
         me._listeners.del();
-        me._routeDialog.del();
         me._flightPlan.del();
     },
 
@@ -182,19 +180,5 @@ var Scenario = {
     #
     initialFlightPlan: func() {
         me._flightPlan.initial();
-    },
-
-    #
-    # @return void
-    #
-    routeDialogSave: func() {
-        me._routeDialog.save();
-    },
-
-    #
-    # @return void
-    #
-    routeDialogLoad: func() {
-        me._routeDialog.load();
     },
 };
