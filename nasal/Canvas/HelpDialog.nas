@@ -37,6 +37,9 @@ var HelpDialog = {
             ),
         ] };
 
+        # Let the parent know who their child is.
+        me.parents[1].setChild(me, HelpDialog);
+
         me.setPositionOnCenter();
 
         var margins = {
