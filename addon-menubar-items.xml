@@ -138,7 +138,7 @@
             3) replace addon ID to match your addon
             -->
             <!-- <item>
-                <label>Reload Add-on</label>
+                <label>Dev Reload</label>
                 <binding>
                     <command>addon-reload</command>
                     <id>org.flightgear.addons.Aerotow</id>
