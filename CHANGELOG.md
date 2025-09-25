@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v.1.9.3
+
+- Fix Halifax calculation in route dialog
+
 ## v.1.9.2
 
 - Fix adding thermal
