@@ -141,6 +141,12 @@ or on the Windows:
 
 Run simulator again, now everything should be working.
 
+## Development
+
+### Class Diagram
+
+![alt Class Diagram](docs/diagram.png "Class Diagram")
+
 ## Authors
 
 - Roman "PlayeRom" Ludwicki
