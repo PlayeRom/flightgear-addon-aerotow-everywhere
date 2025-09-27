@@ -37,13 +37,15 @@ var Dialog = {
         # For FG versions up to and including 2024 this is ‘/sim/gui/canvas’, but for the dev version it is ‘/canvas/desktop’
         # TODO: fix it in future when 2024 will be obsolete and "/canvas/desktop" will be a standard.
         me._isCanvas2024 = props.globals.getNode("/sim/gui/canvas") != nil;
-        me._canvasNode = props.globals.getNode(me.getPathToCanvas());
+        me._canvasNode = props.globals.getNode(me._getPathToCanvas());
 
         me._window = me._createCanvasWindow(me._width, me._height, title, resize);
         me._canvas = me._window.createCanvas().set("background", canvas.style.getColor("bg_color"));
         me._group  = me._canvas.createGroup();
         me._vbox   = canvas.VBoxLayout.new();
         me._canvas.setLayout(me._vbox);
+
+        me._usePositionOnCenter = false;
 
         me._handleKeys();
 
@@ -71,7 +73,7 @@ var Dialog = {
 
                 # Set listener for resize width of window
                 me._listeners.add(
-                    node: me.getPathToCanvas() ~ "/window[" ~ me._windowPropIndex ~ "]/content-size[0]",
+                    node: me._getPathToCanvas() ~ "/window[" ~ me._windowPropIndex ~ "]/content-size[0]",
                     code: func() {
                         resizeTimer.isRunning
                             ? resizeTimer.restart(0.1)
@@ -80,7 +82,7 @@ var Dialog = {
                 );
 
                 me._listeners.add(
-                    node: me.getPathToCanvas() ~ "/window[" ~ me._windowPropIndex ~ "]/content-size[1]",
+                    node: me._getPathToCanvas() ~ "/window[" ~ me._windowPropIndex ~ "]/content-size[1]",
                     code: func() {
                         resizeTimer.isRunning
                             ? resizeTimer.restart(0.1)
@@ -91,6 +93,33 @@ var Dialog = {
         }
 
         return me;
+    },
+
+    #
+    # Add listeners for screen size changes.
+    #
+    # @return void
+    #
+    _addScreenSizeListeners: func() {
+        me._listeners.add(
+            node: me._getPathToCanvas() ~ "/size[0]",
+            code: func() {
+                if (me._usePositionOnCenter) {
+                    me.setPositionOnCenter();
+                }
+            },
+            type: Listeners.ON_CHANGE_ONLY,
+        );
+
+        me._listeners.add(
+            node: me._getPathToCanvas() ~ "/size[1]",
+            code: func() {
+                if (me._usePositionOnCenter) {
+                    me.setPositionOnCenter();
+                }
+            },
+            type: Listeners.ON_CHANGE_ONLY,
+        );
     },
 
     #
@@ -166,6 +195,11 @@ var Dialog = {
         }
 
         me._window.setPosition(newX, newY);
+
+        if (!me._usePositionOnCenter) {
+            me._usePositionOnCenter = true;
+            me._addScreenSizeListeners();
+        }
     },
 
     #
@@ -315,7 +349,7 @@ var Dialog = {
     # @return int
     #
     getScreenWidth: func() {
-        return getprop(me.getPathToCanvas() ~ "/size[0]");
+        return getprop(me._getPathToCanvas() ~ "/size[0]");
     },
 
     #
@@ -324,7 +358,7 @@ var Dialog = {
     # @return int
     #
     getScreenHeight: func() {
-        return getprop(me.getPathToCanvas() ~ "/size[1]");
+        return getprop(me._getPathToCanvas() ~ "/size[1]");
     },
 
     #
@@ -332,7 +366,7 @@ var Dialog = {
     #
     # @return string
     #
-    getPathToCanvas: func() {
+    _getPathToCanvas: func() {
         if (me._isCanvas2024) {
             return "/sim/gui/canvas";
         }
