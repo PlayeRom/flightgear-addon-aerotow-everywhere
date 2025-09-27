@@ -29,10 +29,9 @@ var ThermalDialog = {
             Dialog.new(width: 450, height: 250, title: "Add Thermal"),
         ] };
 
-        # Let the parent know who their child is.
-        me.parents[1].setChild(me, ThermalDialog);
-
-        me.setPositionOnCenter();
+        var dialogParent = me.parents[1];
+        dialogParent.setChild(me, ThermalDialog); # Let the parent know who their child is.
+        dialogParent.setPositionOnCenter();
 
         me._addonNodePath = g_Addon.node.getPath();
 

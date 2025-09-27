@@ -35,10 +35,9 @@ var RouteAerotowDialog = {
             _scenario: scenario,
         };
 
-        # Let the parent know who their child is.
-        me.parents[1].setChild(me, RouteAerotowDialog);
-
-        me.setPositionOnCenter();
+        var dialogParent = me.parents[1];
+        dialogParent.setChild(me, RouteAerotowDialog); # Let the parent know who their child is.
+        dialogParent.setPositionOnCenter();
 
         me._addonNodePath = g_Addon.node.getPath();
         me._savePath = g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR;
