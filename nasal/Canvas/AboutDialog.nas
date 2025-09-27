@@ -24,10 +24,9 @@ var AboutDialog = {
             Dialog.new(width: 300, height: 400, title: "About Aerotow Everywhere Add-on"),
         ] };
 
-        # Let the parent know who their child is.
-        me.parents[1].setChild(me, AboutDialog);
-
-        me.setPositionOnCenter();
+        var dialogParent = me.parents[1];
+        dialogParent.setChild(me, AboutDialog); # Let the parent know who their child is.
+        dialogParent.setPositionOnCenter();
 
         me._vbox.addSpacing(10);
 
