@@ -3,7 +3,7 @@
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
-# Copyright (C) 2022 Roman Ludwicki
+# Copyright (C) 2025 Roman Ludwicki
 #
 # Aerotow Everywhere is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
@@ -30,7 +30,11 @@ var RouteAerotowDialog = {
         var me = {
             parents: [
                 RouteAerotowDialog,
-                Dialog.new(width: 450, height: 768, title: "Add Thermal"),
+                PersistentDialog.new(
+                    width: 450,
+                    height: 768,
+                    title: "Add Thermal",
+                ),
             ],
             _scenario: scenario,
         };
@@ -53,10 +57,12 @@ var RouteAerotowDialog = {
     # Destructor.
     #
     # @return void
+    # @override PersistentDialog
     #
     del: func() {
         me._altChangeLabels.clear();
-        call(Dialog.del, [], me);
+
+        me.parents[1].del();
     },
 
     #
@@ -257,7 +263,7 @@ var RouteAerotowDialog = {
     # @return ghost  Horizontal box layout.
     #
     _buildLayoutButtons: func() {
-        var buttonOk = me._getButton("OK", func { me._window.hide(); });
+        var buttonOk = me._getButton("OK", func { me.hide(); });
         var buttonDefault = me._getButton("Default", func {
             me._scenario.initialFlightPlan();
             me.calculateAltChangeAndTotals();
