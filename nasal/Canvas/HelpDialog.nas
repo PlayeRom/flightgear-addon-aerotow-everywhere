@@ -3,7 +3,7 @@
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
-# Copyright (C) 2022 Roman Ludwicki
+# Copyright (C) 2025 Roman Ludwicki
 #
 # Aerotow Everywhere is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
@@ -26,16 +26,18 @@ var HelpDialog = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [
-            HelpDialog,
-            Dialog.new(
-                width   : HelpDialog.WINDOW_WIDTH,
-                height  : HelpDialog.WINDOW_HEIGHT,
-                title   : "Aerotow Everywhere Help",
-                resize  : true,
-                onResize: func(w, h) { me._onResize(w, h); }
-            ),
-        ] };
+        var me = {
+            parents: [
+                HelpDialog,
+                PersistentDialog.new(
+                    width   : HelpDialog.WINDOW_WIDTH,
+                    height  : HelpDialog.WINDOW_HEIGHT,
+                    title   : "Aerotow Everywhere Help",
+                    resize  : true,
+                    onResize: func(w, h) { me._onResize(w, h); }
+                ),
+            ],
+        };
 
         var dialogParent = me.parents[1];
         dialogParent.setChild(me, HelpDialog); # Let the parent know who their child is.
@@ -47,11 +49,11 @@ var HelpDialog = {
             right  : 0,
             bottom : 0,
         };
-        me._scrollData = me._createScrollArea(margins: margins);
+        me._scrollData = ScrollAreaHelper.create(context: me._group, margins: margins);
 
         me._vbox.addItem(me._scrollData, 1); # 2nd param = stretch
 
-        me._scrollDataContent = me._getScrollAreaContent(
+        me._scrollDataContent = ScrollAreaHelper.getContent(
             context  : me._scrollData,
             font     : "LiberationFonts/LiberationSans-Regular.ttf",
             fontSize : 16,
@@ -71,9 +73,10 @@ var HelpDialog = {
     # Destructor
     #
     # @return void
+    # @override PersistentDialog
     #
     del: func() {
-        call(Dialog.del, [], me);
+        me.parents[1].del();
     },
 
     #
@@ -130,7 +133,7 @@ var HelpDialog = {
             .setText("Close")
             .setFixedSize(75, 26)
             .listen("clicked", func {
-                me._window.hide();
+                me.hide();
             });
 
         buttonBox.addItem(btnClose);

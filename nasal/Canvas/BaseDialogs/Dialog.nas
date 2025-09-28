@@ -3,14 +3,14 @@
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
-# Copyright (C) 2022 Roman Ludwicki
+# Copyright (C) 2025 Roman Ludwicki
 #
 # Aerotow Everywhere is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
 #
 
 #
-# Base Dialog class.
+# Base Dialog class for the PersistentDialog and TransientDialog classes.
 #
 var Dialog = {
     #
@@ -30,9 +30,6 @@ var Dialog = {
             _height: height,
         };
 
-        me._childMe = nil;
-        me._childCls = nil;
-
         # Recognize the path to the canvas property.
         # For FG versions up to and including 2024 this is ‘/sim/gui/canvas’, but for the dev version it is ‘/canvas/desktop’
         # TODO: fix it in future when 2024 will be obsolete and "/canvas/desktop" will be a standard.
@@ -44,10 +41,6 @@ var Dialog = {
         me._group  = me._canvas.createGroup();
         me._vbox   = canvas.VBoxLayout.new();
         me._canvas.setLayout(me._vbox);
-
-        me._usePositionOnCenter = false;
-
-        me._handleKeys();
 
         me._windowPropIndex = nil;
 
@@ -96,33 +89,6 @@ var Dialog = {
     },
 
     #
-    # Add listeners for screen size changes.
-    #
-    # @return void
-    #
-    _addScreenSizeListeners: func() {
-        me._listeners.add(
-            node: me._getPathToCanvas() ~ "/size[0]",
-            code: func() {
-                if (me._usePositionOnCenter) {
-                    me.setPositionOnCenter();
-                }
-            },
-            type: Listeners.ON_CHANGE_ONLY,
-        );
-
-        me._listeners.add(
-            node: me._getPathToCanvas() ~ "/size[1]",
-            code: func() {
-                if (me._usePositionOnCenter) {
-                    me.setPositionOnCenter();
-                }
-            },
-            type: Listeners.ON_CHANGE_ONLY,
-        );
-    },
-
-    #
     # @param  int  width
     # @param  int  height
     # @param  string  title
@@ -130,30 +96,15 @@ var Dialog = {
     # @return ghost  Canvas Window object.
     #
     _createCanvasWindow: func(width, height, title, resize) {
-        var type = "dialog";
-        var id = nil; # default
-        var allowFocus = true; # default
-
-        var window = canvas.Window.new([width, height], type, id, allowFocus)
+        return canvas.Window.new(
+                size: [width, height],
+                type: "dialog",
+                id: nil,  # default
+                allowFocus: true, # default
+                destroy_on_close: true, # default
+            )
             .set("title", title)
             .setBool("resize", resize);
-
-        window.hide();
-
-        var self = me;
-
-        window.del = func() {
-            # This method will be call after click on (X) button in canvas top
-            # bar and here we want hide the window only.
-            # FG version 2024.x supports the destroy_on_close flag, which could
-            # be set to false, then FG would call hide() on the window itself,
-            # but this will not give us the ability to call the child's hide()
-            # function.
-
-            self._callMethodByChild("hide");
-        };
-
-        return window;
     },
 
     #
@@ -164,8 +115,28 @@ var Dialog = {
     del: func() {
         me._listeners.del();
 
-        # Since we override window.del() to only hide the window, we need to actually destroy the window here by:
+        # Since PersistentDialog override window.del() to only hide the window,
+        # we need to actually destroy the window here by call() function:
         call(canvas.Window.del, [], me._window);
+    },
+
+    #
+    # Show canvas dialog.
+    #
+    # @return void
+    #
+    show: func() {
+        me._window.raise();
+        me._window.show();
+    },
+
+    #
+    # Hide canvas dialog.
+    #
+    # @return void
+    #
+    hide: func() {
+        me._window.hide();
     },
 
     #
@@ -195,71 +166,6 @@ var Dialog = {
         }
 
         me._window.setPosition(newX, newY);
-
-        if (!me._usePositionOnCenter) {
-            me._usePositionOnCenter = true;
-            me._addScreenSizeListeners();
-        }
-    },
-
-    #
-    # @param  vector|nil  bgColor
-    # @param  hash|nil  margins  Margins hash or nil
-    # @return ghost  canvas.gui.widgets.ScrollArea object
-    #
-    _createScrollArea: func(bgColor = nil, margins = nil) {
-        var scrollArea = canvas.gui.widgets.ScrollArea.new(me._group, canvas.style, {});
-        scrollArea.setColorBackground(bgColor == nil ? canvas.style.getColor("bg_color") : bgColor);
-
-        if (margins != nil) {
-            scrollArea.setContentsMargins(margins.left, margins.top, margins.right, margins.bottom);
-        }
-
-        return scrollArea;
-    },
-
-    #
-    # @param  ghost  context  Parent object as ScrollArea widget
-    # @param  string|nil  font  Font file name
-    # @param  int|nil  fontSize  Font size
-    # @param  string|nil  alignment  Content alignment value
-    # @return ghost  Content group of ScrollArea
-    #
-    _getScrollAreaContent: func(context, font = nil, fontSize = nil, alignment = nil) {
-        var scrollContent = context.getContent();
-
-        if (font != nil) {
-            scrollContent.set("font", font);
-        }
-
-        if (fontSize != nil) {
-            scrollContent.set("character-size", fontSize);
-        }
-
-        if (alignment != nil) {
-            scrollContent.set("alignment", alignment);
-        }
-
-        return scrollContent;
-    },
-
-    #
-    # Show canvas dialog.
-    #
-    # @return void
-    #
-    show: func() {
-        me._window.raise();
-        me._window.show();
-    },
-
-    #
-    # Hide canvas dialog.
-    #
-    # @return void
-    #
-    hide: func() {
-        me._window.hide();
     },
 
     #
@@ -372,58 +278,5 @@ var Dialog = {
         }
 
         return "/canvas/desktop";
-    },
-
-    #
-    # Let the Dialog (parent) know who their child is.
-    # Call this method in the child constructor if your child class needs
-    # to call its stuff in methods like hide() or del().
-    #
-    # @param  hash  childMe  Child instance of object.
-    # @param  hash  childCls  Child class hash.
-    # @return void
-    #
-    setChild: func(childMe, childCls) {
-        me._childMe = childMe;
-        me._childCls = childCls;
-    },
-
-    #
-    # Call child given method if exists.
-    #
-    # @param  string  funcName  Method name to call.
-    # @return bool  Return true if function has been called, otherwise return false.
-    #
-    _callMethodByChild: func(funcName) {
-        if (me._childMe != nil and me._childCls != nil and typeof(me._childCls[funcName]) == "func") {
-            print("_callMethodByChild child exist");
-            return call(me._childCls[funcName], [], me._childMe);
-        }
-
-        print("_callMethodByChild child NOT exist");
-        # Child doesn't have give function name, so run it by self.
-        return call(Dialog[funcName], [], me);
-    },
-
-    #
-    # Handle keydown listener for window.
-    #
-    # @return void
-    #
-    _handleKeys: func() {
-        me._window.addEventListener("keydown", func(event) {
-            # Possible fields of event:
-            #   event.key - key as name
-            #   event.keyCode - key as code
-            # Modifiers:
-            #   event.shiftKey
-            #   event.ctrlKey
-            #   event.altKey
-            #   event.metaKey
-
-            if (event.key == "Escape") {
-                me._callMethodByChild("hide");
-            }
-        });
     },
 };

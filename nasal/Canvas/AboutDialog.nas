@@ -3,7 +3,7 @@
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
-# Copyright (C) 2022 Roman Ludwicki
+# Copyright (C) 2025 Roman Ludwicki
 #
 # Aerotow Everywhere is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
@@ -19,10 +19,16 @@ var AboutDialog = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [
-            AboutDialog,
-            Dialog.new(width: 300, height: 400, title: "About Aerotow Everywhere Add-on"),
-        ] };
+        var me = {
+            parents: [
+                AboutDialog,
+                PersistentDialog.new(
+                    width: 300,
+                    height: 400,
+                    title: "About Aerotow Everywhere Add-on",
+                ),
+            ],
+        };
 
         var dialogParent = me.parents[1];
         dialogParent.setChild(me, AboutDialog); # Let the parent know who their child is.
@@ -48,7 +54,7 @@ var AboutDialog = {
 
         me._vbox.addStretch(1);
 
-        var buttonBoxClose = me._drawBottomBar("Close", func { me._window.hide(); });
+        var buttonBoxClose = me._drawBottomBar("Close", func { me.hide(); });
         me._vbox.addSpacing(10);
         me._vbox.addItem(buttonBoxClose);
         me._vbox.addSpacing(10);
@@ -60,9 +66,10 @@ var AboutDialog = {
     # Destructor.
     #
     # @return void
+    # @override PersistentDialog
     #
     del: func() {
-        call(Dialog.del, [], me);
+        me.parents[1].del();
     },
 
     #
