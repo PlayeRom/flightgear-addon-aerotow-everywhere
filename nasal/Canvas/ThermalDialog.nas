@@ -3,7 +3,7 @@
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
-# Copyright (C) 2022 Roman Ludwicki
+# Copyright (C) 2025 Roman Ludwicki
 #
 # Aerotow Everywhere is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
@@ -24,10 +24,16 @@ var ThermalDialog = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [
-            ThermalDialog,
-            Dialog.new(width: 450, height: 250, title: "Add Thermal"),
-        ] };
+        var me = {
+            parents: [
+                ThermalDialog,
+                PersistentDialog.new(
+                    width: 450,
+                    height: 250,
+                    title: "Add Thermal",
+                ),
+            ],
+        };
 
         var dialogParent = me.parents[1];
         dialogParent.setChild(me, ThermalDialog); # Let the parent know who their child is.
@@ -117,9 +123,10 @@ var ThermalDialog = {
     # Destructor.
     #
     # @return void
+    # @override PersistentDialog
     #
     del: func() {
-        call(Dialog.del, [], me);
+        me.parents[1].del();
     },
 
     #
