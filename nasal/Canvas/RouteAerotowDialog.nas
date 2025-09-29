@@ -106,7 +106,7 @@ var RouteAerotowDialog = {
     # @return ghost  Horizontal box layout.
     #
     _buildLayoutAircraftComboBox: func() {
-        var comboBox = canvas.gui.widgets.ComboBox.new(me._group, canvas.style, {});
+        var comboBox = canvas.gui.widgets.ComboBox.new(me._group);
         if (Utils.tryCatch(func { typeof(comboBox.createItem) == "func"; }, [])) {
             # For next addMenuItem is deprecated
             #                   label,          value
@@ -138,7 +138,7 @@ var RouteAerotowDialog = {
     # @return ghost  Input text widget.
     #
     _buildLayoutMaxAltitude: func() {
-        var lineEditMaxAlt = canvas.gui.widgets.LineEdit.new(me._group, canvas.style, {})
+        var lineEditMaxAlt = canvas.gui.widgets.LineEdit.new(me._group)
             .setFixedSize(80, 28)
             .setText(sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl")))
             .listen("text-changed", func(e) {
@@ -243,7 +243,7 @@ var RouteAerotowDialog = {
     # @return ghost  Horizontal box layout.
     #
     _buildLayoutRouteDescInput: func() {
-        var editDesc = canvas.gui.widgets.LineEdit.new(me._group, canvas.style, {})
+        var editDesc = canvas.gui.widgets.LineEdit.new(me._group)
             .setText(getprop(me._addonNodePath ~ "/addon-devel/route/wpts/description"))
             .listen("text-changed", func(e) {
                 setprop(me._addonNodePath ~ "/addon-devel/route/wpts/description", e.detail.text);
@@ -305,14 +305,14 @@ var RouteAerotowDialog = {
     # @return ghost  Widget for alt change label.
     #
     _createGridRow: func(grid, gridRow, index) {
-        var editHeading = canvas.gui.widgets.LineEdit.new(me._group, canvas.style, {})
+        var editHeading = canvas.gui.widgets.LineEdit.new(me._group)
             # .setFixedSize(80, 28)
             .setText(sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change")))
             .listen("text-changed", func(e) {
                 setprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change", num(e.detail.text));
             });
 
-        var editDistance = canvas.gui.widgets.LineEdit.new(me._group, canvas.style, {})
+        var editDistance = canvas.gui.widgets.LineEdit.new(me._group)
             # .setFixedSize(80, 28)
             .setText(sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/distance-m")))
             .listen("text-changed", func(e) {
@@ -340,7 +340,7 @@ var RouteAerotowDialog = {
     # @return ghost  Label widget.
     #
     _getLabel: func(text, wordWrap = false) {
-        return canvas.gui.widgets.Label.new(me._group, canvas.style, {wordWrap: wordWrap})
+        return canvas.gui.widgets.Label.new(parent: me._group, cfg: { wordWrap: wordWrap })
             .setText(text);
     },
 
@@ -350,7 +350,7 @@ var RouteAerotowDialog = {
     # @return ghost  Button widget.
     #
     _getButton: func(text, callback) {
-        return canvas.gui.widgets.Button.new(me._group, canvas.style, {})
+        return canvas.gui.widgets.Button.new(me._group)
             .setText(text)
             .listen("clicked", callback);
     },
