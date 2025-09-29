@@ -16,6 +16,15 @@
 var MY_LOG_LEVEL = LOG_WARN;
 
 #
+# Global flag to enable dev mode.
+# You can use this flag to condition on heavier logging that shouldn't be
+# executed for the end user, but you want to keep it in your code for development
+# purposes. This flag will be set to true automatically when you use an .env
+# file with DEV_MODE=true.
+#
+var g_isDevMode = false;
+
+#
 # Global object of addons.Addon.
 #
 var g_Addon = nil;
@@ -81,16 +90,23 @@ var Bootstrap = {
     # @return void
     #
     _initDevMode: func() {
-        var reloadMenu = DevReloadMenu.new();
         var env = DevEnv.new();
-
-        env.getValue("DEV_MODE")
-            ? reloadMenu.addMenu()
-            : reloadMenu.removeMenu();
 
         var logLevel = env.getValue("MY_LOG_LEVEL");
         if (logLevel != nil) {
             MY_LOG_LEVEL = logLevel;
+        }
+
+        g_isDevMode = env.getBoolValue("DEV_MODE");
+
+        if (g_isDevMode) {
+            var reloadMenu = DevReloadMenu.new();
+
+            env.getBoolValue("ADD_RELOAD_MENU")
+                ? reloadMenu.addMenu()
+                : reloadMenu.removeMenu();
+
+            DevReloadMultiKey.addMultiKeyCmd(env.getValue("RELOAD_MULTIKEY_CMD"));
         }
     },
 };
