@@ -146,7 +146,7 @@ var ThermalDialog = {
 
         var unitWidget = me._getLabel(unitLabel).setFixedSize(160, 28);
 
-        var editWidget = canvas.gui.widgets.LineEdit.new(me._group, canvas.style, {})
+        var editWidget = canvas.gui.widgets.LineEdit.new(me._group)
             .setFixedSize(80, 28)
             .setText(editValue);
 
@@ -165,7 +165,7 @@ var ThermalDialog = {
     # @return ghost  Label widget.
     #
     _getLabel: func(text, wordWrap = false) {
-        return canvas.gui.widgets.Label.new(me._group, canvas.style, {wordWrap: wordWrap})
+        return canvas.gui.widgets.Label.new(parent: me._group, cfg: { wordWrap: wordWrap })
             .setText(text);
     },
 
@@ -175,7 +175,7 @@ var ThermalDialog = {
     # @return ghost  Button widget.
     #
     _getButton: func(text, callback) {
-        return canvas.gui.widgets.Button.new(me._group, canvas.style, {})
+        return canvas.gui.widgets.Button.new(me._group)
             .setText(text)
             .listen("clicked", callback);
     },

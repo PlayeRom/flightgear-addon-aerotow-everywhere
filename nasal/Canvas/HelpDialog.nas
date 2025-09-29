@@ -129,7 +129,7 @@ var HelpDialog = {
     _drawBottomBar: func() {
         var buttonBox = canvas.HBoxLayout.new();
 
-        var btnClose = canvas.gui.widgets.Button.new(me._group, canvas.style, {})
+        var btnClose = canvas.gui.widgets.Button.new(me._group)
             .setText("Close")
             .setFixedSize(75, 26)
             .listen("clicked", func {
