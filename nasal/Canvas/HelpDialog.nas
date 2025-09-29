@@ -49,7 +49,7 @@ var HelpDialog = {
             right  : 0,
             bottom : 0,
         };
-        me._scrollData = ScrollAreaHelper.create(context: me._group, margins: margins);
+        me._scrollData = ScrollAreaHelper.create(me._group, margins);
 
         me._vbox.addItem(me._scrollData, 1); # 2nd param = stretch
 
