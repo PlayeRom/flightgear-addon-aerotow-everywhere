@@ -39,9 +39,9 @@ var RouteAerotowDialog = {
             _scenario: scenario,
         };
 
-        var dialogParent = me.parents[1];
-        dialogParent.setChild(me, RouteAerotowDialog); # Let the parent know who their child is.
-        dialogParent.setPositionOnCenter();
+        me._parentDialog = me.parents[1];
+        me._parentDialog.setChild(me, RouteAerotowDialog); # Let the parent know who their child is.
+        me._parentDialog.setPositionOnCenter();
 
         me._addonNodePath = g_Addon.node.getPath();
         me._savePath = g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR;
@@ -62,7 +62,7 @@ var RouteAerotowDialog = {
     del: func() {
         me._altChangeLabels.clear();
 
-        me.parents[1].del();
+        me._parentDialog.del();
     },
 
     #
