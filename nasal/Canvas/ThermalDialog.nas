@@ -35,9 +35,9 @@ var ThermalDialog = {
             ],
         };
 
-        var dialogParent = me.parents[1];
-        dialogParent.setChild(me, ThermalDialog); # Let the parent know who their child is.
-        dialogParent.setPositionOnCenter();
+        me._parentDialog = me.parents[1];
+        me._parentDialog.setChild(me, ThermalDialog); # Let the parent know who their child is.
+        me._parentDialog.setPositionOnCenter();
 
         me._addonNodePath = g_Addon.node.getPath();
 
@@ -126,7 +126,7 @@ var ThermalDialog = {
     # @override PersistentDialog
     #
     del: func() {
-        me.parents[1].del();
+        me._parentDialog.del();
     },
 
     #
