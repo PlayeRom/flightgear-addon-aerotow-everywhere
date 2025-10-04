@@ -25,10 +25,10 @@ var Loader = {
             _addon: addon,
         };
 
-        me._excludedForLevel0 = [
+        me._excludedForLevel0 = std.Vector.new([
             "addon-main.nas",
             "Loader.nas",
-        ];
+        ]);
 
         return me;
     },
@@ -45,15 +45,19 @@ var Loader = {
         var entries = globals.directory(path);
 
         foreach (var entry; entries) {
-            if (entry == "." or entry == ".." or (level == 0 and contains(me._excludedForLevel0, entry))) {
+            if ((level == 0 and me._excludedForLevel0.contains(entry))
+                or entry == "."
+                or entry == ".."
+            ) {
                 continue;
             }
 
-            var fullPath = path ~ "/" ~ entry;
+            var fullPath = os.path.new(path);
+            fullPath.append(entry);
 
-            if (io.is_regular_file(fullPath) and me._getExtension(entry) == ".NAS") {
-                logprint(LOG_WARN, level, ". ", namespace, " -> ", fullPath);
-                io.load_nasal(fullPath, namespace);
+            if (fullPath.isFile() and fullPath.lower_extension == "nas") {
+                logprint(LOG_WARN, level, ". ", namespace, " -> ", fullPath.realpath);
+                io.load_nasal(fullPath.realpath, namespace);
                 continue;
             }
 
@@ -62,40 +66,25 @@ var Loader = {
                 continue;
             }
 
-            if (!io.is_directory(fullPath)) {
+            if (!fullPath.isDir()) {
                 continue;
             }
 
-            if (me._isNamespaceChange(entry, fullPath, "Widgets")) me.load(fullPath, "canvas", level + 1);
-            else                                                   me.load(fullPath, namespace, level + 1);
+            if (me._isDirInPath("Widgets", fullPath)) me.load(fullPath.realpath, "canvas",  level + 1);
+            else                                      me.load(fullPath.realpath, namespace, level + 1);
         }
     },
 
     #
-    # Get last 4 characters from file name as upper case.
+    # Returns true if expectedDirName is the last part of the fullPath,
+    # or if expectedDirName is contained in the current path.
     #
-    # @param  string  fileName
-    # @return string|nil
-    #
-    _getExtension: func(fileName) {
-        var length = size(fileName);
-        if (length <= 4) {
-            return nil;
-        }
-
-        return string.uc(substr(fileName, length - 4));
-    },
-
-    #
-    # Returns true if expectedDirName is the current directory, or if expectedDirName is contained in the current path.
-    #
-    # @param  string  dirName   Single current directory name.
-    # @param  string  fullPath  Current full path.
     # @param  string  expectedDirName  The expected directory name, which means the namespace should change.
+    # @param  ghost  fullPath  Current full path as os.path object.
     # @return bool
     #
-    _isNamespaceChange: func(dirName, fullPath, expectedDirName) {
-        return string.imatch(dirName, expectedDirName)
-            or string.imatch(fullPath, me._addon.basePath ~ "/*/" ~ expectedDirName ~ "/*");
+    _isDirInPath: func(expectedDirName, fullPath) {
+        return string.imatch(fullPath.file, expectedDirName)
+            or string.imatch(fullPath.realpath, me._addon.basePath ~ "/*/" ~ expectedDirName ~ "/*");
     },
 };
