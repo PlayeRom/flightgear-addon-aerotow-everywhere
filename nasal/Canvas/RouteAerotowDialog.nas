@@ -106,25 +106,15 @@ var RouteAerotowDialog = {
     # @return ghost  Horizontal box layout.
     #
     _buildLayoutAircraftComboBox: func() {
-        var comboBox = canvas.gui.widgets.ComboBox.new(me._group);
-        if (Utils.tryCatch(func { typeof(comboBox.createItem) == "func"; }, [])) {
-            # For next addMenuItem is deprecated
-            #                   label,          value
-            comboBox.createItem("Piper J3 Cub", "Piper J3 Cub");
-            comboBox.createItem("Robin DR400",  "Robin DR400");
-            comboBox.createItem("Cessna 182",   "Cessna 182");
-            comboBox.createItem("Douglas C-47", "Douglas C-47");
-            comboBox.createItem("Halifax",      "Handley Page Halifax");
-        } else {
-            # for 2024.1
-            #                    label,          value
-            comboBox.addMenuItem("Piper J3 Cub", "Piper J3 Cub");
-            comboBox.addMenuItem("Robin DR400",  "Robin DR400");
-            comboBox.addMenuItem("Cessna 182",   "Cessna 182");
-            comboBox.addMenuItem("Douglas C-47", "Douglas C-47");
-            comboBox.addMenuItem("Halifax",      "Handley Page Halifax");
-        }
-        comboBox.setFixedSize(140, 28);
+        var items = [
+            { label: "Piper J3 Cub", value: "Piper J3 Cub" },
+            { label: "Robin DR400",  value: "Robin DR400" },
+            { label: "Cessna 182",   value: "Cessna 182" },
+            { label: "Douglas C-47", value: "Douglas C-47" },
+            { label: "Halifax",      value: "Handley Page Halifax" },
+        ];
+
+        var comboBox = ComboBoxHelper.create(me._group, items, 140, 28);
         comboBox.setSelectedByValue(getprop(me._addonNodePath ~ "/addon-devel/route/ai-model"));
         comboBox.listen("selected-item-changed", func(e) {
             setprop(me._addonNodePath ~ "/addon-devel/route/ai-model", e.detail.value);
