@@ -12,6 +12,8 @@
 io.include("Loader.nas");
 
 #
+# Main add-on function.
+#
 # @param  ghost  addon  The addons.Addon object.
 # @return void
 #
