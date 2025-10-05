@@ -40,6 +40,11 @@ var g_Aerotow = nil;
 var g_AddThermalDialog = nil;
 
 #
+# Global object of tow rope config dialog.
+#
+var g_TowRopeConfigDialog = nil;
+
+#
 # Global object of help dialog.
 #
 var g_HelpDialog = nil;
@@ -87,6 +92,7 @@ var Bootstrap = {
         Timer.singleShot(3, func() {
             g_Aerotow = Aerotow.new();
             g_AddThermalDialog = ThermalDialog.new();
+            g_TowRopeConfigDialog = TowRopeConfigDialog.new();
             g_HelpDialog = HelpDialog.new();
             g_AboutDialog = AboutDialog.new();
 
@@ -117,6 +123,10 @@ var Bootstrap = {
 
         if (g_AddThermalDialog) {
             g_AddThermalDialog.del();
+        }
+
+        if (g_TowRopeConfigDialog) {
+            g_TowRopeConfigDialog.del();
         }
 
         if (g_HelpDialog) {
