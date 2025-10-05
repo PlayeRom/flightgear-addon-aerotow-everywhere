@@ -106,7 +106,7 @@ var Bootstrap = {
     },
 
     #
-    # Uninitialize addon's namespace
+    # Uninitialize object from add-on namespace.
     #
     # @return void
     #
