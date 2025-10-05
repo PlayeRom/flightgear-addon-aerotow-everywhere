@@ -35,8 +35,8 @@
                 <label>Towrope Configuration...</label>
                 <name>aerotow-everywhere-towrope-dialog</name>
                 <binding>
-                    <command>dialog-show</command>
-                    <dialog-name>towrope-config</dialog-name>
+                    <command>nasal</command>
+                    <script>aerotow.g_TowRopeConfigDialog.show();</script>
                 </binding>
             </item>
             <item>
