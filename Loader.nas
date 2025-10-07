@@ -25,10 +25,13 @@ var Loader = {
             _addon: addon,
         };
 
-        me._excludedForLevel0 = [
-            "addon-main.nas",
-            "Loader.nas",
-        ];
+        # List of files that should not be loaded.
+        me._excluded = std.Hash.new({
+            "/addon-main.nas":,
+            "/Loader.nas":,
+        });
+
+        me._fullPath = os.path.new();
 
         return me;
     },
@@ -36,24 +39,32 @@ var Loader = {
     #
     # Search for ".nas" files recursively and load them.
     #
-    # @param  string  path  Starts as base path of add-on.
+    # @param  string  path  Starts as base absolute path of add-on.
     # @param  string  namespace  Namespace of add-on.
     # @param  int  level  Starts from 0, each subsequent subdirectory gets level + 1.
+    # @param  string  relPath  Relative path to the add-on's root directory.
     # @return void
     #
-    load: func(path, namespace, level = 0) {
+    load: func(path, namespace, level = 0, relPath = "") {
         var entries = globals.directory(path);
 
         foreach (var entry; entries) {
-            if (entry == "." or entry == ".." or (level == 0 and contains(me._excludedForLevel0, entry))) {
+            if (entry == "." or entry == "..") {
                 continue;
             }
 
-            var fullPath = path ~ "/" ~ entry;
+            var fullRelPath = relPath ~ "/" ~ entry;
+            if (me._excluded.contains(fullRelPath)) {
+                logprint(LOG_WARN, level, ". ", namespace, " excluded -> ", fullRelPath);
+                continue;
+            }
 
-            if (io.is_regular_file(fullPath) and me._getExtension(entry) == ".NAS") {
-                logprint(LOG_WARN, level, ". ", namespace, " -> ", fullPath);
-                io.load_nasal(fullPath, namespace);
+            me._fullPath.set(path);
+            me._fullPath.append(entry);
+
+            if (me._fullPath.isFile() and me._fullPath.lower_extension == "nas") {
+                logprint(LOG_WARN, level, ". ", namespace, " -> ", me._fullPath.realpath);
+                io.load_nasal(me._fullPath.realpath, namespace);
                 continue;
             }
 
@@ -62,40 +73,27 @@ var Loader = {
                 continue;
             }
 
-            if (!io.is_directory(fullPath)) {
+            if (!me._fullPath.isDir()) {
                 continue;
             }
 
-            if (me._isNamespaceChange(entry, fullPath, "Widgets")) me.load(fullPath, "canvas", level + 1);
-            else                                                   me.load(fullPath, namespace, level + 1);
+            if (me._isDirInPath("Widgets")) {
+                me.load(me._fullPath.realpath, "canvas",  level + 1, fullRelPath);
+            } else {
+                me.load(me._fullPath.realpath, namespace, level + 1, fullRelPath);
+            }
         }
     },
 
     #
-    # Get last 4 characters from file name as upper case.
+    # Returns true if expectedDirName is the last part of the me._fullPath,
+    # or if expectedDirName is contained in the current path.
     #
-    # @param  string  fileName
-    # @return string|nil
-    #
-    _getExtension: func(fileName) {
-        var length = size(fileName);
-        if (length <= 4) {
-            return nil;
-        }
-
-        return string.uc(substr(fileName, length - 4));
-    },
-
-    #
-    # Returns true if expectedDirName is the current directory, or if expectedDirName is contained in the current path.
-    #
-    # @param  string  dirName   Single current directory name.
-    # @param  string  fullPath  Current full path.
     # @param  string  expectedDirName  The expected directory name, which means the namespace should change.
     # @return bool
     #
-    _isNamespaceChange: func(dirName, fullPath, expectedDirName) {
-        return string.imatch(dirName, expectedDirName)
-            or string.imatch(fullPath, me._addon.basePath ~ "/*/" ~ expectedDirName ~ "/*");
+    _isDirInPath: func(expectedDirName) {
+        return string.imatch(me._fullPath.file, expectedDirName)
+            or string.imatch(me._fullPath.realpath, me._addon.basePath ~ "/*/" ~ expectedDirName ~ "/*");
     },
 };
