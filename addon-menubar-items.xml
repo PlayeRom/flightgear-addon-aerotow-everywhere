@@ -94,8 +94,8 @@
                     <command>nasal</command>
                     <script><![CDATA[
                         # Run stopAerotow() with a delay to ensure that the engine sound turns off
-                        aerotow.Timer.singleShot(1, aerotow.g_Aerotow, func () {
-                            aerotow.g_Aerotow.stopAerotow();
+                        aerotowAddon.Timer.singleShot(1, aerotowAddon.g_Aerotow, func () {
+                            aerotowAddon.g_Aerotow.stopAerotow();
                         });
                     ]]></script>
                 </binding>

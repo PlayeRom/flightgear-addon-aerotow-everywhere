@@ -551,7 +551,7 @@
             <binding>
                 <command>nasal</command>
                 <script><![CDATA[
-                    aerotow.g_Aerotow.initialFlightPlan();
+                    aerotowAddon.g_Aerotow.initialFlightPlan();
                 ]]></script>
             </binding>
         </button>
@@ -562,7 +562,7 @@
             <binding>
                 <command>nasal</command>
                 <script><![CDATA[
-                    aerotow.g_Aerotow.routeDialogSave();
+                    aerotowAddon.g_Aerotow.routeDialogSave();
                 ]]></script>
             </binding>
         </button>
@@ -573,7 +573,7 @@
             <binding>
                 <command>nasal</command>
                 <script><![CDATA[
-                    aerotow.g_Aerotow.routeDialogLoad();
+                    aerotowAddon.g_Aerotow.routeDialogLoad();
                 ]]></script>
             </binding>
         </button>
