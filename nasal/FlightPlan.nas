@@ -311,7 +311,7 @@ var FlightPlan = {
             me._coord = coordRwyThreshold;
 
             # Move to the left of the runway threshold
-            me._heading = globals.geo.normdeg(me._heading - 90);
+            me._heading = geo.normdeg(me._heading - 90);
             me._coord.apply_course_distance(me._heading, 1000);
 
             # Add a waypoint to the left of the runway + 3000 m to the middle of length
@@ -535,7 +535,7 @@ var FlightPlan = {
         }
 
         # Shift heading and coordinates
-        me._heading = globals.geo.normdeg(me._heading + wptShift.hdgChange);
+        me._heading = geo.normdeg(me._heading + wptShift.hdgChange);
         me._coord.apply_course_distance(me._heading, wptShift.dist);
 
         if (contains(wptShift, "elevation")) {
