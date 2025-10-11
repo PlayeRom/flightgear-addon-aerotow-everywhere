@@ -132,7 +132,8 @@ var TowRopeConfigDialog = {
     #
     del: func() {
         me._listeners.del();
-        me._parentDialog.del();
+
+        call(PersistentDialog.del, [], me);
     },
 
     #
