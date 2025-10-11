@@ -69,7 +69,7 @@ var AboutDialog = {
     # @override PersistentDialog
     #
     del: func() {
-        me._parentDialog.del();
+        call(PersistentDialog.del, [], me);
     },
 
     #
