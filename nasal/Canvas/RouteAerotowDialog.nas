@@ -62,7 +62,7 @@ var RouteAerotowDialog = {
     del: func() {
         me._altChangeLabels.clear();
 
-        me._parentDialog.del();
+        call(PersistentDialog.del, [], me);
     },
 
     #
