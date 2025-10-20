@@ -24,7 +24,7 @@ var TowRopeConfigDialog = {
     # @return hash
     #
     new: func() {
-        var me = {
+        var obj = {
             parents: [
                 TowRopeConfigDialog,
                 PersistentDialog.new(
@@ -35,78 +35,77 @@ var TowRopeConfigDialog = {
             ],
         };
 
-        me._parentDialog = me.parents[1];
-        me._parentDialog.setChild(me, TowRopeConfigDialog); # Let the parent know who their child is.
-        me._parentDialog.setPositionOnCenter();
+        call(PersistentDialog.setChild, [obj, TowRopeConfigDialog], obj.parents[1]); # Let the parent know who their child is.
+        call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
-        me._ropeLengthNode       = props.globals.getNode("/sim/hitches/aerotow/tow/length");
-        me._ropeBreakForceNode   = props.globals.getNode("/sim/hitches/aerotow/tow/break-force");
-        me._ropeElasticConstNode = props.globals.getNode("/sim/hitches/aerotow/tow/elastic-constant");
-        me._ropeDiameterNode     = props.globals.getNode("/sim/hitches/aerotow/rope/rope-diameter-mm");
-        me._ropeWeightNode       = props.globals.getNode("/sim/hitches/aerotow/tow/weight-per-m-kg-m");
+        obj._ropeLengthNode       = props.globals.getNode("/sim/hitches/aerotow/tow/length");
+        obj._ropeBreakForceNode   = props.globals.getNode("/sim/hitches/aerotow/tow/break-force");
+        obj._ropeElasticConstNode = props.globals.getNode("/sim/hitches/aerotow/tow/elastic-constant");
+        obj._ropeDiameterNode     = props.globals.getNode("/sim/hitches/aerotow/rope/rope-diameter-mm");
+        obj._ropeWeightNode       = props.globals.getNode("/sim/hitches/aerotow/tow/weight-per-m-kg-m");
 
-        me._widgets = {
+        obj._widgets = {
             length: {
-                label : me._getLabel("Towrope Length", "right"),
-                value : me._getLabel("m", "right", 75, 26),
-                min   : me._getLabel("20 m", "right"),
-                max   : me._getLabel("200 m", "left"),
-                slider: me._getSlider(min: 20, max: 200, step: 5, callback: func(e) {
+                label : obj._getLabel("Towrope Length", "right"),
+                value : obj._getLabel("m", "right", 75, 26),
+                min   : obj._getLabel("20 m", "right"),
+                max   : obj._getLabel("200 m", "left"),
+                slider: obj._getSlider(min: 20, max: 200, step: 5, callback: func(e) {
                     var value = e.detail.value;
-                    me._widgets["length"].value.setText(sprintf("%.0f m", value));
-                    me._ropeLengthNode.setDoubleValue(value);
+                    obj._widgets["length"].value.setText(sprintf("%.0f m", value));
+                    obj._ropeLengthNode.setDoubleValue(value);
                 }),
             },
             breakForce: {
-                label : me._getLabel("Weak Link Break Force", "right"),
-                value : me._getLabel("N", "right", 75, 26),
-                min   : me._getLabel("100 N", "right"),
-                max   : me._getLabel("100,000 N", "left"),
-                slider: me._getSlider(min: 100, max: 100000, step: 100, callback: func(e) {
+                label : obj._getLabel("Weak Link Break Force", "right"),
+                value : obj._getLabel("N", "right", 75, 26),
+                min   : obj._getLabel("100 N", "right"),
+                max   : obj._getLabel("100,000 N", "left"),
+                slider: obj._getSlider(min: 100, max: 100000, step: 100, callback: func(e) {
                     var value = e.detail.value;
-                    me._widgets["breakForce"].value.setText(sprintf("%.0f N", value));
-                    me._ropeBreakForceNode.setDoubleValue(value);
+                    obj._widgets["breakForce"].value.setText(sprintf("%.0f N", value));
+                    obj._ropeBreakForceNode.setDoubleValue(value);
                 }),
             },
             elastic: {
-                label : me._getLabel("Towrope Elastic Constant", "right"),
-                value : me._getLabel("N", "right", 75, 26),
-                min   : me._getLabel("0 N", "right"),
-                max   : me._getLabel("1,500,000 N", "left"),
-                slider: me._getSlider(min: 0, max: 1500000, step: 200, callback: func(e) {
+                label : obj._getLabel("Towrope Elastic Constant", "right"),
+                value : obj._getLabel("N", "right", 75, 26),
+                min   : obj._getLabel("0 N", "right"),
+                max   : obj._getLabel("1,500,000 N", "left"),
+                slider: obj._getSlider(min: 0, max: 1500000, step: 200, callback: func(e) {
                     var value = e.detail.value;
-                    me._widgets["elastic"].value.setText(sprintf("%.0f N", value));
-                    me._ropeElasticConstNode.setDoubleValue(value);
+                    obj._widgets["elastic"].value.setText(sprintf("%.0f N", value));
+                    obj._ropeElasticConstNode.setDoubleValue(value);
                 }),
             },
             diameter: {
-                label : me._getLabel("Towrope Diameter", "right"),
-                value : me._getLabel("mm", "right", 75, 26),
-                min   : me._getLabel("0 mm", "right"),
-                max   : me._getLabel("50 mm", "left"),
-                slider: me._getSlider(min: 0, max: 50, step: 1, callback: func(e) {
+                label : obj._getLabel("Towrope Diameter", "right"),
+                value : obj._getLabel("mm", "right", 75, 26),
+                min   : obj._getLabel("0 mm", "right"),
+                max   : obj._getLabel("50 mm", "left"),
+                slider: obj._getSlider(min: 0, max: 50, step: 1, callback: func(e) {
                     var value = e.detail.value;
-                    me._widgets["diameter"].value.setText(sprintf("%.0f mm", value));
-                    me._ropeDiameterNode.setDoubleValue(value);
+                    obj._widgets["diameter"].value.setText(sprintf("%.0f mm", value));
+                    obj._ropeDiameterNode.setDoubleValue(value);
                 }),
             },
             weight: {
-                label : me._getLabel("Towrope Weight per Meter", "right"),
-                value : me._getLabel("kg/m", "right", 75, 26),
-                min   : me._getLabel("0 kg/m", "right"),
-                max   : me._getLabel("1 kg/m", "left"),
-                slider: me._getSlider(min: 0, max: 100, step: 1, callback: func(e) {
+                label : obj._getLabel("Towrope Weight per Meter", "right"),
+                value : obj._getLabel("kg/m", "right", 75, 26),
+                min   : obj._getLabel("0 kg/m", "right"),
+                max   : obj._getLabel("1 kg/m", "left"),
+                slider: obj._getSlider(min: 0, max: 100, step: 1, callback: func(e) {
                     # TODO: FIXME: It should be set to min: 0, max: 1, step: 0.01,
                     # but for some reason with these settings the slider goes crazy
                     # and steps by 1. That's why I use a conversion of 100.
                     var value = e.detail.value / 100;
-                    me._widgets["weight"].value.setText(sprintf("%.2f kg/m", value));
-                    me._ropeWeightNode.setDoubleValue(value);
+                    obj._widgets["weight"].value.setText(sprintf("%.2f kg/m", value));
+                    obj._ropeWeightNode.setDoubleValue(value);
                 }),
             },
         };
 
-        me._rowNames = [
+        obj._rowNames = [
             "length",
             "breakForce",
             "elastic",
@@ -114,14 +113,14 @@ var TowRopeConfigDialog = {
             "weight",
         ];
 
-        me._setSliderValues();
+        obj._setSliderValues();
 
-        me._buildLayout();
+        obj._buildLayout();
 
-        me._listeners = Listeners.new();
-        me._addListeners();
+        obj._listeners = Listeners.new();
+        obj._addListeners();
 
-        return me;
+        return obj;
     },
 
     #
@@ -153,17 +152,17 @@ var TowRopeConfigDialog = {
         }
 
         var hBox = canvas.HBoxLayout.new();
-        hBox.addSpacing(RouteAerotowDialog.PADDING);
+        hBox.addSpacing(me.PADDING);
         hBox.addItem(grid);
-        hBox.addSpacing(RouteAerotowDialog.PADDING);
+        hBox.addSpacing(me.PADDING);
 
-        me._vbox.addSpacing(TowRopeConfigDialog.PADDING);
+        me._vbox.addSpacing(me.PADDING);
         me._vbox.addItem(hBox);
         me._vbox.addStretch(1);
 
-        me._vbox.addSpacing(RouteAerotowDialog.PADDING);
+        me._vbox.addSpacing(me.PADDING);
         me._vbox.addItem(me._drawBottomBar());
-        me._vbox.addSpacing(RouteAerotowDialog.PADDING);
+        me._vbox.addSpacing(me.PADDING);
     },
 
     #

@@ -24,7 +24,7 @@ var ThermalDialog = {
     # @return hash
     #
     new: func() {
-        var me = {
+        var obj = {
             parents: [
                 ThermalDialog,
                 PersistentDialog.new(
@@ -35,76 +35,75 @@ var ThermalDialog = {
             ],
         };
 
-        me._parentDialog = me.parents[1];
-        me._parentDialog.setChild(me, ThermalDialog); # Let the parent know who their child is.
-        me._parentDialog.setPositionOnCenter();
+        call(PersistentDialog.setChild, [obj, ThermalDialog], obj.parents[1]); # Let the parent know who their child is.
+        call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
-        me._addonNodePath = g_Addon.node.getPath();
+        obj._addonNodePath = g_Addon.node.getPath();
 
-        me._distanceM = getprop(me._addonNodePath ~ "/addon-devel/add-thermal/distance-m") or 300;
-        me._strengthFps = getprop(me._addonNodePath ~ "/addon-devel/add-thermal/strength-fps") or 16.0;
-        me._diameterFt = getprop(me._addonNodePath ~ "/addon-devel/add-thermal/diameter-ft") or 4000;
-        me._heightMsl = getprop(me._addonNodePath ~ "/addon-devel/add-thermal/height-msl") or 9000;
+        obj._distanceM = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/distance-m") or 300;
+        obj._strengthFps = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/strength-fps") or 16.0;
+        obj._diameterFt = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/diameter-ft") or 4000;
+        obj._heightMsl = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/height-msl") or 9000;
 
-        me._vbox.addSpacing(ThermalDialog.PADDING);
+        obj._vbox.addSpacing(me.PADDING);
 
         var hBoxDesc = canvas.HBoxLayout.new();
-        hBoxDesc.addSpacing(ThermalDialog.PADDING);
-        hBoxDesc.addItem(me._getLabel("This option allows the thermal to be placed at the distance designated below in front of the glider along with other parameters.", true));
-        hBoxDesc.addSpacing(ThermalDialog.PADDING);
+        hBoxDesc.addSpacing(me.PADDING);
+        hBoxDesc.addItem(obj._getLabel("This option allows the thermal to be placed at the distance designated below in front of the glider along with other parameters.", true));
+        hBoxDesc.addSpacing(me.PADDING);
 
-        me._vbox.addItem(hBoxDesc);
+        obj._vbox.addItem(hBoxDesc);
 
-        me._vbox.addStretch(1);
+        obj._vbox.addStretch(1);
 
         var grid = canvas.GridLayout.new();
 
-        var editValue = sprintf("%d", me._distanceM);
+        var editValue = sprintf("%d", obj._distanceM);
         var unitFormat = "m (%.02f NM)";
-        var unitLabel = sprintf(unitFormat, me._distanceM *  globals.M2NM);
-        me._createGridRow(grid, 0, "Distance in front of the glider", editValue, unitLabel, func(e, unitWidget) {
-            me._distanceM = num(e.detail.text);
-            unitWidget.setText(sprintf(unitFormat, me._distanceM *  globals.M2NM));
+        var unitLabel = sprintf(unitFormat, obj._distanceM *  globals.M2NM);
+        obj._createGridRow(grid, 0, "Distance in front of the glider", editValue, unitLabel, func(e, unitWidget) {
+            obj._distanceM = num(e.detail.text);
+            unitWidget.setText(sprintf(unitFormat, obj._distanceM *  globals.M2NM));
         });
 
-        editValue = sprintf("%.2f", me._strengthFps);
+        editValue = sprintf("%.2f", obj._strengthFps);
         unitFormat = "ft/s (%.2f m/s)";
-        unitLabel = sprintf(unitFormat, me._strengthFps * globals.FPS2KT * globals.KT2MPS);
-        me._createGridRow(grid, 1, "Strength", editValue, unitLabel, func(e, unitWidget) {
-            me._strengthFps = num(e.detail.text);
-            unitWidget.setText(sprintf(unitFormat, me._strengthFps * globals.FPS2KT * globals.KT2MPS));
+        unitLabel = sprintf(unitFormat, obj._strengthFps * globals.FPS2KT * globals.KT2MPS);
+        obj._createGridRow(grid, 1, "Strength", editValue, unitLabel, func(e, unitWidget) {
+            obj._strengthFps = num(e.detail.text);
+            unitWidget.setText(sprintf(unitFormat, obj._strengthFps * globals.FPS2KT * globals.KT2MPS));
         });
 
-        editValue = sprintf("%d", me._diameterFt);
+        editValue = sprintf("%d", obj._diameterFt);
         unitFormat = "ft (%.0f m)";
-        unitLabel = sprintf(unitFormat, me._diameterFt * globals.FT2M);
-        me._createGridRow(grid, 2, "Diameter", editValue, unitLabel, func(e, unitWidget) {
-            me._diameterFt = num(e.detail.text);
-            unitWidget.setText(sprintf(unitFormat, me._diameterFt * globals.FT2M));
+        unitLabel = sprintf(unitFormat, obj._diameterFt * globals.FT2M);
+        obj._createGridRow(grid, 2, "Diameter", editValue, unitLabel, func(e, unitWidget) {
+            obj._diameterFt = num(e.detail.text);
+            unitWidget.setText(sprintf(unitFormat, obj._diameterFt * globals.FT2M));
         });
 
-        editValue = sprintf("%d", me._heightMsl);
+        editValue = sprintf("%d", obj._heightMsl);
         unitFormat = "ft (%.0f m)";
-        unitLabel = sprintf(unitFormat, me._heightMsl * globals.FT2M);
-        me._createGridRow(grid, 3, "Height MSL", editValue, unitLabel, func(e, unitWidget) {
-            me._heightMsl = num(e.detail.text);
-            unitWidget.setText(sprintf(unitFormat, me._heightMsl * globals.FT2M));
+        unitLabel = sprintf(unitFormat, obj._heightMsl * globals.FT2M);
+        obj._createGridRow(grid, 3, "Height MSL", editValue, unitLabel, func(e, unitWidget) {
+            obj._heightMsl = num(e.detail.text);
+            unitWidget.setText(sprintf(unitFormat, obj._heightMsl * globals.FT2M));
         });
 
         var hBoxGrid = canvas.HBoxLayout.new();
-        hBoxGrid.addSpacing(ThermalDialog.PADDING);
+        hBoxGrid.addSpacing(me.PADDING);
         hBoxGrid.addItem(grid);
-        hBoxGrid.addSpacing(ThermalDialog.PADDING);
+        hBoxGrid.addSpacing(me.PADDING);
 
-        me._vbox.addItem(hBoxGrid);
+        obj._vbox.addItem(hBoxGrid);
 
-        me._vbox.addStretch(1);
+        obj._vbox.addStretch(1);
 
-        var buttonAdd = me._getButton("Add thermal", func {
-            me._addThermal();
-            me.hide();
+        var buttonAdd = obj._getButton("Add thermal", func {
+            obj._addThermal();
+            obj.hide();
         });
-        var buttonCancel = me._getButton("Cancel", func { me.hide(); });
+        var buttonCancel = obj._getButton("Cancel", func { obj.hide(); });
 
         var hBoxBtns = canvas.HBoxLayout.new();
         hBoxBtns.addStretch(1);
@@ -112,11 +111,11 @@ var ThermalDialog = {
         hBoxBtns.addItem(buttonCancel);
         hBoxBtns.addStretch(1);
 
-        me._vbox.addSpacing(ThermalDialog.PADDING);
-        me._vbox.addItem(hBoxBtns);
-        me._vbox.addSpacing(ThermalDialog.PADDING);
+        obj._vbox.addSpacing(me.PADDING);
+        obj._vbox.addItem(hBoxBtns);
+        obj._vbox.addSpacing(me.PADDING);
 
-        return me;
+        return obj;
     },
 
     #

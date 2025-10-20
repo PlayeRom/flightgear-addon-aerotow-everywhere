@@ -27,7 +27,7 @@ var RouteAerotowDialog = {
     # @return hash
     #
     new: func(scenario) {
-        var me = {
+        var obj = {
             parents: [
                 RouteAerotowDialog,
                 PersistentDialog.new(
@@ -39,18 +39,17 @@ var RouteAerotowDialog = {
             _scenario: scenario,
         };
 
-        me._parentDialog = me.parents[1];
-        me._parentDialog.setChild(me, RouteAerotowDialog); # Let the parent know who their child is.
-        me._parentDialog.setPositionOnCenter();
+        call(PersistentDialog.setChild, [obj, RouteAerotowDialog], obj.parents[1]); # Let the parent know who their child is.
+        call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
-        me._addonNodePath = g_Addon.node.getPath();
-        me._savePath = g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR;
+        obj._addonNodePath = g_Addon.node.getPath();
+        obj._savePath = g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR;
 
-        me._bindings = {};
+        obj._bindings = {};
 
-        me._buildLayout();
+        obj._buildLayout();
 
-        return me;
+        return obj;
     },
 
     #

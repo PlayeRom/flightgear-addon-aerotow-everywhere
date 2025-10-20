@@ -25,17 +25,17 @@ var FlightPlan = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [FlightPlan] };
+        var obj = { parents: [FlightPlan] };
 
-        me._flightPlanWriter = FlightPlanWriter.new();
+        obj._flightPlanWriter = FlightPlanWriter.new();
 
-        me._addonNodePath = g_Addon.node.getPath();
+        obj._addonNodePath = g_Addon.node.getPath();
 
-        me._coord    = nil; # Coordinates for flight plan
-        me._heading  = nil; # AI plane heading
-        me._altitude = nil; # AI plane altitude
+        obj._coord    = nil; # Coordinates for flight plan
+        obj._heading  = nil; # AI plane heading
+        obj._altitude = nil; # AI plane altitude
 
-        return me;
+        return obj;
     },
 
     #

@@ -19,7 +19,7 @@ var AboutDialog = {
     # @return hash
     #
     new: func() {
-        var me = {
+        var obj = {
             parents: [
                 AboutDialog,
                 PersistentDialog.new(
@@ -30,36 +30,35 @@ var AboutDialog = {
             ],
         };
 
-        me._parentDialog = me.parents[1];
-        me._parentDialog.setChild(me, AboutDialog); # Let the parent know who their child is.
-        me._parentDialog.setPositionOnCenter();
+        call(PersistentDialog.setChild, [obj, AboutDialog], obj.parents[1]); # Let the parent know who their child is.
+        call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
-        me._vbox.addSpacing(10);
+        obj._vbox.addSpacing(10);
 
-        me._vbox.addItem(me._getLabel(g_Addon.name));
-        me._vbox.addItem(me._getLabel(sprintf("version %s", g_Addon.version.str())));
-        me._vbox.addItem(me._getLabel("September 15, 2025"));
-        me._vbox.addStretch(1);
-        me._vbox.addItem(me._getLabel("Written by:"));
+        obj._vbox.addItem(obj._getLabel(g_Addon.name));
+        obj._vbox.addItem(obj._getLabel(sprintf("version %s", g_Addon.version.str())));
+        obj._vbox.addItem(obj._getLabel("September 15, 2025"));
+        obj._vbox.addStretch(1);
+        obj._vbox.addItem(obj._getLabel("Written by:"));
 
         foreach (var author; g_Addon.authors) {
-            me._vbox.addItem(me._getLabel(author.name));
+            obj._vbox.addItem(obj._getLabel(author.name));
         }
 
-        me._vbox.addStretch(1);
+        obj._vbox.addStretch(1);
 
-        me._vbox.addItem(me._getButton("Open GitHub Website", func {
+        obj._vbox.addItem(obj._getButton("Open GitHub Website", func {
             Utils.openBrowser({ url: g_Addon.codeRepositoryUrl });
         }));
 
-        me._vbox.addStretch(1);
+        obj._vbox.addStretch(1);
 
-        var buttonBoxClose = me._drawBottomBar("Close", func { me.hide(); });
-        me._vbox.addSpacing(10);
-        me._vbox.addItem(buttonBoxClose);
-        me._vbox.addSpacing(10);
+        var buttonBoxClose = obj._drawBottomBar("Close", func { obj.hide(); });
+        obj._vbox.addSpacing(10);
+        obj._vbox.addItem(buttonBoxClose);
+        obj._vbox.addSpacing(10);
 
-        return me;
+        return obj;
     },
 
     #

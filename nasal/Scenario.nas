@@ -27,23 +27,23 @@ var Scenario = {
     # @return hash
     #
     new: func() {
-        var me = { parents : [Scenario] };
+        var obj = { parents : [Scenario] };
 
-        me._addonNodePath = g_Addon.node.getPath();
+        obj._addonNodePath = g_Addon.node.getPath();
 
-        me._listeners = Listeners.new();
-        me._flightPlan = FlightPlan.new();
-        me._isScenarioLoaded = false;
-        me._scenarioPath = g_Addon.storagePath ~ "/" ~ Scenario.FILENAME_SCENARIO;
+        obj._listeners = Listeners.new();
+        obj._flightPlan = FlightPlan.new();
+        obj._isScenarioLoaded = false;
+        obj._scenarioPath = g_Addon.storagePath ~ "/" ~ me.FILENAME_SCENARIO;
 
-        me.initialFlightPlan();
+        obj.initialFlightPlan();
 
-        me._listeners.add("/sim/presets/longitude-deg", func () {
+        obj._listeners.add("/sim/presets/longitude-deg", func () {
             # User change airport/runway
-            me.initialFlightPlan();
+            obj.initialFlightPlan();
         });
 
-        return me;
+        return obj;
     },
 
     #
@@ -70,8 +70,8 @@ var Scenario = {
         var scenarioXml = {
             PropertyList: {
                 scenario: {
-                    name       : Scenario.SCENARIO_NAME,
-                    description: Scenario.SCENARIO_DESC,
+                    name       : me.SCENARIO_NAME,
+                    description: me.SCENARIO_DESC,
                     entry: {
                         callsign  : "FG-TOW",
                         type      : "aircraft",
@@ -101,9 +101,9 @@ var Scenario = {
     _addScenarioToPropertyList: func() {
         if (!me._isAlreadyAdded()) {
             var scenarioData = {
-                name       : Scenario.SCENARIO_NAME,
-                id         : Scenario.SCENARIO_ID,
-                description: Scenario.SCENARIO_DESC,
+                name       : me.SCENARIO_NAME,
+                id         : me.SCENARIO_ID,
+                description: me.SCENARIO_DESC,
                 path       : me._scenarioPath,
             };
 
@@ -117,7 +117,7 @@ var Scenario = {
     _isAlreadyAdded: func() {
         foreach (var scenario; props.globals.getNode("/sim/ai/scenarios").getChildren("scenario")) {
             var id = scenario.getChild("id");
-            if (id != nil and id.getValue() == Scenario.SCENARIO_ID) {
+            if (id != nil and id.getValue() == me.SCENARIO_ID) {
                 return true;
             }
         }
@@ -131,7 +131,7 @@ var Scenario = {
     # @return bool  Return true on successful, otherwise false.
     #
     load: func() {
-        var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
+        var args = props.Node.new({ "name": me.SCENARIO_ID });
         if (fgcommand("load-scenario", args)) {
             me._isScenarioLoaded = true;
             Message.success("Let's fly!");
@@ -153,7 +153,7 @@ var Scenario = {
     #
     unload: func(withMessages = false) {
         if (me._isScenarioLoaded) {
-            var args = props.Node.new({ "name": Scenario.SCENARIO_ID });
+            var args = props.Node.new({ "name": me.SCENARIO_ID });
             if (fgcommand("unload-scenario", args)) {
                 me._isScenarioLoaded = false;
 

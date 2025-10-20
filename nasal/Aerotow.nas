@@ -19,21 +19,21 @@ var Aerotow = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [Aerotow] };
+        var obj = { parents: [Aerotow] };
 
-        me._addonNodePath = g_Addon.node.getPath();
-        me._listeners = Listeners.new();
+        obj._addonNodePath = g_Addon.node.getPath();
+        obj._listeners = Listeners.new();
 
-        me._scenario = Scenario.new();
+        obj._scenario = Scenario.new();
 
-        me._routeAerotowDialog = RouteAerotowDialog.new(me._scenario);
+        obj._routeAerotowDialog = RouteAerotowDialog.new(obj._scenario);
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
-        me._listeners.add(me._addonNodePath ~ "/addon-devel/ai-model", func () {
-            me._restartAerotow();
+        obj._listeners.add(obj._addonNodePath ~ "/addon-devel/ai-model", func () {
+            obj._restartAerotow();
         });
 
-        return me;
+        return obj;
     },
 
     #
