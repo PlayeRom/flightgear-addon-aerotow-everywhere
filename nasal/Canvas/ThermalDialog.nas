@@ -38,18 +38,20 @@ var ThermalDialog = {
         call(PersistentDialog.setChild, [obj, ThermalDialog], obj.parents[1]); # Let the parent know who their child is.
         call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
+        obj._widget = WidgetHelper.new(obj._group);
+
         obj._addonNodePath = g_Addon.node.getPath();
 
-        obj._distanceM = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/distance-m") or 300;
+        obj._distanceM   = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/distance-m") or 300;
         obj._strengthFps = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/strength-fps") or 16.0;
-        obj._diameterFt = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/diameter-ft") or 4000;
-        obj._heightMsl = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/height-msl") or 9000;
+        obj._diameterFt  = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/diameter-ft") or 4000;
+        obj._heightMsl   = getprop(obj._addonNodePath ~ "/addon-devel/add-thermal/height-msl") or 9000;
 
         obj._vbox.addSpacing(me.PADDING);
 
         var hBoxDesc = canvas.HBoxLayout.new();
         hBoxDesc.addSpacing(me.PADDING);
-        hBoxDesc.addItem(obj._getLabel("This option allows the thermal to be placed at the distance designated below in front of the glider along with other parameters.", true));
+        hBoxDesc.addItem(obj._widget.getLabel("This option allows the thermal to be placed at the distance designated below in front of the glider along with other parameters.", true));
         hBoxDesc.addSpacing(me.PADDING);
 
         obj._vbox.addItem(hBoxDesc);
@@ -99,11 +101,11 @@ var ThermalDialog = {
 
         obj._vbox.addStretch(1);
 
-        var buttonAdd = obj._getButton("Add thermal", func {
+        var buttonAdd = obj._widget.getButton("Add thermal", func {
             obj._addThermal();
             obj.hide();
         });
-        var buttonCancel = obj._getButton("Cancel", func { obj.hide(); });
+        var buttonCancel = obj._widget.getButton("Cancel", func obj.hide());
 
         var hBoxBtns = canvas.HBoxLayout.new();
         hBoxBtns.addStretch(1);
@@ -140,43 +142,16 @@ var ThermalDialog = {
     # @return void
     #
     _createGridRow: func(grid, row, label, editValue, unitLabel, callback) {
-        var labelWidget = me._getLabel(label);
+        var labelWidget = me._widget.getLabel(label);
         labelWidget.setTextAlign("right");
 
-        var unitWidget = me._getLabel(unitLabel).setFixedSize(160, 28);
+        var unitWidget = me._widget.getLabel(unitLabel).setFixedSize(160, 28);
 
-        var editWidget = canvas.gui.widgets.LineEdit.new(me._group)
-            .setFixedSize(80, 28)
-            .setText(editValue);
-
-        editWidget.listen("text-changed", func(e) {
-            callback(e, unitWidget);
-        });
+        var editWidget = me._widget.getLineEdit(editValue, 80, { "text-changed": func(e) callback(e, unitWidget) });
 
         grid.addItem(labelWidget, 0, row);
         grid.addItem(editWidget, 1, row);
         grid.addItem(unitWidget, 2, row);
-    },
-
-    #
-    # @param  string  text  Label text.
-    # @param  bool  wordWrap  If true then text will be wrapped.
-    # @return ghost  Label widget.
-    #
-    _getLabel: func(text, wordWrap = false) {
-        return canvas.gui.widgets.Label.new(parent: me._group, cfg: { wordWrap: wordWrap })
-            .setText(text);
-    },
-
-    #
-    # @param  string  text  Label of button.
-    # @param  func  callback  Function which will be executed after click the button.
-    # @return ghost  Button widget.
-    #
-    _getButton: func(text, callback) {
-        return canvas.gui.widgets.Button.new(me._group)
-            .setText(text)
-            .listen("clicked", callback);
     },
 
     #

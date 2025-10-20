@@ -42,6 +42,8 @@ var HelpDialog = {
         call(PersistentDialog.setChild, [obj, HelpDialog], obj.parents[1]); # Let the parent know who their child is.
         call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
+        obj._widget = WidgetHelper.new(obj._group);
+
         var margins = {
             left   : HelpDialog.PADDING,
             top    : HelpDialog.PADDING,
@@ -52,7 +54,7 @@ var HelpDialog = {
 
         obj._vbox.addItem(obj._scrollData, 1); # 2nd param = stretch
 
-        obj._scrollDataContent = ScrollAreaHelper.getContent(
+        obj._scrollContent = ScrollAreaHelper.getContent(
             context  : obj._scrollData,
             font     : "LiberationFonts/LiberationSans-Regular.ttf",
             fontSize : 16,
@@ -96,12 +98,12 @@ var HelpDialog = {
     # @return void
     #
     _reDrawTexts: func(x, y, maxWidth = nil) {
-        me._scrollDataContent.removeAllChildren();
+        me._scrollContent.removeAllChildren();
         me._helpTexts.clear();
 
         foreach (var node; me._propHelpText.getChildren("paragraph")) {
             var isHeader = math.mod(node.getIndex(), 2) == 0;
-            var text = me._scrollDataContent.createChild("text")
+            var text = me._scrollContent.createChild("text")
                 .setText(node.getValue())
                 .setTranslation(x, y)
                 .setColor(canvas.style.getColor("text_color"))
@@ -123,24 +125,18 @@ var HelpDialog = {
     },
 
     #
-    # @return ghost  HBoxLayout object with button
+    # @return void
     #
     _drawBottomBar: func() {
+        var btnClose = me._widget.getButton("Close", 75, func {
+            me.hide();
+        });
+
         var buttonBox = canvas.HBoxLayout.new();
-
-        var btnClose = canvas.gui.widgets.Button.new(me._group)
-            .setText("Close")
-            .setFixedSize(75, 26)
-            .listen("clicked", func {
-                me.hide();
-            });
-
         buttonBox.addItem(btnClose);
 
         me._vbox.addSpacing(10);
         me._vbox.addItem(buttonBox);
         me._vbox.addSpacing(10);
-
-        return buttonBox;
     },
 };

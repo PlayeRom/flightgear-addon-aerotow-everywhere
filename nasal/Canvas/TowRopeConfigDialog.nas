@@ -38,6 +38,8 @@ var TowRopeConfigDialog = {
         call(PersistentDialog.setChild, [obj, TowRopeConfigDialog], obj.parents[1]); # Let the parent know who their child is.
         call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
+        obj._widget = WidgetHelper.new(obj._group);
+
         obj._ropeLengthNode       = props.globals.getNode("/sim/hitches/aerotow/tow/length");
         obj._ropeBreakForceNode   = props.globals.getNode("/sim/hitches/aerotow/tow/break-force");
         obj._ropeElasticConstNode = props.globals.getNode("/sim/hitches/aerotow/tow/elastic-constant");
@@ -47,7 +49,7 @@ var TowRopeConfigDialog = {
         obj._widgets = {
             length: {
                 label : obj._getLabel("Towrope Length", "right"),
-                value : obj._getLabel("m", "right", 75, 26),
+                value : obj._getLabel("m", "right", 75),
                 min   : obj._getLabel("20 m", "right"),
                 max   : obj._getLabel("200 m", "left"),
                 slider: obj._getSlider(min: 20, max: 200, step: 5, callback: func(e) {
@@ -58,7 +60,7 @@ var TowRopeConfigDialog = {
             },
             breakForce: {
                 label : obj._getLabel("Weak Link Break Force", "right"),
-                value : obj._getLabel("N", "right", 75, 26),
+                value : obj._getLabel("N", "right", 75),
                 min   : obj._getLabel("100 N", "right"),
                 max   : obj._getLabel("100,000 N", "left"),
                 slider: obj._getSlider(min: 100, max: 100000, step: 100, callback: func(e) {
@@ -69,7 +71,7 @@ var TowRopeConfigDialog = {
             },
             elastic: {
                 label : obj._getLabel("Towrope Elastic Constant", "right"),
-                value : obj._getLabel("N", "right", 75, 26),
+                value : obj._getLabel("N", "right", 75),
                 min   : obj._getLabel("0 N", "right"),
                 max   : obj._getLabel("1,500,000 N", "left"),
                 slider: obj._getSlider(min: 0, max: 1500000, step: 200, callback: func(e) {
@@ -80,7 +82,7 @@ var TowRopeConfigDialog = {
             },
             diameter: {
                 label : obj._getLabel("Towrope Diameter", "right"),
-                value : obj._getLabel("mm", "right", 75, 26),
+                value : obj._getLabel("mm", "right", 75),
                 min   : obj._getLabel("0 mm", "right"),
                 max   : obj._getLabel("50 mm", "left"),
                 slider: obj._getSlider(min: 0, max: 50, step: 1, callback: func(e) {
@@ -91,7 +93,7 @@ var TowRopeConfigDialog = {
             },
             weight: {
                 label : obj._getLabel("Towrope Weight per Meter", "right"),
-                value : obj._getLabel("kg/m", "right", 75, 26),
+                value : obj._getLabel("kg/m", "right", 75),
                 min   : obj._getLabel("0 kg/m", "right"),
                 max   : obj._getLabel("1 kg/m", "left"),
                 slider: obj._getSlider(min: 0, max: 100, step: 1, callback: func(e) {
@@ -167,17 +169,15 @@ var TowRopeConfigDialog = {
 
     #
     # @param  string  text  Label text.
-    # @param  bool  wordWrap  If true then text will be wrapped.
+    # @param  string  align
+    # @param  int|nil  width
     # @return ghost  Label widget.
     #
-    _getLabel: func(text, align = "center", width = nil, height = nil, wordWrap = false) {
-        var label = canvas.gui.widgets.Label.new(parent: me._group, cfg: { wordWrap: wordWrap })
-            .setText(text);
+    _getLabel: func(text, align = "center", width = nil) {
+        var label = me._widget.getLabel(text: text, align: align);
 
-        label.setTextAlign(align);
-
-        if (width != nil and height != nil) {
-            label.setFixedSize(width, height);
+        if (width != nil) {
+            label.setFixedSize(width, 26);
         }
 
         return label;
@@ -207,34 +207,11 @@ var TowRopeConfigDialog = {
     },
 
     #
-    # @param  string  text  Label of button.
-    # @param  func  callback  Function which will be executed after click the button.
-    # @return ghost  Button widget.
-    #
-    _getButton: func(text, callback) {
-        return canvas.gui.widgets.Button.new(me._group)
-            .setText(text)
-            .setFixedSize(200, 26)
-            .listen("clicked", callback);
-    },
-
-    #
-    # @param  string  label  Label of button.
-    # @param  func  callback  function which will be executed after click the button.
     # @return ghost  HBoxLayout object with button.
     #
     _drawBottomBar: func() {
-        var okBtn = canvas.gui.widgets.Button.new(me._group)
-            .setText("OK")
-            .setFixedSize(75, 26)
-            .listen("clicked", func me.hide());
-
-        var defaultBtn = canvas.gui.widgets.Button.new(me._group)
-            .setText("Default")
-            .setFixedSize(75, 26)
-            .listen("clicked", func {
-                me._setDefaultValues();
-            });
+        var okBtn = me._widget.getButton("OK", 75, func me.hide());
+        var defaultBtn = me._widget.getButton("Default", 75, func me._setDefaultValues());
 
         var hBox = canvas.HBoxLayout.new();
         hBox.addStretch(1);

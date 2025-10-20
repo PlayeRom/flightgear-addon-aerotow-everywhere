@@ -42,6 +42,8 @@ var RouteAerotowDialog = {
         call(PersistentDialog.setChild, [obj, RouteAerotowDialog], obj.parents[1]); # Let the parent know who their child is.
         call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
+        obj._widget = WidgetHelper.new(obj._group);
+
         obj._addonNodePath = g_Addon.node.getPath();
         obj._savePath = g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR;
 
@@ -88,10 +90,10 @@ var RouteAerotowDialog = {
     #
     _buildLayoutTopDesc: func() {
         var vBox = canvas.VBoxLayout.new();
-        vBox.addItem(me._getLabel("Here you can change the default flight path of the tow plane.", true));
-        vBox.addItem(me._getLabel("You cannot change the initial point, the AI plane always takes-off in front of the runway you are on.", true));
+        vBox.addItem(me._widget.getLabel("Here you can change the default flight path of the tow plane.", true));
+        vBox.addItem(me._widget.getLabel("You cannot change the initial point, the AI plane always takes-off in front of the runway you are on.", true));
         vBox.addSpacing(10);
-        vBox.addItem(me._getLabel("A distance with a value of 0 terminates the flight plan.", true));
+        vBox.addItem(me._widget.getLabel("A distance with a value of 0 terminates the flight plan.", true));
 
         var hBox = canvas.HBoxLayout.new();
         hBox.addSpacing(RouteAerotowDialog.PADDING);
@@ -127,13 +129,16 @@ var RouteAerotowDialog = {
     # @return ghost  Input text widget.
     #
     _buildLayoutMaxAltitude: func() {
-        var lineEditMaxAlt = canvas.gui.widgets.LineEdit.new(me._group)
-            .setFixedSize(80, 28)
-            .setText(sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl")))
-            .listen("text-changed", func(e) {
-                setprop(me._addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", num(e.detail.text));
-                me.calculateAltChangeAndTotals();
-            });
+        var lineEditMaxAlt = me._widget.getLineEdit(
+            sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl")),
+            80,
+            {
+                "text-changed": func(e) {
+                    setprop(me._addonNodePath ~ "/addon-devel/route/wpts/max-alt-agl", num(e.detail.text));
+                    me.calculateAltChangeAndTotals();
+                },
+            },
+        );
 
         me._bindWidgetWithProp("/addon-devel/route/wpts/max-alt-agl", lineEditMaxAlt, "%.0f");
 
@@ -149,10 +154,10 @@ var RouteAerotowDialog = {
 
         var hBox = canvas.HBoxLayout.new();
         hBox.addSpacing(RouteAerotowDialog.PADDING);
-        hBox.addItem(me._getLabel("Aerotow:"));
+        hBox.addItem(me._widget.getLabel("Aerotow:"));
         hBox.addItem(aircraft, 1);
         hBox.addStretch(1);
-        hBox.addItem(me._getLabel("Max alt (AGL):"));
+        hBox.addItem(me._widget.getLabel("Max alt (AGL):"));
         hBox.addItem(maxAlt);
         hBox.addSpacing(RouteAerotowDialog.PADDING);
 
@@ -166,13 +171,13 @@ var RouteAerotowDialog = {
         var grid = canvas.GridLayout.new();
 
         var row = 0;
-        grid.addItem(me._getLabel("Initial Heading (°)"), 0, row);
-        grid.addItem(me._getLabel("Distance (m)"), 1, row);
-        grid.addItem(me._getLabel("Alt change (AGL)"), 2, row);
+        grid.addItem(me._widget.getLabel("Initial Heading (°)"), 0, row);
+        grid.addItem(me._widget.getLabel("Distance (m)"), 1, row);
+        grid.addItem(me._widget.getLabel("Alt change (AGL)"), 2, row);
 
-        var initHdgLabel  = me._getLabel(sprintf("%.2f°",   getprop(me._addonNodePath ~ "/addon-devel/route/init-wpt/heading-change")));
-        var initDistLabel = me._getLabel(sprintf("%.0f m",  getprop(me._addonNodePath ~ "/addon-devel/route/init-wpt/distance-m")));
-        var initAltLabel  = me._getLabel(sprintf("%.0f ft", getprop(me._addonNodePath ~ "/addon-devel/route/init-wpt/alt-change-agl-ft")));
+        var initHdgLabel  = me._widget.getLabel(sprintf("%.2f°",   getprop(me._addonNodePath ~ "/addon-devel/route/init-wpt/heading-change")));
+        var initDistLabel = me._widget.getLabel(sprintf("%.0f m",  getprop(me._addonNodePath ~ "/addon-devel/route/init-wpt/distance-m")));
+        var initAltLabel  = me._widget.getLabel(sprintf("%.0f ft", getprop(me._addonNodePath ~ "/addon-devel/route/init-wpt/alt-change-agl-ft")));
 
         me._bindWidgetWithProp("/addon-devel/route/init-wpt/heading-change", initHdgLabel, "%.2f°");
         me._bindWidgetWithProp("/addon-devel/route/init-wpt/distance-m", initDistLabel, "%.0f m");
@@ -184,9 +189,9 @@ var RouteAerotowDialog = {
         grid.addItem(initAltLabel, 2, row);
 
         row += 1;
-        grid.addItem(me._getLabel("Heading change (°)"), 0, row);
-        grid.addItem(me._getLabel("Distance (m)"), 1, row);
-        grid.addItem(me._getLabel("Alt change (AGL)"), 2, row);
+        grid.addItem(me._widget.getLabel("Heading change (°)"), 0, row);
+        grid.addItem(me._widget.getLabel("Distance (m)"), 1, row);
+        grid.addItem(me._widget.getLabel("Alt change (AGL)"), 2, row);
 
         me._altChangeLabels = std.Vector.new();
         for (var i = 0; i < 10; i += 1) {
@@ -194,11 +199,11 @@ var RouteAerotowDialog = {
             me._altChangeLabels.append(me._createGridRow(grid, row, i));
         }
 
-        var totalLabel = me._getLabel("Total:");
+        var totalLabel = me._widget.getLabel("Total:");
         totalLabel.setTextAlign("right");
 
-        me._totalDistanceLabel = me._getLabel(sprintf("%.0f m", getprop(me._addonNodePath ~ "/addon-devel/route/total/distance")));
-        me._totalAltitudeLabel = me._getLabel(sprintf("%.0f ft", getprop(me._addonNodePath ~ "/addon-devel/route/total/alt")));
+        me._totalDistanceLabel = me._widget.getLabel(sprintf("%.0f m", getprop(me._addonNodePath ~ "/addon-devel/route/total/distance")));
+        me._totalAltitudeLabel = me._widget.getLabel(sprintf("%.0f ft", getprop(me._addonNodePath ~ "/addon-devel/route/total/alt")));
 
         me._bindWidgetWithProp("/addon-devel/route/total/distance", me._totalDistanceLabel, "%.0f m");
         me._bindWidgetWithProp("/addon-devel/route/total/alt", me._totalAltitudeLabel, "%.0f ft");
@@ -222,7 +227,7 @@ var RouteAerotowDialog = {
     _buildLayoutRouteDescLabel: func() {
         var hBox = canvas.HBoxLayout.new();
         hBox.addSpacing(RouteAerotowDialog.PADDING);
-        hBox.addItem(me._getLabel("Description:"));
+        hBox.addItem(me._widget.getLabel("Description:"));
         hBox.addSpacing(RouteAerotowDialog.PADDING);
 
         return hBox;
@@ -232,11 +237,14 @@ var RouteAerotowDialog = {
     # @return ghost  Horizontal box layout.
     #
     _buildLayoutRouteDescInput: func() {
-        var editDesc = canvas.gui.widgets.LineEdit.new(me._group)
-            .setText(getprop(me._addonNodePath ~ "/addon-devel/route/wpts/description"))
-            .listen("text-changed", func(e) {
-                setprop(me._addonNodePath ~ "/addon-devel/route/wpts/description", e.detail.text);
-            });
+        var editDesc = me._widget.getLineEdit(
+            getprop(me._addonNodePath ~ "/addon-devel/route/wpts/description"),
+            {
+                "text-changed": func(e) {
+                    setprop(me._addonNodePath ~ "/addon-devel/route/wpts/description", e.detail.text);
+                },
+            },
+        );
 
         me._bindWidgetWithProp("/addon-devel/route/wpts/description", editDesc, "%s");
 
@@ -252,14 +260,14 @@ var RouteAerotowDialog = {
     # @return ghost  Horizontal box layout.
     #
     _buildLayoutButtons: func() {
-        var buttonOk = me._getButton("OK", func { me.hide(); });
-        var buttonDefault = me._getButton("Default", func {
+        var buttonOk = me._widget.getButton("OK", func me.hide());
+        var buttonDefault = me._widget.getButton("Default", func {
             me._scenario.initialFlightPlan();
             me.calculateAltChangeAndTotals();
             me._updateTextWidgets();
         });
-        var buttonSave = me._getButton("Save...", func { me.save(); });
-        var buttonLoad = me._getButton("Load...", func { me.load(); });
+        var buttonSave = me._widget.getButton("Save...", func me.save());
+        var buttonLoad = me._widget.getButton("Load...", func me.load());
 
         var hBox = canvas.HBoxLayout.new();
         hBox.addStretch(1);
@@ -294,22 +302,26 @@ var RouteAerotowDialog = {
     # @return ghost  Widget for alt change label.
     #
     _createGridRow: func(grid, gridRow, index) {
-        var editHeading = canvas.gui.widgets.LineEdit.new(me._group)
-            # .setFixedSize(80, 28)
-            .setText(sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change")))
-            .listen("text-changed", func(e) {
-                setprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change", num(e.detail.text));
-            });
+        var editHeading = me._widget.getLineEdit(
+            sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change")),
+            {
+                "text-changed": func(e) {
+                    setprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change", num(e.detail.text));
+                },
+            },
+        );
 
-        var editDistance = canvas.gui.widgets.LineEdit.new(me._group)
-            # .setFixedSize(80, 28)
-            .setText(sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/distance-m")))
-            .listen("text-changed", func(e) {
-                setprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/distance-m", num(e.detail.text));
-                me.calculateAltChangeAndTotals();
-            });
+        var editDistance = me._widget.getLineEdit(
+            sprintf("%.0f", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/distance-m")),
+            {
+                "text-changed": func(e) {
+                    setprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/distance-m", num(e.detail.text));
+                    me.calculateAltChangeAndTotals();
+                },
+            },
+        );
 
-        var altChangeLabel = me._getLabel(sprintf("%.0f ft", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/alt-change-agl-ft")))
+        var altChangeLabel = me._widget.getLabel(sprintf("%.0f ft", getprop(me._addonNodePath ~ "/addon-devel/route/wpts/wpt[" ~ index ~ "]/alt-change-agl-ft")))
             .setFixedSize(200, 28);
 
         me._bindWidgetWithProp("/addon-devel/route/wpts/wpt[" ~ index ~ "]/heading-change", editHeading, "%.0f");
@@ -321,27 +333,6 @@ var RouteAerotowDialog = {
         grid.addItem(altChangeLabel, 2, gridRow);
 
         return altChangeLabel;
-    },
-
-    #
-    # @param  string  text  Label text.
-    # @param  bool  wordWrap  If true then text will be wrapped.
-    # @return ghost  Label widget.
-    #
-    _getLabel: func(text, wordWrap = false) {
-        return canvas.gui.widgets.Label.new(parent: me._group, cfg: { wordWrap: wordWrap })
-            .setText(text);
-    },
-
-    #
-    # @param  string  text  Label of button.
-    # @param  func  callback  Function which will be executed after click the button.
-    # @return ghost  Button widget.
-    #
-    _getButton: func(text, callback) {
-        return canvas.gui.widgets.Button.new(me._group)
-            .setText(text)
-            .listen("clicked", callback);
     },
 
     #
