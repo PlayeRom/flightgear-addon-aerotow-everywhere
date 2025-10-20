@@ -26,7 +26,7 @@ var HelpDialog = {
     # @return hash
     #
     new: func() {
-        var me = {
+        var obj = {
             parents: [
                 HelpDialog,
                 PersistentDialog.new(
@@ -34,14 +34,13 @@ var HelpDialog = {
                     height  : HelpDialog.WINDOW_HEIGHT,
                     title   : "Aerotow Everywhere Help",
                     resize  : true,
-                    onResize: func(w, h) { me._onResize(w, h); }
+                    onResize: func(w, h) { obj._onResize(w, h); }
                 ),
             ],
         };
 
-        me._parentDialog = me.parents[1];
-        me._parentDialog.setChild(me, HelpDialog); # Let the parent know who their child is.
-        me._parentDialog.setPositionOnCenter();
+        call(PersistentDialog.setChild, [obj, HelpDialog], obj.parents[1]); # Let the parent know who their child is.
+        call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
         var margins = {
             left   : HelpDialog.PADDING,
@@ -49,24 +48,24 @@ var HelpDialog = {
             right  : 0,
             bottom : 0,
         };
-        me._scrollData = ScrollAreaHelper.create(me._group, margins);
+        obj._scrollData = ScrollAreaHelper.create(obj._group, margins);
 
-        me._vbox.addItem(me._scrollData, 1); # 2nd param = stretch
+        obj._vbox.addItem(obj._scrollData, 1); # 2nd param = stretch
 
-        me._scrollDataContent = ScrollAreaHelper.getContent(
-            context  : me._scrollData,
+        obj._scrollDataContent = ScrollAreaHelper.getContent(
+            context  : obj._scrollData,
             font     : "LiberationFonts/LiberationSans-Regular.ttf",
             fontSize : 16,
             alignment: "left-baseline"
         );
 
-        me._helpTexts = std.Vector.new();
-        me._propHelpText = props.globals.getNode(g_Addon.node.getPath() ~ "/addon-devel/help-text");
+        obj._helpTexts = std.Vector.new();
+        obj._propHelpText = props.globals.getNode(g_Addon.node.getPath() ~ "/addon-devel/help-text");
 
-        me._reDrawTexts(x: 0, y: 0, maxWidth: HelpDialog.WINDOW_WIDTH - (HelpDialog.PADDING * 2));
-        me._drawBottomBar();
+        obj._reDrawTexts(x: 0, y: 0, maxWidth: HelpDialog.WINDOW_WIDTH - (HelpDialog.PADDING * 2));
+        obj._drawBottomBar();
 
-        return me;
+        return obj;
     },
 
     #

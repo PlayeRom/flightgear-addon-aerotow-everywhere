@@ -24,9 +24,9 @@ var Aerotow = {
         obj._addonNodePath = g_Addon.node.getPath();
         obj._listeners = Listeners.new();
 
-        me._scenario = Scenario.new();
+        obj._scenario = Scenario.new();
 
-        me._routeAerotowDialog = RouteAerotowDialog.new(me._scenario);
+        obj._routeAerotowDialog = RouteAerotowDialog.new(obj._scenario);
 
         # Listener for ai-model property triggered when the user select a tow aircraft from add-on menu
         obj._listeners.add(obj._addonNodePath ~ "/addon-devel/ai-model", func () {
