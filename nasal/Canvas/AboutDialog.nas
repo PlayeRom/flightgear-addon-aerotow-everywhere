@@ -33,6 +33,8 @@ var AboutDialog = {
         call(PersistentDialog.setChild, [obj, AboutDialog], obj.parents[1]); # Let the parent know who their child is.
         call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
 
+        obj._widget = WidgetHelper.new(obj._group);
+
         obj._vbox.addSpacing(10);
 
         obj._vbox.addItem(obj._getLabel(g_Addon.name));
@@ -47,15 +49,14 @@ var AboutDialog = {
 
         obj._vbox.addStretch(1);
 
-        obj._vbox.addItem(obj._getButton("Open GitHub Website", func {
+        obj._vbox.addItem(obj._widget.getButton("Open GitHub Website", 200, func {
             Utils.openBrowser({ url: g_Addon.codeRepositoryUrl });
         }));
 
         obj._vbox.addStretch(1);
 
-        var buttonBoxClose = obj._drawBottomBar("Close", func { obj.hide(); });
         obj._vbox.addSpacing(10);
-        obj._vbox.addItem(buttonBoxClose);
+        obj._vbox.addItem(obj._drawBottomBar());
         obj._vbox.addSpacing(10);
 
         return obj;
@@ -77,43 +78,20 @@ var AboutDialog = {
     # @return ghost  Label widget.
     #
     _getLabel: func(text, wordWrap = false) {
-        var label = canvas.gui.widgets.Label.new(parent: me._group, cfg: { wordWrap: wordWrap })
-            .setText(text);
-
-        label.setTextAlign("center");
-
-        return label;
+        return me._widget.getLabel(text, wordWrap, "center");
     },
 
     #
-    # @param  string  text  Label of button.
-    # @param  func  callback  Function which will be executed after click the button.
-    # @return ghost  Button widget.
-    #
-    _getButton: func(text, callback) {
-        return canvas.gui.widgets.Button.new(me._group)
-            .setText(text)
-            .setFixedSize(200, 26)
-            .listen("clicked", callback);
-    },
-
-    #
-    # @param  string  label  Label of button.
-    # @param  func  callback  function which will be executed after click the button.
     # @return ghost  HBoxLayout object with button.
     #
-    _drawBottomBar: func(label, callback) {
-        var buttonBox = canvas.HBoxLayout.new();
+    _drawBottomBar: func() {
+        var btnClose = me._widget.getButton("Close", 75, func me.hide());
 
-        var btnClose = canvas.gui.widgets.Button.new(me._group)
-            .setText(label)
-            .setFixedSize(75, 26)
-            .listen("clicked", callback);
+        var hBox = canvas.HBoxLayout.new();
+        hBox.addStretch(1);
+        hBox.addItem(btnClose);
+        hBox.addStretch(1);
 
-        buttonBox.addStretch(1);
-        buttonBox.addItem(btnClose);
-        buttonBox.addStretch(1);
-
-        return buttonBox;
+        return hBox;
     },
 };
