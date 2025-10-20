@@ -1,11 +1,11 @@
 #
-# Aerotow Everywhere - Add-on for FlightGear
+# CanvasSkeleton Add-on for FlightGear
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
 # Copyright (C) 2025 Roman Ludwicki
 #
-# Aerotow Everywhere is an Open Source project and it is licensed
+# This is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
 #
 
@@ -20,12 +20,12 @@ var DevEnv = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [DevEnv] };
+        var obj = { parents: [DevEnv] };
 
-        me._variables = std.Hash.new();
-        me._readEnvFile();
+        obj._variables = std.Hash.new();
+        obj._readEnvFile();
 
-        return me;
+        return obj;
     },
 
     #
@@ -125,15 +125,15 @@ var DevEnv = {
         value = me._removeQuotes(value);
         var valueUc = string.uc(value);
 
-           if (valueUc == "TRUE") return true;
-        elsif (valueUc == "FALSE") return false;
-        elsif (isnum(valueUc)) return num(valueUc);
+           if (valueUc == "TRUE")      return true;
+        elsif (valueUc == "FALSE")     return false;
+        elsif (isnum(valueUc))         return num(valueUc);
         elsif (valueUc == "LOG_ALERT") return LOG_ALERT;
-        elsif (valueUc == "LOG_WARN") return LOG_WARN;
-        elsif (valueUc == "LOG_INFO") return LOG_INFO;
+        elsif (valueUc == "LOG_WARN")  return LOG_WARN;
+        elsif (valueUc == "LOG_INFO")  return LOG_INFO;
         elsif (valueUc == "LOG_DEBUG") return LOG_DEBUG;
-        elsif (valueUc == "LOG_BULK") return LOG_BULK;
-        # TODO: add more here if needed
+        elsif (valueUc == "LOG_BULK")  return LOG_BULK;
+        # TODO: add more conversion here if needed
 
         return value; # return string as default
     },

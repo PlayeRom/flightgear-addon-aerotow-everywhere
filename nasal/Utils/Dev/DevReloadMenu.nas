@@ -1,11 +1,11 @@
 #
-# Aerotow Everywhere - Add-on for FlightGear
+# CanvasSkeleton Add-on for FlightGear
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
 # Copyright (C) 2025 Roman Ludwicki
 #
-# Aerotow Everywhere is an Open Source project and it is licensed
+# This is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
 #
 
@@ -17,8 +17,7 @@ var DevReloadMenu = {
     #
     # Constants:
     #
-    MAIN_MENU_LABEL: "Aerotow Everywhere",
-    RELOAD_MENU_LABEL: "Dev Reload",
+    _RELOAD_MENU_LABEL: "Dev Reload",
 
     #
     # Constructor.
@@ -26,11 +25,42 @@ var DevReloadMenu = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [DevReloadMenu] };
+        var obj = { parents: [DevReloadMenu] };
 
-        me._reloadMenuName = g_Addon.id ~ "-dev-reload";
+        obj._reloadMenuName = g_Addon.id ~ "-dev-reload";
 
-        return me;
+        obj._mainMenuLabel = obj._getMainMenuLabel();
+
+        return obj;
+    },
+
+    #
+    # Get main menu label for this add-on, read from /addon-menubar-items.xml file.
+    #
+    # @return string
+    #
+    _getMainMenuLabel: func() {
+        var menuNode = io.read_properties(g_Addon.basePath ~ "/addon-menubar-items.xml");
+        if (menuNode == nil) {
+            return "none";
+        }
+
+        var menuBarItems = menuNode.getChild("menubar-items");
+        if (menuBarItems == nil) {
+            return "none";
+        }
+
+        var menu = menuBarItems.getChild("menu");
+        if (menu == nil) {
+            return "none";
+        }
+
+        var label = menu.getChild("label");
+        if (label == nil) {
+            return "none";
+        }
+
+        return label.getValue();
     },
 
     #
@@ -51,7 +81,7 @@ var DevReloadMenu = {
         }
 
         var data = {
-            label  : DevReloadMenu.RELOAD_MENU_LABEL,
+            label  : me._RELOAD_MENU_LABEL,
             name   : me._reloadMenuName,
             binding: {
                 command: "addon-reload",
@@ -62,7 +92,7 @@ var DevReloadMenu = {
         menuNode.addChild("item").setValues(data);
         fgcommand("gui-redraw");
 
-        Log.alert("the menu item \"", DevReloadMenu.RELOAD_MENU_LABEL, "\" has been added.");
+        Log.alert("the menu item \"", me._RELOAD_MENU_LABEL, "\" has been added.");
     },
 
     #
@@ -85,7 +115,7 @@ var DevReloadMenu = {
         item.remove();
         fgcommand("gui-redraw");
 
-        Log.alert("the menu item \"", DevReloadMenu.RELOAD_MENU_LABEL, "\" has been removed.");
+        Log.alert("the menu item \"", me._RELOAD_MENU_LABEL, "\" has been removed.");
     },
 
     #
@@ -96,7 +126,7 @@ var DevReloadMenu = {
     _getMenuNode: func() {
         foreach (var menu; props.globals.getNode("/sim/menubar/default").getChildren("menu")) {
             var name = menu.getChild("label");
-            if (name != nil and name.getValue() == DevReloadMenu.MAIN_MENU_LABEL) {
+            if (name != nil and name.getValue() == me._mainMenuLabel) {
                 return menu;
             }
         }

@@ -1,11 +1,11 @@
 #
-# Aerotow Everywhere - Add-on for FlightGear
+# CanvasSkeleton Add-on for FlightGear
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
 # Copyright (C) 2025 Roman Ludwicki
 #
-# Aerotow Everywhere is an Open Source project and it is licensed
+# This is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
 #
 
@@ -26,11 +26,11 @@ var Listeners = {
     # @return hash
     #
     new: func() {
-        var me = { parents: [Listeners] };
+        var obj = { parents: [Listeners] };
 
-        me._listeners = std.Vector.new();
+        obj._listeners = std.Vector.new();
 
-        return me;
+        return obj;
     },
 
     #

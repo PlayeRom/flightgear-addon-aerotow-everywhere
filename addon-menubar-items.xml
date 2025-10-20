@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
 #
 # Aerotow Everywhere - Add-on for FlightGear
@@ -10,13 +11,6 @@
 # Aerotow Everywhere is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
 #
--->
-
-<!--
-    2018-12 WARNING:
-    PUI menu items must have a globally unique label to make bindings work
-    correctly. Bindings of all items with the same label will be triggered
-    if any of them is selected from the menu.
 -->
 
 <PropertyList>
@@ -134,8 +128,9 @@
             FOR DEVELOPMENT ONLY!
             trigger reload of addon-main.nas
             1) This item should be REMOVED for release versions.
-            2) Ensure the label is unique
-            3) replace addon ID to match your addon
+            2) replace addon ID to match your addon
+            3) For convenience, you can use a .env file with DEV_MODE=true to
+                enable this menu item, without the need to edit this file.
             -->
             <!-- <item>
                 <label>Dev Reload</label>
@@ -144,6 +139,7 @@
                     <id>org.flightgear.addons.Aerotow</id>
                 </binding>
             </item> -->
+
         </menu>
     </menubar-items>
 </PropertyList>

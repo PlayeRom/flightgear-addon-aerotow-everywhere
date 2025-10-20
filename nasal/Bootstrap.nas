@@ -47,8 +47,8 @@ var Bootstrap = {
     init: func(addon) {
         g_Addon = addon;
 
-        Bootstrap._initDevMode();
-        Bootstrap._createDirectories();
+        me._initDevMode();
+        me._createDirectories();
 
         g_Aerotow = Aerotow.new();
     },
@@ -90,6 +90,10 @@ var Bootstrap = {
     # @return void
     #
     _initDevMode: func() {
+        if (!Config.dev.useEnvFile) {
+            return;
+        }
+
         var env = DevEnv.new();
 
         var logLevel = env.getValue("MY_LOG_LEVEL");
@@ -106,7 +110,10 @@ var Bootstrap = {
                 ? reloadMenu.addMenu()
                 : reloadMenu.removeMenu();
 
-            DevReloadMultiKey.addMultiKeyCmd(env.getValue("RELOAD_MULTIKEY_CMD"));
+            DevMultiKeyCmd.new()
+                .addReloadAddon(env.getValue("RELOAD_MULTIKEY_CMD"))
+                .addRunTests(env.getValue("TEST_MULTIKEY_CMD"))
+                .finish();
         }
     },
 };

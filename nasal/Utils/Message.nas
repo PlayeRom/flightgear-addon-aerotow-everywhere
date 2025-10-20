@@ -1,11 +1,11 @@
 #
-# Aerotow Everywhere - Add-on for FlightGear
+# CanvasSkeleton Add-on for FlightGear
 #
 # Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
 #
-# Copyright (C) 2022 Roman Ludwicki
+# Copyright (C) 2025 Roman Ludwicki
 #
-# Aerotow Everywhere is an Open Source project and it is licensed
+# This is an Open Source project and it is licensed
 # under the GNU Public License v3 (GPLv3)
 #
 
@@ -20,7 +20,7 @@ var Message = {
     # @return void
     #
     success: func(msgs...) {
-        Message._display(string.join("", msgs), "ok");
+        me._display(string.join("", msgs), "ok");
     },
 
     #
@@ -30,7 +30,7 @@ var Message = {
     # @return void
     #
     error: func(msgs...) {
-        Message._display(string.join("", msgs), "error");
+        me._display(string.join("", msgs), "error");
     },
 
     #
@@ -45,7 +45,7 @@ var Message = {
         Log.alert(message);
 
         # Read the message by speech synthesizer
-        props.globals.getNode("/sim/sound/voices/ai-plane").setValue(message);
+        setprop("/sim/sound/voices/ai-plane", message);
 
         # Display message on the screen
         var durationInSec = int(size(message) / 12) + 3;
