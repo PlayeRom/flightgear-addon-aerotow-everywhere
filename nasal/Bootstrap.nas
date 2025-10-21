@@ -70,44 +70,12 @@ var Bootstrap = {
         me._initDevMode();
         me._createDirectories();
 
-        # Disable the menu as it loads with delay.
-        gui.menuEnable("aerotow-everywhere-route-dialog", false);
-        gui.menuEnable("aerotow-everywhere-towrope-dialog", false);
-        gui.menuEnable("aerotow-everywhere-call-cub", false);
-        gui.menuEnable("aerotow-everywhere-call-robin", false);
-        gui.menuEnable("aerotow-everywhere-call-c182", false);
-        gui.menuEnable("aerotow-everywhere-call-c47", false);
-        gui.menuEnable("aerotow-everywhere-call-halifax", false);
-        gui.menuEnable("aerotow-everywhere-disable-aircraft", false);
-        gui.menuEnable("aerotow-everywhere-add-thermal-dialog", false);
-        gui.menuEnable("aerotow-everywhere-help-dialog", false);
-        gui.menuEnable("aerotow-everywhere-about-dialog", false);
-
-        # Delay loading of the whole addon so as not to break the MCDUs for aircraft like A320, A330. The point is that,
-        # for example, the A320 hard-coded the texture index from /canvas/by-index/texture[15]. But add-on can creates
-        # its canvas textures earlier than the airplane, which will cause that at index 15 there will be no MCDU texture
-        # but the texture from the add-on. So thanks to this delay, the textures of the plane will be created first, and
-        # then the textures of this add-on.
-
-        Timer.singleShot(3, func() {
+        me._delayCanvasLoading(func {
             g_Aerotow = Aerotow.new();
             g_AddThermalDialog = ThermalDialog.new();
             g_TowRopeConfigDialog = TowRopeConfigDialog.new();
             g_HelpDialog = HelpDialog.new();
             g_AboutDialog = AboutDialog.new();
-
-            # Enable the menu as the entire Canvas should now be loaded.
-            gui.menuEnable("aerotow-everywhere-route-dialog", true);
-            gui.menuEnable("aerotow-everywhere-towrope-dialog", true);
-            gui.menuEnable("aerotow-everywhere-call-cub", true);
-            gui.menuEnable("aerotow-everywhere-call-robin", true);
-            gui.menuEnable("aerotow-everywhere-call-c182", true);
-            gui.menuEnable("aerotow-everywhere-call-c47", true);
-            gui.menuEnable("aerotow-everywhere-call-halifax", true);
-            gui.menuEnable("aerotow-everywhere-disable-aircraft", true);
-            gui.menuEnable("aerotow-everywhere-add-thermal-dialog", true);
-            gui.menuEnable("aerotow-everywhere-help-dialog", true);
-            gui.menuEnable("aerotow-everywhere-about-dialog", true);
         });
     },
 
@@ -156,6 +124,29 @@ var Bootstrap = {
         # Create /route-saves directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
         path = os.path.new(g_Addon.storagePath ~ "/" ~ RouteAerotowDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
         path.create_dir();
+    },
+
+    #
+    # Delay loading the entire Canvas add-on to avoid damaging aircraft displays such as A320, A330. The point is that,
+    # for example, the A320 hard-coded the texture index from /canvas/by-index/texture[15]. But this add-on may creates
+    # its canvas textures earlier than the airplane, which will cause that at index 15 there will be no texture of some
+    # display but the texture from the add-on. So thanks to this delay, the textures of the plane will be created first,
+    # and then the textures of this add-on.
+    #
+    # @param  func  callback
+    # @return void
+    #
+    _delayCanvasLoading: func(callback) {
+        # Disable menu items responsible for launching persistent dialogs.
+        var menu = MenuStateHandler.new();
+        menu.toggleItems(false);
+
+        Timer.singleShot(3, func() {
+            callback();
+
+            # Enable menu items responsible for launching persistent dialogs.
+            menu.toggleItems(true);
+        });
     },
 
     #
