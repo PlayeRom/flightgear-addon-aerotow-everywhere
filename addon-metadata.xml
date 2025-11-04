@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+#
+# Framework Add-on for FlightGear
+#
+# Written and developer by Roman Ludwicki (PlayeRom, SP-ROM)
+#
+# Copyright (C) 2025 Roman Ludwicki
+#
+# This is an Open Source project and it is licensed
+# under the GNU Public License v3 (GPLv3)
+#
+-->
+
+<PropertyList>
+    <meta>
+        <file-type type="string">FlightGear add-on metadata</file-type>
+        <format-version type="int">1</format-version>
+    </meta>
+
+    <addon>
+        <identifier type="string">org.flightgear.addons.framework</identifier>
+        <name type="string">Framework</name>
+        <version type="string">1.0.0</version>
+
+        <authors>
+            <author>
+                <name type="string">Roman Ludwicki</name>
+                <email type="string"></email>
+                <url type="string"></url>
+            </author>
+        </authors>
+
+        <maintainers>
+            <maintainer>
+                <name type="string">Roman Ludwicki</name>
+                <email type="string"></email>
+                <url type="string"></url>
+            </maintainer>
+        </maintainers>
+
+        <short-description type="string">
+            Add-on as framework to help add-on developers.
+        </short-description>
+
+        <long-description type="string">
+            This add-on doesn't do anything special, but it provides a base of common classes and mechanisms that you can use as a starting point when writing a new add-on for FlightGear.
+        </long-description>
+
+        <license>
+            <designation type="string">GNU GPL version 3 or later</designation>
+            <file type="string">LICENSE</file>
+            <url type="string">https://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+
+        <min-FG-version type="string">2020.1.1</min-FG-version>
+        <max-FG-version type="string">none</max-FG-version>
+
+        <urls>
+            <home-page type="string">https://github.com/PlayeRom/flightgear-addon-framework/</home-page>
+            <download type="string">https://github.com/PlayeRom/flightgear-addon-framework/releases</download>
+            <support type="string">https://github.com/PlayeRom/flightgear-addon-framework/issues</support>
+            <code-repository type="string">https://github.com/PlayeRom/flightgear-addon-framework</code-repository>
+        </urls>
+
+        <tags>
+            <tag type="string">skeleton</tag>
+            <tag type="string">dummy</tag>
+            <tag type="string">framework</tag>
+            <tag type="string">canvas</tag>
+        </tags>
+    </addon>
+</PropertyList>
