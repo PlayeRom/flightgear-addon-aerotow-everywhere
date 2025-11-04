@@ -33,7 +33,7 @@ var Aircraft = {
     # @return hash
     #
     new: func(vs, speed, speedLimit, rolling, minRwyLength, minFinalLegDist, name, nameMenuCall, modelPath) {
-        var me = {
+        return {
             parents        : [Aircraft],
             vs             : vs,
             speed          : speed,
@@ -45,8 +45,6 @@ var Aircraft = {
             nameMenuCall   : nameMenuCall,
             modelPath      : modelPath,
         };
-
-        return me;
     },
 
     #
