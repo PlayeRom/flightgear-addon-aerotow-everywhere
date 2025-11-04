@@ -17,6 +17,26 @@ io.include('framework/nasal/Application.nas');
 var g_Aerotow = nil;
 
 #
+# Global object of add thermal dialog.
+#
+var g_AddThermalDialog = nil;
+
+#
+# Global object of tow rope config dialog.
+#
+var g_TowRopeConfigDialog = nil;
+
+#
+# Global object of help dialog.
+#
+var g_HelpDialog = nil;
+
+#
+# Global object of about dialog.
+#
+var g_AboutDialog = nil;
+
+#
 # Main add-on function.
 #
 # @param  ghost  addon  The addons.Addon object.
@@ -28,8 +48,6 @@ var main = func(addon) {
     Application
         .hookFilesExcludedFromLoading(func {
             return [
-                '/framework/nasal/Canvas/BaseDialogs/Dialog.nas',
-                '/framework/nasal/Canvas/BaseDialogs/PersistentDialog.nas',
                 '/framework/nasal/Canvas/BaseDialogs/TransientDialog.nas',
             ];
         })
@@ -40,14 +58,19 @@ var main = func(addon) {
             # Create /AI/FlightPlans/ directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
             # User has to add the path as --data=$FG_HOME/Export/Addons/org.flightgear.addons.Aerotow
             # Then the FG will be able to read flight plan file
-            var path = os.path.new(g_Addon.storagePath ~ "/AI/FlightPlans/dummy-file.txt");
+            var path = os.path.new(g_Addon.storagePath ~ '/AI/FlightPlans/dummy-file.txt');
             path.create_dir();
 
             # Create /route-saves directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
-            path = os.path.new(g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
+            path = os.path.new(g_Addon.storagePath ~ '/' ~ RouteAerotowDialog.ROUTE_SAVES_DIR ~ '/dummy-file.txt');
             path.create_dir();
-
+        })
+        .hookOnInitCanvas(func {
             g_Aerotow = Aerotow.new();
+            g_AddThermalDialog = ThermalDialog.new();
+            g_TowRopeConfigDialog = TowRopeConfigDialog.new();
+            g_HelpDialog = HelpDialog.new();
+            g_AboutDialog = AboutDialog.new();
         })
         .create(addon, 'aerotowAddon');
 };
@@ -71,5 +94,21 @@ var unload = func(addon) {
 
     if (g_Aerotow != nil) {
         g_Aerotow.del();
+    }
+
+    if (g_AddThermalDialog != nil) {
+        g_AddThermalDialog.del();
+    }
+
+    if (g_TowRopeConfigDialog != nil) {
+        g_TowRopeConfigDialog.del();
+    }
+
+    if (g_HelpDialog != nil) {
+        g_HelpDialog.del();
+    }
+
+    if (g_AboutDialog != nil) {
+        g_AboutDialog.del();
     }
 };
