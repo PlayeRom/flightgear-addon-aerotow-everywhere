@@ -46,8 +46,7 @@ var main = func(addon) {
             # Create /route-saves directory in $FG_HOME/Export/Addons/org.flightgear.addons.Aerotow/
             path = os.path.new(g_Addon.storagePath ~ "/" ~ RouteDialog.ROUTE_SAVES_DIR ~ "/dummy-file.txt");
             path.create_dir();
-        })
-        .hookOnInit(func {
+
             g_Aerotow = Aerotow.new();
         })
         .create(addon, 'aerotowAddon');
