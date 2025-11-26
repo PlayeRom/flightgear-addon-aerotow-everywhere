@@ -9,6 +9,8 @@
 # under the GNU Public License v3 (GPLv3)
 #
 
+Log.success('Loaded by include -> /nasal/Dev/DevMultiKeyCmd');
+
 #
 # A class for adding multi-key commands.
 # This is for development purposes only.
@@ -97,7 +99,9 @@ var DevMultiKeyCmd = {
 
         var path = '/input/keyboard/multikey';
 
-        for (var i = 0; i < size(sequence); i += 1) {
+        var count = size(sequence);
+
+        for (var i = 0; i < count; i += 1) {
             path ~= '/key[' ~ sequence[i] ~ ']';
             setprop(path ~ '/name', chr(sequence[i]));
         }
@@ -164,7 +168,9 @@ var DevMultiKeyCmd = {
     # @return string  Return true if sequence is alphanumeric, false otherwise.
     #
     _isAlphanumeric: func(sequence) {
-        for (var i = 0; i < size(sequence); i += 1) {
+        var count = size(sequence);
+
+        for (var i = 0; i < count; i += 1) {
             if (!string.isalnum(sequence[i])) {
                 return false;
             }
